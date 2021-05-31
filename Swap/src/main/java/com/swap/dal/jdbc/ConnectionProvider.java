@@ -10,21 +10,19 @@ import javax.sql.DataSource;
 
 abstract class ConnectionProvider {
 	private static DataSource dataSource;
-	
-	static
-	{
+
+	static {
 		Context context;
 		try {
 			context = new InitialContext();
-			ConnectionProvider.dataSource = (DataSource)context.lookup("java:comp/env/jdbc/pool_cnx");
+			ConnectionProvider.dataSource = (DataSource) context.lookup("java:comp/env/jdbc/pool_cnx");
 		} catch (NamingException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Database can't be accessed");
 		}
 	}
 
-	public static Connection getConnection() throws SQLException
-	{
+	public static Connection getConnection() throws SQLException {
 		return ConnectionProvider.dataSource.getConnection();
 	}
 }

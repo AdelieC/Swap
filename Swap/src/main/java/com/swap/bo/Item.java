@@ -1,5 +1,115 @@
 package com.swap.bo;
 
-public class Item {
+import java.io.Serializable;
+import java.time.LocalDate;
 
+public class Item implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private int id, initialPrice, salePrice, userId, categoryId;
+	private String name, description;
+	private LocalDate startDate, endDate;
+
+	public Item() {
+	}
+
+	public Item(String name, String description, LocalDate startDate, LocalDate endDate, int categoryId,
+			int initialPrice, int userId) {
+		this.name = name;
+		this.description = description;
+		this.categoryId = categoryId;
+		this.initialPrice = initialPrice;
+		this.salePrice = initialPrice;
+		this.userId = userId;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+
+	public Item(int id, String name, String description, LocalDate startDate, LocalDate endDate, int categoryId,
+			int initialPrice, int salePrice, int userId) {
+		this(name, description, startDate, endDate, categoryId, initialPrice, userId);
+		this.id = id;
+		this.salePrice = salePrice;
+	}
+
+	public String toString() {
+		String result = "";
+		result += "Name: " + this.name + "\n";
+		result += "Description: " + this.description + "\n";
+		result += "Category: " + this.categoryId + " Initial Price: " + this.initialPrice + "\n";
+		result += "User number: " + this.userId + "\n";
+		result += "Start date: " + this.startDate + " End date: " + this.endDate + "\n";
+		return result;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getInitialPrice() {
+		return this.initialPrice;
+	}
+
+	public void setInitialPrice(int initialPrice) {
+		this.initialPrice = initialPrice;
+	}
+
+	public int getSalePrice() {
+		return this.salePrice;
+	}
+
+	public void setSalePrice(int salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	public int getUserId() {
+		return this.userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public int getCategoryId() {
+		return this.categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public LocalDate getStartDate() {
+		return this.startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDate getEndDate() {
+		return this.endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
 }

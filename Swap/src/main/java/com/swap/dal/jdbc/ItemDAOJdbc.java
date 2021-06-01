@@ -14,9 +14,9 @@ import com.swap.dal.DALException;
 import com.swap.dal.ItemDAO;
 
 public class ItemDAOJdbc implements ItemDAO {
-	private static String[] columns = { "item_id", "item_name", "description", "start_date", "end_date",
+	private static final String[] columns = { "item_id", "item_name", "description", "start_date", "end_date",
 			"initial_price", "sale_price", "user_id", "category_id" };
-	private static String tableName = "ITEMS";
+	private static final String tableName = "ITEMS";
 
 	@Override
 	public void create(Item s) throws DALException {

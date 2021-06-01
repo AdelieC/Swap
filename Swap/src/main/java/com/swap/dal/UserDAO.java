@@ -15,5 +15,7 @@ public interface UserDAO extends DAO<User> {
 
 	public List<User> selectAllAdmins() throws DALException;
 
-	public void deleteById(int userId) throws DALException;
+	public void delete(int userId) throws DALException;
+
+	public boolean exists(User u) throws DALException;
 }

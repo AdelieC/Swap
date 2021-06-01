@@ -23,6 +23,17 @@ public class DBUtils {
 		return "SELECT * FROM " + tableName + " WHERE " + col + " LIKE ?";
 	}
 
+	public static String selectWhereBetween(String tableName, String col) {
+		return "SELECT * FROM " + tableName + " WHERE " + col + " BETWEEN (? AND ?)";
+	}
+
+	public static String findExactMatchIn(String tableName, String[] columns) {
+		String matches = columns[0] + " = ?";
+		for (int i = 1; i < columns.length; i++)
+			matches += (" AND " + columns[i] + " = ?");
+		return "SELECT " + columns[0] + " FROM " + tableName + " WHERE " + matches;
+	}
+
 	public static String twoCriteriasSearch(String tableName, String col1, String col2) {
 		return "SELECT * FROM " + tableName + " WHERE " + col1 + " LIKE ? OR " + col2 + " LIKE ?";
 	}

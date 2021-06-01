@@ -110,25 +110,7 @@ public class UserDAOjdbc implements UserDAO {
 	}
 
 	@Override
-	public void delete(User u) throws DALException {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		String SQLQuery = DBUtils.deleteWhere(TABLENAME, "user_id");
-		try {
-			conn = ConnectionProvider.getConnection();
-			stmt = conn.prepareStatement(SQLQuery);
-			stmt.setInt(1, u.getUserId());
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new DALException("User " + u.getUsername() + " couldn't be deleted", e);
-		} finally {
-			DBUtils.closePrepStmt(stmt);
-			DBUtils.closeConnection(conn);
-		}
-	}
-
-	@Override
-	public void deleteById(int userId) throws DALException {
+	public void delete(int userId) throws DALException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		String SQLQuery = DBUtils.deleteWhere(TABLENAME, "user_id");
@@ -143,6 +125,11 @@ public class UserDAOjdbc implements UserDAO {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);
 		}
+	}
+
+	@Override
+	public void delete(User u) throws DALException {
+		this.delete(u.getUserId());
 	}
 
 	@Override
@@ -325,6 +312,40 @@ public class UserDAOjdbc implements UserDAO {
 			DBUtils.closeConnection(conn);
 		}
 		return users;
+	}
+
+	@Override
+	public boolean exists(User u) throws DALException {
+		Boolean found = false;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String SQLQuery = DBUtils.findExactMatchIn(TABLENAME, COLS);
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(SQLQuery);
+			stmt.setInt(1, u.getUserId());
+			stmt.setString(2, u.getUsername());
+			stmt.setString(3, u.getLastName());
+			stmt.setString(4, u.getFirstName());
+			stmt.setString(5, u.getEmail());
+			stmt.setString(6, u.getTelephone());
+			stmt.setString(7, u.getStreet());
+			stmt.setString(8, u.getPostcode());
+			stmt.setString(9, u.getCity());
+			stmt.setString(10, u.getPassword());
+			stmt.setInt(11, u.getCredit());
+			stmt.setBoolean(12, u.isAdmin());
+			result = stmt.executeQuery();
+			found = result.next();
+		} catch (SQLException e) {
+			throw new DALException(
+					"User with id " + u.getUserId() + " and name " + u.getUsername() + "already exists in db USERS", e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+		return found;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO : add constraints in setters to transform what should get transformed (trimed, checked with business rules, parsed) before getting to the BLL
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String username, lastName, firstName, email, telephone, street, postcode, city, password;

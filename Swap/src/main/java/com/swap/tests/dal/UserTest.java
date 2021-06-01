@@ -61,7 +61,7 @@ public class UserTest extends HttpServlet {
 			System.out.println("DELETED USERS");
 			userDAO.create(validUser3);
 			userDAO.delete(validUser2);
-			userDAO.deleteById(validUser3.getUserId());
+			userDAO.delete(validUser3.getUserId());
 			users = userDAO.read();
 			users.forEach(x -> System.out.println(x));
 			System.out.println("---------------------------");

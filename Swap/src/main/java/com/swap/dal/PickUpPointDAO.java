@@ -7,7 +7,7 @@ import com.swap.bo.PickUpPoint;
 public interface PickUpPointDAO extends DAO<PickUpPoint> {
 	public PickUpPoint selectById(int id) throws DALException;
 
-	public List<PickUpPoint> selectByItemId(int itemId) throws DALException;
+	public PickUpPoint selectByItemId(int itemId) throws DALException;
 
 	public List<PickUpPoint> selectByStreet(String street) throws DALException;
 

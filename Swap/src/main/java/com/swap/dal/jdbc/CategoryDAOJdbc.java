@@ -22,10 +22,15 @@ public class CategoryDAOJdbc implements CategoryDAO {
 		String query = DBUtils.insert(tableName, columns);
 		try {
 			cn = ConnectionProvider.getConnection();
-			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getCategoryId());
-			stmt.setString(2, s.getLabel());
-			stmt.executeUpdate();
+			stmt = cn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, s.getLabel());
+			int nbRows = stmt.executeUpdate();
+			if (nbRows == 1) {
+				ResultSet rs = stmt.getGeneratedKeys();
+				while (rs.next()) {
+					s.setId(rs.getInt(1));
+				}
+			}
 		} catch (SQLException e) {
 			throw new DALException("Category --" + s.getLabel() + "-- insertion failed", e);
 		} finally {
@@ -71,8 +76,8 @@ public class CategoryDAOJdbc implements CategoryDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getCategoryId());
-			stmt.setString(2, s.getLabel());
+			stmt.setString(1, s.getLabel());
+			stmt.setInt(2, s.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Category --" + s.getLabel() + "-- update failed", e);
@@ -96,7 +101,7 @@ public class CategoryDAOJdbc implements CategoryDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getCategoryId());
+			stmt.setInt(1, s.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Category --" + s.getLabel() + "-- deletion failed", e);
@@ -124,8 +129,10 @@ public class CategoryDAOJdbc implements CategoryDAO {
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, id);
 			result = stmt.executeQuery();
-			String label = result.getString("label");
-			category = new Category(id, label);
+			while (result.next()) {
+				String label = result.getString("label");
+				category = new Category(id, label);
+			}
 		} catch (SQLException e) {
 			throw new DALException("READ - Category by ID failed ");
 		}
@@ -133,8 +140,7 @@ public class CategoryDAOJdbc implements CategoryDAO {
 	}
 
 	@Override
-	public List<Category> selectByLabel(String label) throws DALException {
-		List<Category> list = new ArrayList<Category>();
+	public Category selectByLabel(String label) throws DALException {
 		Category category = null;
 		Connection cn = null;
 		PreparedStatement stmt = null;
@@ -145,13 +151,14 @@ public class CategoryDAOJdbc implements CategoryDAO {
 			stmt = cn.prepareStatement(query);
 			stmt.setString(1, label);
 			result = stmt.executeQuery();
-			int id = result.getInt("category_id");
-			category = new Category(id, label);
-			list.add(category);
+			while (result.next()) {
+				int id = result.getInt("category_id");
+				category = new Category(id, label);
+			}
 		} catch (SQLException e) {
-			throw new DALException("READ - Category by ID failed ");
+			throw new DALException("READ - Category by LABEL failed ");
 		}
-		return list;
+		return category;
 	}
 
 }

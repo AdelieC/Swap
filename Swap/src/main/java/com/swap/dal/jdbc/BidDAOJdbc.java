@@ -25,11 +25,10 @@ public class BidDAOJdbc implements BidDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getId());
-			stmt.setInt(2, s.getUserId());
-			stmt.setInt(3, s.getItemId());
-			stmt.setDate(4, Date.valueOf(s.getDate()));
-			stmt.setInt(5, s.getBidPrice());
+			stmt.setInt(1, s.getUserId());
+			stmt.setInt(2, s.getItemId());
+			stmt.setDate(3, Date.valueOf(s.getDate()));
+			stmt.setInt(4, s.getBidPrice());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Bid --" + s.getId() + "-- insertion failed", e);

@@ -23,14 +23,13 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getId());
-			stmt.setInt(2, s.getItemId());
-			stmt.setString(3, s.getStreet());
+			stmt.setInt(1, s.getItemId());
+			stmt.setString(2, s.getStreet());
 			stmt.setString(3, s.getPostcode());
-			stmt.setString(3, s.getCity());
+			stmt.setString(4, s.getCity());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("Pick-up Point --" + s.getId() + "-- insertion failed", e);
+			throw new DALException("Pick-up Point --" + s.getStreet() + "-- insertion failed", e);
 		} finally {
 			try {
 				if (stmt != null) {
@@ -77,14 +76,13 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getId());
-			stmt.setInt(2, s.getItemId());
-			stmt.setString(3, s.getStreet());
+			stmt.setInt(1, s.getItemId());
+			stmt.setString(2, s.getStreet());
 			stmt.setString(3, s.getPostcode());
-			stmt.setString(3, s.getCity());
+			stmt.setString(4, s.getCity());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("Pick-up Point --" + s.getId() + "-- update failed", e);
+			throw new DALException("Pick-up Point --" + s.getStreet() + "-- update failed", e);
 		} finally {
 			try {
 				if (stmt != null) {
@@ -112,7 +110,7 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			stmt.setString(3, s.getCity());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("Pick-up Point --" + s.getId() + "-- deletion failed", e);
+			throw new DALException("Pick-up Point --" + s.getStreet() + "-- deletion failed", e);
 		} finally {
 			try {
 				if (stmt != null) {
@@ -149,9 +147,8 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 	}
 
 	@Override
-	public List<PickUpPoint> selectByItemId(int itemId) throws DALException {
-		List<PickUpPoint> list = new ArrayList<PickUpPoint>();
-		PickUpPoint pu = null;
+	public PickUpPoint selectByItemId(int itemId) throws DALException {
+		PickUpPoint pup = null;
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
@@ -165,12 +162,11 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			String street = result.getString("street");
 			String postcode = result.getString("postcode");
 			String city = result.getString("city");
-			pu = new PickUpPoint(id, itemId, street, postcode, city);
-			list.add(pu);
+			pup = new PickUpPoint(id, itemId, street, postcode, city);
 		} catch (SQLException e) {
 			throw new DALException("READ - Pick-up Point by ITEM ID failed ");
 		}
-		return list;
+		return pup;
 	}
 
 	@Override

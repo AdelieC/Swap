@@ -26,15 +26,15 @@ public class ItemDAOJdbc implements ItemDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getId());
-			stmt.setString(2, s.getName());
-			stmt.setString(3, s.getDescription());
-			stmt.setDate(4, Date.valueOf(s.getStartDate()));
-			stmt.setDate(5, Date.valueOf(s.getEndDate()));
-			stmt.setInt(6, s.getInitialPrice());
-			stmt.setInt(7, s.getSalePrice());
-			stmt.setInt(8, s.getUserId());
-			stmt.setInt(9, s.getCategoryId());
+			stmt.setString(1, s.getName());
+			stmt.setString(2, s.getDescription());
+			stmt.setDate(3, Date.valueOf(s.getStartDate()));
+			stmt.setDate(4, Date.valueOf(s.getEndDate()));
+			stmt.setInt(5, s.getInitialPrice());
+			stmt.setInt(6, s.getSalePrice());
+			stmt.setInt(7, s.getUserId());
+			stmt.setInt(8, s.getCategoryId());
+			System.out.println(s.getEndDate());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("item --" + s.getName() + "-- insertion failed", e);
@@ -43,7 +43,9 @@ public class ItemDAOJdbc implements ItemDAO {
 				if (stmt != null) {
 					stmt.close();
 				}
-				cn.close();
+				if (cn != null) {
+					cn.close();
+				}
 			} catch (SQLException e) {
 				e.getStackTrace();
 			}
@@ -89,16 +91,15 @@ public class ItemDAOJdbc implements ItemDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getId());
-			stmt.setString(2, s.getName());
-			stmt.setString(3, s.getDescription());
-			stmt.setDate(4, Date.valueOf(s.getStartDate()));
-			stmt.setDate(5, Date.valueOf(s.getEndDate()));
-			stmt.setInt(6, s.getInitialPrice());
-			stmt.setInt(7, s.getSalePrice());
-			stmt.setInt(8, s.getUserId());
-			stmt.setInt(9, s.getCategoryId());
-			stmt.setInt(10, s.getId());
+			stmt.setString(1, s.getName());
+			stmt.setString(2, s.getDescription());
+			stmt.setDate(3, Date.valueOf(s.getStartDate()));
+			stmt.setDate(4, Date.valueOf(s.getEndDate()));
+			stmt.setInt(5, s.getInitialPrice());
+			stmt.setInt(6, s.getSalePrice());
+			stmt.setInt(7, s.getUserId());
+			stmt.setInt(8, s.getCategoryId());
+			stmt.setInt(9, s.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("item --" + s.getName() + "-- update failed", e);

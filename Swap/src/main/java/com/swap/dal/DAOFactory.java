@@ -3,7 +3,7 @@ package com.swap.dal;
 import com.swap.dal.jdbc.UserDAOjdbc;
 
 public class DAOFactory {
-	public static UserDAO getUser() throws DALException {
+	public static UserDAO getUserDAO() throws DALException {
 		return new UserDAOjdbc();
 	}
 }

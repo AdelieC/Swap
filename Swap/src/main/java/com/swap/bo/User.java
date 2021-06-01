@@ -1,24 +1,26 @@
 package com.swap.bo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String username, lastName, firstName, email, telephone, streetNb, street, postcode, city, password;
+	private String username, lastName, firstName, email, telephone, street, postcode, city, password;
 	private int userId, credit;
 	private boolean isAdmin;
+	private List<Auction> auctionList = new ArrayList<>();
 
 	public User() {
 	}
 
-	public User(String username, String lastName, String firstName, String email, String telephone, String streetNb,
-			String street, String postcode, String city, String password, int credit, boolean isAdmin) {
+	public User(String username, String lastName, String firstName, String email, String telephone, String street,
+			String postcode, String city, String password, int credit, boolean isAdmin) {
 		this.setUsername(username);
 		this.setLastName(lastName);
 		this.setFirstName(firstName);
 		this.setEmail(email);
 		this.setTelephone(telephone);
-		this.setStreetNb(streetNb);
 		this.setStreet(street);
 		this.setPostcode(postcode);
 		this.setCity(city);
@@ -28,21 +30,9 @@ public class User implements Serializable {
 	}
 
 	public User(int userId, String username, String lastName, String firstName, String email, String telephone,
-			String streetNb, String street, String postcode, String city, String password, int credit,
-			boolean isAdmin) {
+			String street, String postcode, String city, String password, int credit, boolean isAdmin) {
+		this(username, lastName, firstName, email, telephone, street, postcode, city, password, credit, isAdmin);
 		this.setUserId(userId);
-		this.setUsername(username);
-		this.setLastName(lastName);
-		this.setFirstName(firstName);
-		this.setEmail(email);
-		this.setTelephone(telephone);
-		this.setStreetNb(streetNb);
-		this.setStreet(street);
-		this.setPostcode(postcode);
-		this.setCity(city);
-		this.setPassword(password);
-		this.setCredit(credit);
-		this.setIsAdmin(isAdmin);
 	}
 
 	public int getUserId() {
@@ -85,12 +75,12 @@ public class User implements Serializable {
 		return telephone;
 	}
 
-	public String getStreetNb() {
-		return streetNb;
-	}
-
 	public int getCredit() {
 		return credit;
+	}
+
+	public List<Auction> getAuctionList() {
+		return auctionList;
 	}
 
 	public boolean isAdmin() {
@@ -137,16 +127,26 @@ public class User implements Serializable {
 		this.telephone = telephone;
 	}
 
-	public void setStreetNb(String streetNb) {
-		this.streetNb = streetNb;
-	}
-
 	public void setCredit(int credit) {
 		this.credit = credit;
 	}
 
 	public void setIsAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public void setAuctionList(List<Auction> auctionList) {
+		this.auctionList = auctionList;
+	}
+
+	public String toString() {
+		return "User n°" + userId + " : " + username + " (" + lastName + ", " + firstName + ") " + "INFOS -> " + email
+				+ " | " + telephone + " | " + street + " | " + postcode + " | " + city + " | " + credit
+				+ " points | admin = " + isAdmin + " | pw = " + password;
+	}
+
+	public void addAuction(Auction auction) {
+		this.auctionList.add(auction);
 	}
 
 }

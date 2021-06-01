@@ -19,22 +19,26 @@ public class DBUtils {
 		return "SELECT * FROM " + tableName + " WHERE " + col + " = ?";
 	}
 
+	public static String searchBy(String tableName, String col) {
+		return "SELECT * FROM " + tableName + " WHERE " + col + " LIKE ?";
+	}
+
 	public static String twoCriteriasSearch(String tableName, String col1, String col2) {
 		return "SELECT * FROM " + tableName + " WHERE " + col1 + " LIKE ? OR " + col2 + " LIKE ?";
 	}
 
 	public static String insert(String tableName, String[] columns) {
-		String values = "?", cols = columns[0];
-		for (int i = 1; i < columns.length; i++)
+		String values = "?", cols = columns[1];
+		for (int i = 2; i < columns.length; i++)
 			values += ",?";
-		for (int i = 1; i < columns.length; i++)
+		for (int i = 2; i < columns.length; i++)
 			cols += ("," + columns[i]);
 		return "INSERT INTO " + tableName + "(" + cols + ") VALUES(" + values + ")";
 	}
 
 	public static String updateWhere(String tableName, String colId, String[] columns) {
-		String cols = columns[0] + " = ?";
-		for (int i = 1; i < columns.length - 1; i++)
+		String cols = columns[1] + " = ?";
+		for (int i = 2; i < columns.length; i++)
 			cols += (", " + columns[i] + " = ?");
 		return "UPDATE " + tableName + " SET " + cols + " WHERE " + colId + " = ?";
 	}

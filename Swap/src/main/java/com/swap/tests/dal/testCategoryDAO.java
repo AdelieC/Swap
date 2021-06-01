@@ -65,7 +65,7 @@ public class testCategoryDAO extends HttpServlet {
 
 			// TEST SELECTS
 			System.out.println("SELECT BY ID:");
-			Category cat = categoryDAO.selectById(98);
+			Category cat = categoryDAO.selectById(7);
 			System.out.println(cat.toString());
 			System.out.println("SELECT BY LABEL:");
 			cat = categoryDAO.selectByLabel("Pets");

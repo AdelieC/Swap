@@ -63,12 +63,12 @@ public class PickUpPointManager {
 		return pup;
 	}
 
-	public PickUpPoint getByItemId(int itemId) throws BLLException {
+	public PickUpPoint getByAuctionId(int auctionId) throws BLLException {
 		PickUpPoint pup = null;
 		try {
-			pup = this.pupDAO.selectByItemId(itemId);
+			pup = this.pupDAO.selectByAuctionId(auctionId);
 		} catch (DALException e) {
-			throw new BLLException("BLL - SELECT PICK UP POINT BY ITEM ID failure");
+			throw new BLLException("BLL - SELECT PICK UP POINT BY AUCTION ID failure");
 		}
 		return pup;
 	}

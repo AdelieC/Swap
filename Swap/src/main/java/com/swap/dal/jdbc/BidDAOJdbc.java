@@ -14,7 +14,7 @@ import com.swap.dal.BidDAO;
 import com.swap.dal.DALException;
 
 public class BidDAOJdbc implements BidDAO {
-	private static String[] columns = { "bid_id", "user_id", "item_id", "bid_date", "bid_price" };
+	private static String[] columns = { "bid_id", "user_id", "auction_id", "bid_date", "bid_price" };
 	private static String tableName = "BIDS";
 
 	@Override
@@ -26,7 +26,7 @@ public class BidDAOJdbc implements BidDAO {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, s.getUserId());
-			stmt.setInt(2, s.getItemId());
+			stmt.setInt(2, s.getAuctionId());
 			stmt.setDate(3, Date.valueOf(s.getDate()));
 			stmt.setInt(4, s.getBidPrice());
 			stmt.executeUpdate();
@@ -59,9 +59,9 @@ public class BidDAOJdbc implements BidDAO {
 				int id = result.getInt("bid_id");
 				int bidPrice = result.getInt("bid_price");
 				int userId = result.getInt("user_id");
-				int itemId = result.getInt("item_id");
+				int auctionId = result.getInt("auction_id");
 				LocalDate date = result.getDate("date").toLocalDate();
-				Bid bid = new Bid(id, userId, itemId, bidPrice, date);
+				Bid bid = new Bid(id, userId, auctionId, bidPrice, date);
 				list.add(bid);
 			}
 		} catch (SQLException e) {
@@ -80,7 +80,7 @@ public class BidDAOJdbc implements BidDAO {
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, s.getId());
 			stmt.setInt(2, s.getUserId());
-			stmt.setInt(3, s.getItemId());
+			stmt.setInt(3, s.getAuctionId());
 			stmt.setDate(4, Date.valueOf(s.getDate()));
 			stmt.setInt(5, s.getBidPrice());
 			stmt.executeUpdate();
@@ -136,9 +136,9 @@ public class BidDAOJdbc implements BidDAO {
 			result = stmt.executeQuery();
 			int bidPrice = result.getInt("bid_price");
 			int userId = result.getInt("user_id");
-			int itemId = result.getInt("item_id");
+			int auctionId = result.getInt("auction_id");
 			LocalDate date = result.getDate("date").toLocalDate();
-			bid = new Bid(id, userId, itemId, bidPrice, date);
+			bid = new Bid(id, userId, auctionId, bidPrice, date);
 		} catch (SQLException e) {
 			throw new DALException("READ - Bid by ID failed ");
 		}
@@ -160,9 +160,9 @@ public class BidDAOJdbc implements BidDAO {
 			while (result.next()) {
 				int bidPrice = result.getInt("bid_price");
 				int id = result.getInt("bid_id");
-				int itemId = result.getInt("item_id");
+				int auctionId = result.getInt("auction_id");
 				LocalDate date = result.getDate("date").toLocalDate();
-				Bid bid = new Bid(id, userId, itemId, bidPrice, date);
+				Bid bid = new Bid(id, userId, auctionId, bidPrice, date);
 				list.add(bid);
 			}
 		} catch (SQLException e) {
@@ -172,27 +172,27 @@ public class BidDAOJdbc implements BidDAO {
 	}
 
 	@Override
-	public List<Bid> selectByItemId(int itemId) throws DALException {
+	public List<Bid> selectByAuctionId(int auctionId) throws DALException {
 		List<Bid> list = new ArrayList<Bid>();
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.selectBy(tableName, "item_id");
+		String query = DBUtils.selectBy(tableName, "auction_id");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, itemId);
+			stmt.setInt(1, auctionId);
 			result = stmt.executeQuery();
 			while (result.next()) {
 				int bidPrice = result.getInt("bid_price");
 				int id = result.getInt("bid_id");
 				int userId = result.getInt("user_id");
 				LocalDate date = result.getDate("date").toLocalDate();
-				Bid bid = new Bid(id, userId, itemId, bidPrice, date);
+				Bid bid = new Bid(id, userId, auctionId, bidPrice, date);
 				list.add(bid);
 			}
 		} catch (SQLException e) {
-			throw new DALException("READ - Bids by ITEM ID failed ");
+			throw new DALException("READ - Bids by AUCTION ID failed ");
 		}
 		return list;
 	}
@@ -210,11 +210,11 @@ public class BidDAOJdbc implements BidDAO {
 			stmt.setInt(1, price);
 			result = stmt.executeQuery();
 			while (result.next()) {
-				int itemId = result.getInt("item_id");
+				int auctionId = result.getInt("auction_id");
 				int id = result.getInt("bid_id");
 				int userId = result.getInt("user_id");
 				LocalDate date = result.getDate("date").toLocalDate();
-				Bid bid = new Bid(id, userId, itemId, price, date);
+				Bid bid = new Bid(id, userId, auctionId, price, date);
 				list.add(bid);
 			}
 		} catch (SQLException e) {
@@ -236,11 +236,11 @@ public class BidDAOJdbc implements BidDAO {
 			stmt.setDate(1, Date.valueOf(date));
 			result = stmt.executeQuery();
 			while (result.next()) {
-				int itemId = result.getInt("item_id");
+				int auctionId = result.getInt("auction_id");
 				int id = result.getInt("bid_id");
 				int userId = result.getInt("user_id");
 				int bidPrice = result.getInt("bid_price");
-				Bid bid = new Bid(id, userId, itemId, bidPrice, date);
+				Bid bid = new Bid(id, userId, auctionId, bidPrice, date);
 				list.add(bid);
 			}
 		} catch (SQLException e) {

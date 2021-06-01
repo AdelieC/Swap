@@ -20,7 +20,7 @@ public class Category implements Serializable {
 	}
 
 	public String toString() {
-		String result = "Category number: " + this.id;
+		String result = "Category ID: " + this.id;
 		result += " Label: " + this.label;
 		return result;
 	}

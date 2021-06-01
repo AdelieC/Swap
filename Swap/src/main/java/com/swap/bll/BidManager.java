@@ -74,12 +74,12 @@ public class BidManager {
 		return list;
 	}
 
-	public List<Bid> getByItemId(int id) throws BLLException {
+	public List<Bid> getByAuctionId(int id) throws BLLException {
 		List<Bid> list = new ArrayList<Bid>();
 		try {
-			list = bidDAO.selectByItemId(id);
+			list = bidDAO.selectByAuctionId(id);
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET BIDS BY ITEM ID failure");
+			throw new BLLException("BLL - GET BIDS BY AUCTION ID failure");
 		}
 		return list;
 	}

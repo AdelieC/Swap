@@ -5,28 +5,29 @@ import java.time.LocalDate;
 
 public class Bid implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int id, userId, itemId, bidPrice;
+	private int id, userId, auctionId, bidPrice;
 	private LocalDate date;
+	// private User user;
 
 	public Bid() {
 	}
 
-	public Bid(int userId, int itemId, int bidPrice, LocalDate date) {
+	public Bid(int userId, int auctionId, int bidPrice, LocalDate date) {
 		this.userId = userId;
-		this.itemId = itemId;
+		this.auctionId = auctionId;
 		this.bidPrice = bidPrice;
 		this.date = date;
 	}
 
-	public Bid(int id, int userId, int itemId, int bidPrice, LocalDate date) {
-		this(userId, itemId, bidPrice, date);
+	public Bid(int id, int userId, int auctionId, int bidPrice, LocalDate date) {
+		this(userId, auctionId, bidPrice, date);
 		this.setId(id);
 	}
 
 	public String toString() {
 		String result = "";
-		result += "User number: " + this.userId;
-		result += " Item number: " + this.userId + "\n";
+		result += "User ID: " + this.userId;
+		result += " Auction ID: " + this.userId + "\n";
 		result += "Sale price: " + this.bidPrice;
 		result += " Date: " + this.date + "\n";
 		return result;
@@ -40,12 +41,12 @@ public class Bid implements Serializable {
 		this.userId = userId;
 	}
 
-	public int getItemId() {
-		return this.itemId;
+	public int getAuctionId() {
+		return this.auctionId;
 	}
 
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
+	public void setAuctionId(int auctionId) {
+		this.auctionId = auctionId;
 	}
 
 	public int getBidPrice() {

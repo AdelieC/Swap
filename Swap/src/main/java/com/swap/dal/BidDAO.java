@@ -10,7 +10,7 @@ public interface BidDAO extends DAO<Bid> {
 
 	public List<Bid> selectByUser(int userId) throws DALException;
 
-	public List<Bid> selectByItemId(int itemId) throws DALException;
+	public List<Bid> selectByAuctionId(int auctionId) throws DALException;
 
 	public List<Bid> selectByPrice(int price) throws DALException;
 

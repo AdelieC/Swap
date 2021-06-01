@@ -48,8 +48,8 @@ public class testPickUpPointDAO extends HttpServlet {
 			PickUpPoint pup = pupDAO.selectById(1);
 			List<PickUpPoint> list = new ArrayList<PickUpPoint>();
 			System.out.println(pup.toString());
-			System.out.println("SELECT BY ITEM ID:");
-			pup = pupDAO.selectByItemId(2);
+			System.out.println("SELECT BY AUCTION ID:");
+			pup = pupDAO.selectByAuctionId(2);
 			for (PickUpPoint p : list) {
 				System.out.println(p.toString());
 			}

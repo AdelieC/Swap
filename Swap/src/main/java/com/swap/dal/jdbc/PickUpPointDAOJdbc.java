@@ -12,7 +12,7 @@ import com.swap.dal.DALException;
 import com.swap.dal.PickUpPointDAO;
 
 public class PickUpPointDAOJdbc implements PickUpPointDAO {
-	private static String[] columns = { "id", "item_id", "street", "postcode", "city" };
+	private static String[] columns = { "id", "auction_id", "street", "postcode", "city" };
 	private static String tableName = "PICK_UP_POINTS";
 
 	@Override
@@ -23,7 +23,7 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getItemId());
+			stmt.setInt(1, s.getAuctionId());
 			stmt.setString(2, s.getStreet());
 			stmt.setString(3, s.getPostcode());
 			stmt.setString(4, s.getCity());
@@ -55,11 +55,11 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			result = stmt.executeQuery();
 			while (result.next()) {
 				int id = result.getInt("id");
-				int itemId = result.getInt("item_id");
+				int auctionId = result.getInt("auction_id");
 				String street = result.getString("street");
 				String postcode = result.getString("postcode");
 				String city = result.getString("city");
-				PickUpPoint pu = new PickUpPoint(id, itemId, street, postcode, city);
+				PickUpPoint pu = new PickUpPoint(id, auctionId, street, postcode, city);
 				list.add(pu);
 			}
 		} catch (SQLException e) {
@@ -76,7 +76,7 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, s.getItemId());
+			stmt.setInt(1, s.getAuctionId());
 			stmt.setString(2, s.getStreet());
 			stmt.setString(3, s.getPostcode());
 			stmt.setString(4, s.getCity());
@@ -104,7 +104,7 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, s.getId());
-			stmt.setInt(2, s.getItemId());
+			stmt.setInt(2, s.getAuctionId());
 			stmt.setString(3, s.getStreet());
 			stmt.setString(3, s.getPostcode());
 			stmt.setString(3, s.getCity());
@@ -135,11 +135,11 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, id);
 			result = stmt.executeQuery();
-			int itemId = result.getInt("item_id");
+			int auctionId = result.getInt("auction_id");
 			String street = result.getString("street");
 			String postcode = result.getString("postcode");
 			String city = result.getString("city");
-			pu = new PickUpPoint(id, itemId, street, postcode, city);
+			pu = new PickUpPoint(id, auctionId, street, postcode, city);
 		} catch (SQLException e) {
 			throw new DALException("READ - Pick-up Point by ID failed ");
 		}
@@ -147,24 +147,24 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 	}
 
 	@Override
-	public PickUpPoint selectByItemId(int itemId) throws DALException {
+	public PickUpPoint selectByAuctionId(int auctionId) throws DALException {
 		PickUpPoint pup = null;
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.selectBy(tableName, "item_id");
+		String query = DBUtils.selectBy(tableName, "auction_id");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setInt(1, itemId);
+			stmt.setInt(1, auctionId);
 			result = stmt.executeQuery();
 			int id = result.getInt("id");
 			String street = result.getString("street");
 			String postcode = result.getString("postcode");
 			String city = result.getString("city");
-			pup = new PickUpPoint(id, itemId, street, postcode, city);
+			pup = new PickUpPoint(id, auctionId, street, postcode, city);
 		} catch (SQLException e) {
-			throw new DALException("READ - Pick-up Point by ITEM ID failed ");
+			throw new DALException("READ - Pick-up Point by AUCTION ID failed ");
 		}
 		return pup;
 	}
@@ -183,10 +183,10 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			stmt.setString(1, street);
 			result = stmt.executeQuery();
 			int id = result.getInt("id");
-			int itemId = result.getInt("item_id");
+			int auctionId = result.getInt("auction_id");
 			String postcode = result.getString("postcode");
 			String city = result.getString("city");
-			pu = new PickUpPoint(id, itemId, street, postcode, city);
+			pu = new PickUpPoint(id, auctionId, street, postcode, city);
 			list.add(pu);
 		} catch (SQLException e) {
 			throw new DALException("READ - Pick-up Point by STREET failed ");
@@ -208,10 +208,10 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			stmt.setString(1, postcode);
 			result = stmt.executeQuery();
 			int id = result.getInt("id");
-			int itemId = result.getInt("item_id");
+			int auctionId = result.getInt("auction_id");
 			String street = result.getString("street");
 			String city = result.getString("city");
-			pu = new PickUpPoint(id, itemId, street, postcode, city);
+			pu = new PickUpPoint(id, auctionId, street, postcode, city);
 			list.add(pu);
 		} catch (SQLException e) {
 			throw new DALException("READ - Pick-up Point by POSTCODE failed ");
@@ -233,10 +233,10 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			stmt.setString(1, city);
 			result = stmt.executeQuery();
 			int id = result.getInt("id");
-			int itemId = result.getInt("item_id");
+			int auctionId = result.getInt("auction_id");
 			String street = result.getString("street");
 			String postcode = result.getString("postcode");
-			pu = new PickUpPoint(id, itemId, street, postcode, city);
+			pu = new PickUpPoint(id, auctionId, street, postcode, city);
 			list.add(pu);
 		} catch (SQLException e) {
 			throw new DALException("READ - Pick-up Point by POSTCODE failed ");

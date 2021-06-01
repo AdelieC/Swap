@@ -1,13 +1,13 @@
 package com.swap.dal;
 
+import com.swap.dal.jdbc.AuctionDAOJdbc;
 import com.swap.dal.jdbc.BidDAOJdbc;
 import com.swap.dal.jdbc.CategoryDAOJdbc;
-import com.swap.dal.jdbc.ItemDAOJdbc;
 import com.swap.dal.jdbc.PickUpPointDAOJdbc;
 
 public class DAOFactory {
-	public static ItemDAO getItemDAO() {
-		return new ItemDAOJdbc();
+	public static AuctionDAO getAuctionDAO() {
+		return new AuctionDAOJdbc();
 	}
 
 	public static BidDAO getBidDAO() {

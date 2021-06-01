@@ -4,37 +4,37 @@ import java.io.Serializable;
 
 public class PickUpPoint implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int id, itemId;
+	private int id, auctionId;
 	private String street, postcode, city;
 
 	public PickUpPoint() {
 	}
 
-	public PickUpPoint(int itemId, String street, String postcode, String city) {
-		this.itemId = itemId;
+	public PickUpPoint(int auctionId, String street, String postcode, String city) {
+		this.auctionId = auctionId;
 		this.street = street;
 		this.postcode = postcode;
 		this.city = city;
 	}
 
-	public PickUpPoint(int id, int itemId, String street, String postcode, String city) {
-		this(itemId, street, postcode, city);
+	public PickUpPoint(int id, int auctionId, String street, String postcode, String city) {
+		this(auctionId, street, postcode, city);
 		this.id = id;
 	}
 
 	public String toString() {
-		String result = "Item number: " + this.itemId;
+		String result = "Auction ID: " + this.auctionId;
 		result += "  Street: " + this.street + "\n";
 		result += "Postcode: " + this.postcode + " City: " + this.city;
 		return result;
 	}
 
-	public int getItemId() {
-		return itemId;
+	public int getAuctionId() {
+		return auctionId;
 	}
 
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
+	public void setAuctionId(int auctionId) {
+		this.auctionId = auctionId;
 	}
 
 	public String getStreet() {

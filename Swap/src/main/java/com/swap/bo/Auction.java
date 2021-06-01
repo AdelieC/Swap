@@ -3,16 +3,17 @@ package com.swap.bo;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Item implements Serializable {
+public class Auction implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id, initialPrice, salePrice, userId, categoryId;
-	private String name, description;
+	private String name, description, status;
 	private LocalDate startDate, endDate;
+	// private User user;
 
-	public Item() {
+	public Auction() {
 	}
 
-	public Item(String name, String description, LocalDate startDate, LocalDate endDate, int categoryId,
+	public Auction(String name, String description, LocalDate startDate, LocalDate endDate, int categoryId,
 			int initialPrice, int userId) {
 		this.name = name;
 		this.description = description;
@@ -24,19 +25,25 @@ public class Item implements Serializable {
 		this.endDate = endDate;
 	}
 
-	public Item(int id, String name, String description, LocalDate startDate, LocalDate endDate, int categoryId,
+	public Auction(int id, String name, String description, LocalDate startDate, LocalDate endDate, int categoryId,
 			int initialPrice, int salePrice, int userId) {
 		this(name, description, startDate, endDate, categoryId, initialPrice, userId);
 		this.id = id;
 		this.salePrice = salePrice;
 	}
 
+	public Auction(int id, String name, String description, LocalDate startDate, LocalDate endDate, int categoryId,
+			int initialPrice, int salePrice, int userId, String status) {
+		this(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice, userId);
+		this.status = status;
+	}
+
 	public String toString() {
-		String result = "";
+		String result = "AUCTION:\n";
 		result += "Name: " + this.name + "\n";
 		result += "Description: " + this.description + "\n";
-		result += "Category: " + this.categoryId + " Initial Price: " + this.initialPrice + "\n";
-		result += "User number: " + this.userId + "\n";
+		result += "Category: " + this.categoryId + " Price: " + this.salePrice + "\n";
+		result += "Seller ID: " + this.userId + "\n";
 		result += "Start date: " + this.startDate + " End date: " + this.endDate + "\n";
 		return result;
 	}
@@ -111,5 +118,13 @@ public class Item implements Serializable {
 
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

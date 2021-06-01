@@ -41,13 +41,13 @@ public class testBidDAO extends HttpServlet {
 			Bid bid = bidDAO.selectById(1);
 			List<Bid> list = new ArrayList<Bid>();
 			System.out.println(bid.toString());
-			System.out.println("SELECT BY ITEM ID:");
-			list = bidDAO.selectByItemId(1);
+			System.out.println("SELECT BY AUCTION ID:");
+			list = bidDAO.selectByAuctionId(1);
 			for (Bid b : list) {
 				System.out.println(b.toString());
 			}
-			System.out.println("SELECT BY ITEM ID:");
-			list = bidDAO.selectByItemId(2);
+			System.out.println("SELECT BY AUCTION ID:");
+			list = bidDAO.selectByAuctionId(2);
 			for (Bid b : list) {
 				System.out.println(b.toString());
 			}

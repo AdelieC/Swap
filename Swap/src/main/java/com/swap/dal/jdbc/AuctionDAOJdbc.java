@@ -9,17 +9,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.swap.bo.Item;
+import com.swap.bo.Auction;
+import com.swap.dal.AuctionDAO;
 import com.swap.dal.DALException;
-import com.swap.dal.ItemDAO;
 
-public class ItemDAOJdbc implements ItemDAO {
-	private static final String[] columns = { "item_id", "item_name", "description", "start_date", "end_date",
+public class AuctionDAOJdbc implements AuctionDAO {
+	private static final String[] columns = { "auction_id", "auction_name", "description", "start_date", "end_date",
 			"initial_price", "sale_price", "user_id", "category_id" };
-	private static final String tableName = "ITEMS";
+	private static final String tableName = "AUCTIONS";
 
 	@Override
-	public void create(Item s) throws DALException {
+	public void create(Auction s) throws DALException {
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		String query = DBUtils.insert(tableName, columns);
@@ -37,7 +37,7 @@ public class ItemDAOJdbc implements ItemDAO {
 			System.out.println(s.getEndDate());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("item --" + s.getName() + "-- insertion failed", e);
+			throw new DALException("auction --" + s.getName() + "-- insertion failed", e);
 		} finally {
 			try {
 				if (stmt != null) {
@@ -53,8 +53,8 @@ public class ItemDAOJdbc implements ItemDAO {
 	}
 
 	@Override
-	public List<Item> read() throws DALException {
-		List<Item> list = new ArrayList<Item>();
+	public List<Auction> read() throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
@@ -64,8 +64,8 @@ public class ItemDAOJdbc implements ItemDAO {
 			stmt = cn.prepareStatement(query);
 			result = stmt.executeQuery();
 			while (result.next()) {
-				int id = result.getInt("item_id");
-				String name = result.getString("item_name");
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
 				String description = result.getString("description");
 				LocalDate startDate = result.getDate("start_date").toLocalDate();
 				LocalDate endDate = result.getDate("end_date").toLocalDate();
@@ -73,21 +73,21 @@ public class ItemDAOJdbc implements ItemDAO {
 				int salePrice = result.getInt("sale_price");
 				int userId = result.getInt("user_id");
 				int categoryId = result.getInt("category_id");
-				Item item = new Item(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
-						userId);
-				list.add(item);
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId);
+				list.add(auction);
 			}
 		} catch (SQLException e) {
-			throw new DALException("READ - Items List failed ");
+			throw new DALException("READ - Auctions List failed ");
 		}
 		return list;
 	}
 
 	@Override
-	public void update(Item s) throws DALException {
+	public void update(Auction s) throws DALException {
 		Connection cn = null;
 		PreparedStatement stmt = null;
-		String query = DBUtils.updateWhere(tableName, "item_id", columns);
+		String query = DBUtils.updateWhere(tableName, "auction_id", columns);
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
@@ -102,7 +102,7 @@ public class ItemDAOJdbc implements ItemDAO {
 			stmt.setInt(9, s.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("item --" + s.getName() + "-- update failed", e);
+			throw new DALException("auction --" + s.getName() + "-- update failed", e);
 		} finally {
 			try {
 				if (stmt != null) {
@@ -116,17 +116,17 @@ public class ItemDAOJdbc implements ItemDAO {
 	}
 
 	@Override
-	public void delete(Item s) throws DALException {
+	public void delete(Auction s) throws DALException {
 		Connection cn = null;
 		PreparedStatement stmt = null;
-		String query = DBUtils.deleteWhere(tableName, "item_id");
+		String query = DBUtils.deleteWhere(tableName, "auction_id");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, s.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("item --" + s.getName() + "-- deletion failed", e);
+			throw new DALException("auction --" + s.getName() + "-- deletion failed", e);
 		} finally {
 			try {
 				if (stmt != null) {
@@ -140,18 +140,18 @@ public class ItemDAOJdbc implements ItemDAO {
 	}
 
 	@Override
-	public Item selectById(int id) throws DALException {
-		Item item = null;
+	public Auction selectById(int id) throws DALException {
+		Auction auction = null;
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.selectBy(tableName, "item_id");
+		String query = DBUtils.selectBy(tableName, "auction_id");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, id);
 			result = stmt.executeQuery();
-			String name = result.getString("item_name");
+			String name = result.getString("auction_name");
 			String description = result.getString("description");
 			LocalDate startDate = result.getDate("start_date").toLocalDate();
 			LocalDate endDate = result.getDate("end_date").toLocalDate();
@@ -159,27 +159,28 @@ public class ItemDAOJdbc implements ItemDAO {
 			int salePrice = result.getInt("sale_price");
 			int userId = result.getInt("user_id");
 			int categoryId = result.getInt("category_id");
-			item = new Item(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice, userId);
+			auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
+					userId);
 		} catch (SQLException e) {
-			throw new DALException("READ - Item by ID failed ");
+			throw new DALException("READ - Auction by ID failed ");
 		}
-		return item;
+		return auction;
 	}
 
 	@Override
-	public List<Item> selectByName(String name) throws DALException {
-		List<Item> list = new ArrayList<Item>();
-		Item item = null;
+	public List<Auction> selectByName(String name) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
+		Auction auction = null;
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.selectBy(tableName, "item_name");
+		String query = DBUtils.selectBy(tableName, "auction_name");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setString(1, name);
 			result = stmt.executeQuery();
-			int id = result.getInt("item_id");
+			int id = result.getInt("auction_id");
 			String description = result.getString("description");
 			LocalDate startDate = result.getDate("start_date").toLocalDate();
 			LocalDate endDate = result.getDate("end_date").toLocalDate();
@@ -187,18 +188,19 @@ public class ItemDAOJdbc implements ItemDAO {
 			int salePrice = result.getInt("sale_price");
 			int userId = result.getInt("user_id");
 			int categoryId = result.getInt("category_id");
-			item = new Item(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice, userId);
-			list.add(item);
+			auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
+					userId);
+			list.add(auction);
 		} catch (SQLException e) {
-			throw new DALException("READ - Items by NAME failed ");
+			throw new DALException("READ - Auctions by NAME failed ");
 		}
 		return list;
 	}
 
 	@Override
-	public List<Item> selectByKeyword(String keyword) throws DALException {
-		List<Item> list = new ArrayList<Item>();
-		Item item = null;
+	public List<Auction> selectByKeyword(String keyword) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
+		Auction auction = null;
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
@@ -209,7 +211,7 @@ public class ItemDAOJdbc implements ItemDAO {
 			stmt.setString(1, keyword);
 			result = stmt.executeQuery();
 			while (result.next()) {
-				int id = result.getInt("item_id");
+				int id = result.getInt("auction_id");
 				String name = result.getString("name");
 				String description = result.getString("description");
 				LocalDate startDate = result.getDate("start_date").toLocalDate();
@@ -218,18 +220,19 @@ public class ItemDAOJdbc implements ItemDAO {
 				int salePrice = result.getInt("sale_price");
 				int userId = result.getInt("user_id");
 				int categoryId = result.getInt("category_id");
-				item = new Item(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice, userId);
-				list.add(item);
+				auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
+						userId);
+				list.add(auction);
 			}
 		} catch (SQLException e) {
-			throw new DALException("READ - Items by KEYWORD failed ");
+			throw new DALException("READ - Auctions by KEYWORD failed ");
 		}
 		return list;
 	}
 
 	@Override
-	public List<Item> selectByCategory(int categoryId) throws DALException {
-		List<Item> list = new ArrayList<Item>();
+	public List<Auction> selectByCategory(int categoryId) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
@@ -240,27 +243,27 @@ public class ItemDAOJdbc implements ItemDAO {
 			stmt.setInt(1, categoryId);
 			result = stmt.executeQuery();
 			while (result.next()) {
-				int id = result.getInt("item_id");
-				String name = result.getString("item_name");
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
 				String description = result.getString("description");
 				LocalDate startDate = result.getDate("start_date").toLocalDate();
 				LocalDate endDate = result.getDate("end_date").toLocalDate();
 				int initialPrice = result.getInt("initial_price");
 				int salePrice = result.getInt("sale_price");
 				int userId = result.getInt("user_id");
-				Item item = new Item(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
-						userId);
-				list.add(item);
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId);
+				list.add(auction);
 			}
 		} catch (SQLException e) {
-			throw new DALException("READ - Items by CATEGORY failed ");
+			throw new DALException("READ - Auctions by CATEGORY failed ");
 		}
 		return list;
 	}
 
 	@Override
-	public List<Item> selectByUser(int userId) throws DALException {
-		List<Item> list = new ArrayList<Item>();
+	public List<Auction> selectByUser(int userId) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
@@ -271,27 +274,27 @@ public class ItemDAOJdbc implements ItemDAO {
 			stmt.setInt(1, userId);
 			result = stmt.executeQuery();
 			while (result.next()) {
-				int id = result.getInt("item_id");
-				String name = result.getString("item_name");
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
 				String description = result.getString("description");
 				LocalDate startDate = result.getDate("start_date").toLocalDate();
 				LocalDate endDate = result.getDate("end_date").toLocalDate();
 				int initialPrice = result.getInt("initial_price");
 				int salePrice = result.getInt("sale_price");
 				int categoryId = result.getInt("category_id");
-				Item item = new Item(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
-						userId);
-				list.add(item);
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId);
+				list.add(auction);
 			}
 		} catch (SQLException e) {
-			throw new DALException("READ - Items by USER failed ");
+			throw new DALException("READ - Auctions by USER failed ");
 		}
 		return list;
 	}
 
 	@Override
-	public List<Item> selectByPrice(int price) throws DALException {
-		List<Item> list = new ArrayList<Item>();
+	public List<Auction> selectByPrice(int price) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
@@ -302,27 +305,27 @@ public class ItemDAOJdbc implements ItemDAO {
 			stmt.setInt(1, price);
 			result = stmt.executeQuery();
 			while (result.next()) {
-				int id = result.getInt("item_id");
-				String name = result.getString("item_name");
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
 				String description = result.getString("description");
 				LocalDate startDate = result.getDate("start_date").toLocalDate();
 				LocalDate endDate = result.getDate("end_date").toLocalDate();
 				int initialPrice = result.getInt("initial_price");
 				int categoryId = result.getInt("category_id");
 				int userId = result.getInt("user_id");
-				Item item = new Item(id, name, description, startDate, endDate, categoryId, initialPrice, price,
-						userId);
-				list.add(item);
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						price, userId);
+				list.add(auction);
 			}
 		} catch (SQLException e) {
-			throw new DALException("READ - Items by PRICE failed ");
+			throw new DALException("READ - Auctions by PRICE failed ");
 		}
 		return list;
 	}
 
 	@Override
-	public List<Item> selectByDate(LocalDate date) throws DALException {
-		List<Item> list = new ArrayList<Item>();
+	public List<Auction> selectByDate(LocalDate date) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
@@ -334,8 +337,8 @@ public class ItemDAOJdbc implements ItemDAO {
 			stmt.setDate(2, Date.valueOf(date));
 			result = stmt.executeQuery();
 			while (result.next()) {
-				int id = result.getInt("item_id");
-				String name = result.getString("item_name");
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
 				String description = result.getString("description");
 				LocalDate startDate = result.getDate("start_date").toLocalDate();
 				LocalDate endDate = result.getDate("end_date").toLocalDate();
@@ -343,19 +346,19 @@ public class ItemDAOJdbc implements ItemDAO {
 				int salePrice = result.getInt("sale_price");
 				int categoryId = result.getInt("category_id");
 				int userId = result.getInt("user_id");
-				Item item = new Item(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
-						userId);
-				list.add(item);
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId);
+				list.add(auction);
 			}
 		} catch (SQLException e) {
-			throw new DALException("READ - Items by PRICE failed ");
+			throw new DALException("READ - Auctions by PRICE failed ");
 		}
 		return list;
 	}
 
 	@Override
-	public List<Item> selectByUserAndDate(int userId, LocalDate date) throws DALException {
-		List<Item> list = new ArrayList<Item>();
+	public List<Auction> selectByUserAndDate(int userId, LocalDate date) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
@@ -368,20 +371,20 @@ public class ItemDAOJdbc implements ItemDAO {
 			stmt.setInt(3, userId);
 			result = stmt.executeQuery();
 			while (result.next()) {
-				int id = result.getInt("item_id");
-				String name = result.getString("item_name");
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
 				String description = result.getString("description");
 				LocalDate startDate = result.getDate("start_date").toLocalDate();
 				LocalDate endDate = result.getDate("end_date").toLocalDate();
 				int initialPrice = result.getInt("initial_price");
 				int salePrice = result.getInt("sale_price");
 				int categoryId = result.getInt("category_id");
-				Item item = new Item(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
-						userId);
-				list.add(item);
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId);
+				list.add(auction);
 			}
 		} catch (SQLException e) {
-			throw new DALException("READ - Items by PRICE failed ");
+			throw new DALException("READ - Auctions by PRICE failed ");
 		}
 		return list;
 	}

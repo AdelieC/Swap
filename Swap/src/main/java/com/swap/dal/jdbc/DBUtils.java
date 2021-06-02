@@ -1,5 +1,11 @@
 package com.swap.dal.jdbc;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.swap.dal.DALException;
+
 public class DBUtils {
 	private DBUtils() {
 
@@ -19,6 +25,13 @@ public class DBUtils {
 
 	public static String searchBy(String tableName, String col) {
 		return "SELECT * FROM " + tableName + " WHERE " + col + " LIKE ?";
+	}
+
+	public static String findExactMatchIn(String tableName, String[] columns) {
+		String matches = columns[0] + " = ?";
+		for (int i = 1; i < columns.length; i++)
+			matches += (" AND " + columns[i] + " = ?");
+		return "SELECT " + columns[0] + " FROM " + tableName + " WHERE " + matches;
 	}
 
 	public static String twoCriteriasSearch(String tableName, String col1, String col2) {
@@ -43,5 +56,25 @@ public class DBUtils {
 
 	public static String deleteWhere(String tableName, String col) {
 		return "DELETE FROM " + tableName + " WHERE " + col + " = ?";
+	}
+
+	public static void closeConnection(Connection conn) throws DALException {
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new DALException("Failed to close connection - ", e);
+			}
+			conn = null;
+		}
+	}
+
+	public static void closePrepStmt(PreparedStatement rqt) throws DALException {
+		try {
+			if (rqt != null)
+				rqt.close();
+		} catch (SQLException e) {
+			throw new DALException("Failed to close prepared statement - ", e);
+		}
 	}
 }

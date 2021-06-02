@@ -135,11 +135,13 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, id);
 			result = stmt.executeQuery();
-			int auctionId = result.getInt("auction_id");
-			String street = result.getString("street");
-			String postcode = result.getString("postcode");
-			String city = result.getString("city");
-			pu = new PickUpPoint(id, auctionId, street, postcode, city);
+			while (result.next()) {
+				int auctionId = result.getInt("auction_id");
+				String street = result.getString("street");
+				String postcode = result.getString("postcode");
+				String city = result.getString("city");
+				pu = new PickUpPoint(id, auctionId, street, postcode, city);
+			}
 		} catch (SQLException e) {
 			throw new DALException("READ - Pick-up Point by ID failed ");
 		}

@@ -134,11 +134,13 @@ public class BidDAOJdbc implements BidDAO {
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, id);
 			result = stmt.executeQuery();
-			int bidPrice = result.getInt("bid_price");
-			int userId = result.getInt("user_id");
-			int auctionId = result.getInt("auction_id");
-			LocalDate date = result.getDate("date").toLocalDate();
-			bid = new Bid(id, userId, auctionId, bidPrice, date);
+			while (result.next()) {
+				int bidPrice = result.getInt("bid_price");
+				int userId = result.getInt("user_id");
+				int auctionId = result.getInt("auction_id");
+				LocalDate date = result.getDate("date").toLocalDate();
+				bid = new Bid(id, userId, auctionId, bidPrice, date);
+			}
 		} catch (SQLException e) {
 			throw new DALException("READ - Bid by ID failed ");
 		}

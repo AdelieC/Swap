@@ -21,4 +21,7 @@ public class DAOFactory {
 	public static CategoryDAO getCategoryDAO() {
 		return new CategoryDAOJdbc();
 	}
+	public static UserDAO getUserDAO() throws DALException {
+		return new UserDAOjdbc();
+	}
 }

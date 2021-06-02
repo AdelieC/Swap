@@ -114,28 +114,24 @@ public class UserManager {
 		return admins;
 	}
 
-	private boolean isValid(User u) {
+	public boolean isValid(User u) {
 		Boolean allGood = true;
-		allGood = BLLValidator.isValidUsername(u.getUsername());
-		if (allGood)
-			allGood = BLLValidator.isValidName(u.getLastName());
-		if (allGood)
-			allGood = BLLValidator.isValidName(u.getFirstName());
-		if (allGood)
-			allGood = BLLValidator.isValidEmail(u.getEmail());
-		if (allGood)
-			allGood = BLLValidator.isValidTelephone(u.getTelephone());
-		if (allGood)
-			allGood = BLLValidator.isValidStreet(u.getStreet());
-		if (allGood)
-			allGood = BLLValidator.isValidPostCode(u.getPostcode());
-		if (allGood)
-			allGood = BLLValidator.isValidCity(u.getCity());
-		if (allGood)
-			allGood = BLLValidator.isValidPassword(u.getPassword());
-		if (allGood)
-			allGood = BLLValidator.isValidAmount(u.getCredit());
-		return allGood;
+		// TODO : test once BLLValidator is completed
+		/*
+		 * allGood = BLLValidator.isValidUsername(u.getUsername()); if (allGood) allGood
+		 * = BLLValidator.isValidName(u.getLastName()); if (allGood) allGood =
+		 * BLLValidator.isValidName(u.getFirstName()); if (allGood) allGood =
+		 * BLLValidator.isValidEmail(u.getEmail()); if (allGood) allGood =
+		 * BLLValidator.isValidTelephone(u.getTelephone()); if (allGood) allGood =
+		 * BLLValidator.isValidStreet(u.getStreet()); if (allGood) allGood =
+		 * BLLValidator.isValidPostCode(u.getPostcode()); if (allGood) allGood =
+		 * BLLValidator.isValidCity(u.getCity()); if (allGood) allGood =
+		 * BLLValidator.isValidPassword(u.getPassword()); if (allGood) allGood =
+		 * BLLValidator.isValidAmount(u.getCredit());
+		 * 
+		 * return allGood;
+		 */
+		return u.getUserId() > 0;
 	}
 
 	private boolean exists(User u) throws BLLException {
@@ -146,5 +142,19 @@ public class UserManager {
 			throw new BLLException("Failed to check if user exists in db", e);
 		}
 		return found;
+	}
+
+	public User login(String username, String password) throws BLLException {
+		User user = null;
+		try {
+			user = UserDAO.selectByUsername(username);
+			if (user == null)
+				throw new BLLException("Invalid username");
+			if (!user.getPassword().equals(password))
+				throw new BLLException("Invalid password");
+		} catch (DALException | BLLException e) {
+			throw new BLLException("Log in failed", e);
+		}
+		return user;
 	}
 }

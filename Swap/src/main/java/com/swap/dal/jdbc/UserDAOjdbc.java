@@ -144,7 +144,8 @@ public class UserDAOjdbc implements UserDAO {
 			stmt = conn.prepareStatement(SQLQuery);
 			stmt.setInt(1, id);
 			result = stmt.executeQuery();
-			result.next(); // if removed, bug with mariadb jdbc driver
+			if (!result.next())
+				throw new DALException("Result for user number " + id + " was empty");
 			int userId = result.getInt("user_id");
 			String username = result.getString("username");
 			String lastName = result.getString("last_name");
@@ -180,7 +181,8 @@ public class UserDAOjdbc implements UserDAO {
 			stmt = conn.prepareStatement(SQLQuery);
 			stmt.setString(1, usernameQ);
 			result = stmt.executeQuery();
-			result.next(); // if removed, bug with mariadb jdbc driver
+			if (!result.next())
+				throw new DALException("Result for name " + usernameQ + " was empty");
 			int userId = result.getInt("user_id");
 			String username = result.getString("username");
 			String lastName = result.getString("last_name");
@@ -216,7 +218,8 @@ public class UserDAOjdbc implements UserDAO {
 			stmt = conn.prepareStatement(SQLQuery);
 			stmt.setString(1, emailQ.trim());
 			result = stmt.executeQuery();
-			result.next(); // if removed, bug with mariadb jdbc driver
+			if (!result.next())
+				throw new DALException("Result for user with mail = " + emailQ + " was empty");
 			int userId = result.getInt("user_id");
 			String username = result.getString("username");
 			String lastName = result.getString("last_name");

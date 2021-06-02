@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.swap.bo.BOException;
 import com.swap.bo.User;
 import com.swap.dal.DALException;
 import com.swap.dal.DAOFactory;
@@ -94,7 +95,7 @@ public class UserTest extends HttpServlet {
 			users.forEach(x -> System.out.println(x));
 			System.out.println("---------------------------");
 
-		} catch (DALException e) {
+		} catch (DALException | BOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

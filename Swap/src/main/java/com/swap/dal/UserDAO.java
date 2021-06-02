@@ -18,4 +18,5 @@ public interface UserDAO extends DAO<User> {
 	public void delete(int userId) throws DALException;
 
 	public boolean exists(User u) throws DALException;
+
 }

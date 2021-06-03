@@ -101,8 +101,7 @@ public class AuctionConfigServlet extends HttpServlet {
 			} catch (BLLException e) {
 				e.printStackTrace();
 			}
-			RequestDispatcher rd = request.getRequestDispatcher("/");
-			rd.forward(request, response);
+			response.sendRedirect(request.getServletContext().getContextPath());
 		}
 	}
 }

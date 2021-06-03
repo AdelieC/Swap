@@ -20,12 +20,14 @@
 	            <label class="auction-form-label" for="category">Category:</label>
 	            <select name="category" required>
 	                <c:forEach var="category" items="${categoriesList}">
-	                	<c:if test="${!empty categoryId && categoryId == category.id}">
-							<option value="${category.id}" selected>${category.label}</option>
-						</c:if>
-						<c:otherwise>
-							<option value="${category.id}">${category.label}</option>
-						</c:otherwise>
+	                	<c:choose>
+		                	<c:when test="${!empty categoryId && categoryId == category.id}">
+								<option value="${category.id}" selected>${category.label}</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${category.id}">${category.label}</option>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 	            </select>
 	            <label class="auction-form-label" for="picture">Item picture</label>

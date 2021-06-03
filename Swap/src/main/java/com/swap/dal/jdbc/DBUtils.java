@@ -34,8 +34,12 @@ public class DBUtils {
 		return "SELECT " + columns[0] + " FROM " + tableName + " WHERE " + matches;
 	}
 
-	public static String twoCriteriasSearch(String tableName, String col1, String col2) {
+	public static String twoCriteriaSearch(String tableName, String col1, String col2) {
 		return "SELECT * FROM " + tableName + " WHERE " + col1 + " LIKE ? OR " + col2 + " LIKE ?";
+	}
+
+	public static String twoCriteriaMatchingSearch(String tableName, String col1, String col2) {
+		return "SELECT * FROM " + tableName + " WHERE " + col1 + " LIKE ? AND " + col2 + " LIKE ?";
 	}
 
 	public static String insert(String tableName, String[] columns) {

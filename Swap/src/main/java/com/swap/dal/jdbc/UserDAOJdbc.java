@@ -37,7 +37,7 @@ public class UserDAOJdbc implements UserDAO {
 			stmt.setBoolean(11, (Boolean) u.isAdmin());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("User named " + u.getUsername() + "couldn't be inserted in dbTable USER", e);
+			throw new DALException("User named " + u.getUsername() + " couldn't be inserted in dbTable USER", e);
 		} finally {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);

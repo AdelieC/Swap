@@ -23,6 +23,7 @@ public class Auction implements Serializable {
 		this.userId = userId;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.status = "CREATED";
 	}
 
 	public Auction(int id, String name, String description, LocalDate startDate, LocalDate endDate, int categoryId,

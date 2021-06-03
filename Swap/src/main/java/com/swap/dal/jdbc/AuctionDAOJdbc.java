@@ -15,7 +15,7 @@ import com.swap.dal.DALException;
 
 public class AuctionDAOJdbc implements AuctionDAO {
 	private static final String[] columns = { "auction_id", "auction_name", "description", "start_date", "end_date",
-			"initial_price", "sale_price", "user_id", "category_id" };
+			"initial_price", "sale_price", "user_id", "category_id", "status" };
 	private static final String tableName = "AUCTIONS";
 
 	@Override
@@ -25,7 +25,7 @@ public class AuctionDAOJdbc implements AuctionDAO {
 		String query = DBUtils.insert(tableName, columns);
 		try {
 			cn = ConnectionProvider.getConnection();
-			stmt = cn.prepareStatement(query);
+			stmt = cn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, s.getName());
 			stmt.setString(2, s.getDescription());
 			stmt.setDate(3, Date.valueOf(s.getStartDate()));
@@ -34,8 +34,14 @@ public class AuctionDAOJdbc implements AuctionDAO {
 			stmt.setInt(6, s.getSalePrice());
 			stmt.setInt(7, s.getUserId());
 			stmt.setInt(8, s.getCategoryId());
-			System.out.println(s.getEndDate());
-			stmt.executeUpdate();
+			stmt.setString(9, s.getStatus());
+			int nbRows = stmt.executeUpdate();
+			if (nbRows == 1) {
+				ResultSet rs = stmt.getGeneratedKeys();
+				while (rs.next()) {
+					s.setId(rs.getInt(1));
+				}
+			}
 		} catch (SQLException e) {
 			throw new DALException("auction --" + s.getName() + "-- insertion failed", e);
 		} finally {
@@ -73,8 +79,9 @@ public class AuctionDAOJdbc implements AuctionDAO {
 				int salePrice = result.getInt("sale_price");
 				int userId = result.getInt("user_id");
 				int categoryId = result.getInt("category_id");
+				String status = result.getString("status");
 				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
-						salePrice, userId);
+						salePrice, userId, status);
 				list.add(auction);
 			}
 		} catch (SQLException e) {
@@ -99,7 +106,8 @@ public class AuctionDAOJdbc implements AuctionDAO {
 			stmt.setInt(6, s.getSalePrice());
 			stmt.setInt(7, s.getUserId());
 			stmt.setInt(8, s.getCategoryId());
-			stmt.setInt(9, s.getId());
+			stmt.setString(9, "status");
+			stmt.setInt(10, s.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("auction --" + s.getName() + "-- update failed", e);
@@ -159,8 +167,9 @@ public class AuctionDAOJdbc implements AuctionDAO {
 			int salePrice = result.getInt("sale_price");
 			int userId = result.getInt("user_id");
 			int categoryId = result.getInt("category_id");
+			String status = result.getString("status");
 			auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
-					userId);
+					userId, status);
 		} catch (SQLException e) {
 			throw new DALException("READ - Auction by ID failed ");
 		}
@@ -174,23 +183,26 @@ public class AuctionDAOJdbc implements AuctionDAO {
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.selectBy(tableName, "auction_name");
+		String query = DBUtils.searchBy(tableName, "auction_name");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setString(1, name);
 			result = stmt.executeQuery();
-			int id = result.getInt("auction_id");
-			String description = result.getString("description");
-			LocalDate startDate = result.getDate("start_date").toLocalDate();
-			LocalDate endDate = result.getDate("end_date").toLocalDate();
-			int initialPrice = result.getInt("initial_price");
-			int salePrice = result.getInt("sale_price");
-			int userId = result.getInt("user_id");
-			int categoryId = result.getInt("category_id");
-			auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
-					userId);
-			list.add(auction);
+			while (result.next()) {
+				int id = result.getInt("auction_id");
+				String description = result.getString("description");
+				LocalDate startDate = result.getDate("start_date").toLocalDate();
+				LocalDate endDate = result.getDate("end_date").toLocalDate();
+				int initialPrice = result.getInt("initial_price");
+				int salePrice = result.getInt("sale_price");
+				int userId = result.getInt("user_id");
+				int categoryId = result.getInt("category_id");
+				String status = result.getString("status");
+				auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
+						userId, status);
+				list.add(auction);
+			}
 		} catch (SQLException e) {
 			throw new DALException("READ - Auctions by NAME failed ");
 		}
@@ -220,8 +232,9 @@ public class AuctionDAOJdbc implements AuctionDAO {
 				int salePrice = result.getInt("sale_price");
 				int userId = result.getInt("user_id");
 				int categoryId = result.getInt("category_id");
+				String status = result.getString("status");
 				auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
-						userId);
+						userId, status);
 				list.add(auction);
 			}
 		} catch (SQLException e) {
@@ -251,8 +264,9 @@ public class AuctionDAOJdbc implements AuctionDAO {
 				int initialPrice = result.getInt("initial_price");
 				int salePrice = result.getInt("sale_price");
 				int userId = result.getInt("user_id");
+				String status = result.getString("status");
 				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
-						salePrice, userId);
+						salePrice, userId, status);
 				list.add(auction);
 			}
 		} catch (SQLException e) {
@@ -282,8 +296,9 @@ public class AuctionDAOJdbc implements AuctionDAO {
 				int initialPrice = result.getInt("initial_price");
 				int salePrice = result.getInt("sale_price");
 				int categoryId = result.getInt("category_id");
+				String status = result.getString("status");
 				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
-						salePrice, userId);
+						salePrice, userId, status);
 				list.add(auction);
 			}
 		} catch (SQLException e) {
@@ -313,8 +328,9 @@ public class AuctionDAOJdbc implements AuctionDAO {
 				int initialPrice = result.getInt("initial_price");
 				int categoryId = result.getInt("category_id");
 				int userId = result.getInt("user_id");
+				String status = result.getString("status");
 				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
-						price, userId);
+						price, userId, status);
 				list.add(auction);
 			}
 		} catch (SQLException e) {
@@ -346,8 +362,9 @@ public class AuctionDAOJdbc implements AuctionDAO {
 				int salePrice = result.getInt("sale_price");
 				int categoryId = result.getInt("category_id");
 				int userId = result.getInt("user_id");
+				String status = result.getString("status");
 				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
-						salePrice, userId);
+						salePrice, userId, status);
 				list.add(auction);
 			}
 		} catch (SQLException e) {
@@ -379,8 +396,9 @@ public class AuctionDAOJdbc implements AuctionDAO {
 				int initialPrice = result.getInt("initial_price");
 				int salePrice = result.getInt("sale_price");
 				int categoryId = result.getInt("category_id");
+				String status = result.getString("status");
 				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
-						salePrice, userId);
+						salePrice, userId, status);
 				list.add(auction);
 			}
 		} catch (SQLException e) {

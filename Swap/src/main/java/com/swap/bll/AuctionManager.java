@@ -20,7 +20,7 @@ public class AuctionManager {
 			try {
 				this.auctionDAO.create(auction);
 			} catch (DALException e) {
-				throw new BLLException("BLL - CREATE AUCTION failure");
+				throw new BLLException("CREATE AUCTION failure");
 			}
 		}
 	}
@@ -30,7 +30,7 @@ public class AuctionManager {
 		try {
 			list = this.auctionDAO.read();
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET ALL AUCTIONS failure");
+			throw new BLLException("GET ALL AUCTIONS failure");
 		}
 		return list;
 	}
@@ -40,7 +40,7 @@ public class AuctionManager {
 			try {
 				this.auctionDAO.update(auction);
 			} catch (DALException e) {
-				throw new BLLException("BLL - UPDATE AUCTION failure");
+				throw new BLLException("UPDATE AUCTION failure");
 			}
 		}
 	}
@@ -49,7 +49,7 @@ public class AuctionManager {
 		try {
 			this.auctionDAO.delete(auction);
 		} catch (DALException e) {
-			throw new BLLException("BLL - DELETE AUCTION failure");
+			throw new BLLException("DELETE AUCTION failure");
 		}
 	}
 
@@ -58,7 +58,7 @@ public class AuctionManager {
 		try {
 			auction = this.auctionDAO.selectById(id);
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET AUCTION BY ID failure");
+			throw new BLLException("GET AUCTION BY ID failure");
 		}
 		return auction;
 	}
@@ -68,7 +68,7 @@ public class AuctionManager {
 		try {
 			list = this.auctionDAO.selectByUser(userId);
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET AUCTION BY USER ID failure");
+			throw new BLLException("GET AUCTION BY USER ID failure");
 		}
 		return list;
 	}
@@ -78,7 +78,7 @@ public class AuctionManager {
 		try {
 			list = this.auctionDAO.selectByPrice(price);
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET AUCTION BY USER ID failure");
+			throw new BLLException("GET AUCTION BY USER ID failure");
 		}
 		return list;
 	}
@@ -88,7 +88,7 @@ public class AuctionManager {
 		try {
 			list = this.auctionDAO.selectByName(name);
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET AUCTIONS BY NAME failure");
+			throw new BLLException("GET AUCTIONS BY NAME failure");
 		}
 		return list;
 	}
@@ -98,7 +98,7 @@ public class AuctionManager {
 		try {
 			list = this.auctionDAO.selectByKeyword(keyword);
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET AUCTIONS BY KEYWORD failure");
+			throw new BLLException("GET AUCTIONS BY KEYWORD failure");
 		}
 		return list;
 	}
@@ -108,7 +108,7 @@ public class AuctionManager {
 		try {
 			list = this.auctionDAO.selectByCategory(category);
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET AUCTIONS BY CATEGORY failure");
+			throw new BLLException("GET AUCTIONS BY CATEGORY failure");
 		}
 		return list;
 	}
@@ -118,7 +118,7 @@ public class AuctionManager {
 		try {
 			list = this.auctionDAO.selectByDate(date);
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET CURRENT AUCTIONS failure");
+			throw new BLLException("GET CURRENT AUCTIONS failure");
 		}
 		return list;
 	}
@@ -128,7 +128,7 @@ public class AuctionManager {
 		try {
 			list = this.auctionDAO.selectByUserAndDate(userId, date);
 		} catch (DALException e) {
-			throw new BLLException("BLL - GET CURRENT AUCTIONS FOR USER " + userId + "failure");
+			throw new BLLException("GET CURRENT AUCTIONS FOR USER " + userId + "failure");
 		}
 		return list;
 	}

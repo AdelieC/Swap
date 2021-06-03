@@ -187,10 +187,11 @@ public class AuctionDAOJdbc implements AuctionDAO {
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setString(1, name);
+			stmt.setString(1, "%" + name + "%");
 			result = stmt.executeQuery();
 			while (result.next()) {
 				int id = result.getInt("auction_id");
+				name = result.getString("auction_name");
 				String description = result.getString("description");
 				LocalDate startDate = result.getDate("start_date").toLocalDate();
 				LocalDate endDate = result.getDate("end_date").toLocalDate();
@@ -205,6 +206,39 @@ public class AuctionDAOJdbc implements AuctionDAO {
 			}
 		} catch (SQLException e) {
 			throw new DALException("READ - Auctions by NAME failed ");
+		}
+		return list;
+	}
+
+	@Override
+	public List<Auction> searchByNameAndCategory(String name, int categoryId) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String query = DBUtils.twoCriteriaMatchingSearch(tableName, "auction_name", "category_id");
+		try {
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setString(1, "%" + name + "%");
+			stmt.setInt(2, categoryId);
+			result = stmt.executeQuery();
+			while (result.next()) {
+				int id = result.getInt("auction_id");
+				name = result.getString("auction_name");
+				String description = result.getString("description");
+				LocalDate startDate = result.getDate("start_date").toLocalDate();
+				LocalDate endDate = result.getDate("end_date").toLocalDate();
+				int initialPrice = result.getInt("initial_price");
+				int salePrice = result.getInt("sale_price");
+				int userId = result.getInt("user_id");
+				String status = result.getString("status");
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId, status);
+				list.add(auction);
+			}
+		} catch (SQLException e) {
+			throw new DALException("READ - Auctions by PRICE failed ");
 		}
 		return list;
 	}
@@ -379,7 +413,7 @@ public class AuctionDAOJdbc implements AuctionDAO {
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.selectWhereBetween(tableName, "end_date") + " AND user_id=?";
+		String query = DBUtils.twoCriteriaSearch(tableName, "end_date", "user_id");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);

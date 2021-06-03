@@ -72,11 +72,17 @@ public class HomeServlet extends HttpServlet {
 			categorieslist = catmng.getAll();
 			request.setAttribute("categoriesList", categorieslist);
 			int categoryId = Integer.valueOf(request.getParameter("category"));
+			// TODO Factorise the following horror
 			if (categoryId > 0 && request.getParameter("filter") == null) {
 				request.setAttribute("categoryId", categoryId);
 				list = aucmng.getByCategory(categoryId);
-			} else if (request.getParameter("filter") != null) {
+			} else if (categoryId == 0 && request.getParameter("filter") != null) {
+				request.setAttribute("filter", request.getParameter("filter"));
 				list = aucmng.getByName(request.getParameter("filter"));
+			} else if (categoryId > 0 && request.getParameter("filter") != null) {
+				request.setAttribute("categoryId", categoryId);
+				request.setAttribute("filter", request.getParameter("filter"));
+				list = aucmng.getByNameAndCategory(request.getParameter("filter"), categoryId);
 			} else {
 				list = aucmng.getAll();
 			}

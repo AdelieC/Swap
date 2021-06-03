@@ -15,12 +15,17 @@
 		<form method="post" action="<% request.getServletContext().getContextPath(); %>">
 			<fieldset>
 			<legend>Filters</legend>
-				<input type="text" name="filter" placeholder="Item name contains...">
+				<input type="text" name="filter" placeholder="Item name contains..." value="${filter}">
 				<label>Category: </label>
 	            <select name="category" required>
-	            	<c:if test="${empty categoryId}">
-	            		<option value="0" selected>All</option>
-	            	</c:if>
+	            	<c:choose>
+	            		<c:when test="${empty categoryId}">
+	            			<option value="0" selected>All</option>
+	            		</c:when>
+	            		<c:otherwise>
+							<option value="0">All</option>
+						</c:otherwise>
+	            	</c:choose>
 	                <c:forEach var="category" items="${categoriesList}">
 	                	<c:choose>
 		                	<c:when test="${!empty categoryId && categoryId == category.id}">

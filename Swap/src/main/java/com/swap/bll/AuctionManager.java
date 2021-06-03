@@ -93,6 +93,16 @@ public class AuctionManager {
 		return list;
 	}
 
+	public List<Auction> getByNameAndCategory(String name, int categoryId) throws BLLException {
+		List<Auction> list = null;
+		try {
+			list = this.auctionDAO.searchByNameAndCategory(name, categoryId);
+		} catch (DALException e) {
+			throw new BLLException("GET AUCTIONS BY NAME AND CATEGORY failure");
+		}
+		return list;
+	}
+
 	public List<Auction> getByKeyword(String keyword) throws BLLException {
 		List<Auction> list = null;
 		try {

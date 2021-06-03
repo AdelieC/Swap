@@ -10,6 +10,8 @@ public interface AuctionDAO extends DAO<Auction> {
 
 	public List<Auction> selectByName(String name) throws DALException;
 
+	public List<Auction> searchByNameAndCategory(String name, int categoryId) throws DALException;
+
 	public List<Auction> selectByKeyword(String keyword) throws DALException;
 
 	public List<Auction> selectByCategory(int categoryId) throws DALException;

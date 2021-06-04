@@ -148,13 +148,15 @@ public class UserManager {
 		User user = null;
 		try {
 			user = UserDAO.selectByUsername(username);
-			if (user == null)
-				throw new BLLException("Invalid username");
-			if (!user.getPassword().equals(password))
-				throw new BLLException("Invalid password");
-		} catch (DALException | BLLException e) {
+			if (user != null)
+				user = confirmedUser(user, password);
+		} catch (DALException e) {
 			throw new BLLException("Log in failed", e);
 		}
 		return user;
+	}
+
+	private User confirmedUser(User user, String password) {
+		return user.getPassword().equals(password) ? user : null;
 	}
 }

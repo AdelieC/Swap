@@ -34,7 +34,7 @@ public class UserDAOjdbc implements UserDAO {
 			stmt.setString(8, u.getCity());
 			stmt.setString(9, u.getPassword());
 			stmt.setInt(10, u.getCredit());
-			stmt.setBoolean(11, (Boolean) u.isAdmin());
+			stmt.setBoolean(11, u.isAdmin());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("User named " + u.getUsername() + "couldn't be inserted in dbTable USER", e);
@@ -144,22 +144,22 @@ public class UserDAOjdbc implements UserDAO {
 			stmt = conn.prepareStatement(SQLQuery);
 			stmt.setInt(1, id);
 			result = stmt.executeQuery();
-			if (!result.next())
-				throw new DALException("Result for user number " + id + " was empty");
-			int userId = result.getInt("user_id");
-			String username = result.getString("username");
-			String lastName = result.getString("last_name");
-			String firstName = result.getString("first_name");
-			String email = result.getString("email");
-			String telephone = result.getString("telephone");
-			String street = result.getString("street");
-			String postcode = result.getString("postcode");
-			String city = result.getString("city");
-			String password = result.getString("password");
-			int credit = result.getInt("credit");
-			boolean isAdmin = result.getBoolean("is_admin");
-			user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city, password,
-					credit, isAdmin);
+			if (result.next()) {
+				int userId = result.getInt("user_id");
+				String username = result.getString("username");
+				String lastName = result.getString("last_name");
+				String firstName = result.getString("first_name");
+				String email = result.getString("email");
+				String telephone = result.getString("telephone");
+				String street = result.getString("street");
+				String postcode = result.getString("postcode");
+				String city = result.getString("city");
+				String password = result.getString("password");
+				int credit = result.getInt("credit");
+				boolean isAdmin = result.getBoolean("is_admin");
+				user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
+						password, credit, isAdmin);
+			}
 		} catch (SQLException e) {
 			throw new DALException("User with id " + id + " couldn't be fetched from dbTable USERS", e);
 		} finally {
@@ -181,22 +181,22 @@ public class UserDAOjdbc implements UserDAO {
 			stmt = conn.prepareStatement(SQLQuery);
 			stmt.setString(1, usernameQ);
 			result = stmt.executeQuery();
-			if (!result.next())
-				throw new DALException("Result for name " + usernameQ + " was empty");
-			int userId = result.getInt("user_id");
-			String username = result.getString("username");
-			String lastName = result.getString("last_name");
-			String firstName = result.getString("first_name");
-			String email = result.getString("email");
-			String telephone = result.getString("telephone");
-			String street = result.getString("street");
-			String postcode = result.getString("postcode");
-			String city = result.getString("city");
-			String password = result.getString("password");
-			int credit = result.getInt("credit");
-			boolean isAdmin = result.getBoolean("is_admin");
-			user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city, password,
-					credit, isAdmin);
+			if (result.next()) {
+				int userId = result.getInt("user_id");
+				String username = result.getString("username");
+				String lastName = result.getString("last_name");
+				String firstName = result.getString("first_name");
+				String email = result.getString("email");
+				String telephone = result.getString("telephone");
+				String street = result.getString("street");
+				String postcode = result.getString("postcode");
+				String city = result.getString("city");
+				String password = result.getString("password");
+				int credit = result.getInt("credit");
+				boolean isAdmin = result.getBoolean("is_admin");
+				user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
+						password, credit, isAdmin);
+			}
 		} catch (SQLException e) {
 			throw new DALException("User with name " + usernameQ + " couldn't be fetched from dbTable USERS", e);
 		} finally {
@@ -218,22 +218,22 @@ public class UserDAOjdbc implements UserDAO {
 			stmt = conn.prepareStatement(SQLQuery);
 			stmt.setString(1, emailQ.trim());
 			result = stmt.executeQuery();
-			if (!result.next())
-				throw new DALException("Result for user with mail = " + emailQ + " was empty");
-			int userId = result.getInt("user_id");
-			String username = result.getString("username");
-			String lastName = result.getString("last_name");
-			String firstName = result.getString("first_name");
-			String email = result.getString("email");
-			String telephone = result.getString("telephone");
-			String street = result.getString("street");
-			String postcode = result.getString("postcode");
-			String city = result.getString("city");
-			String password = result.getString("password");
-			int credit = result.getInt("credit");
-			boolean isAdmin = result.getBoolean("is_admin");
-			user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city, password,
-					credit, isAdmin);
+			if (result.next()) {
+				int userId = result.getInt("user_id");
+				String username = result.getString("username");
+				String lastName = result.getString("last_name");
+				String firstName = result.getString("first_name");
+				String email = result.getString("email");
+				String telephone = result.getString("telephone");
+				String street = result.getString("street");
+				String postcode = result.getString("postcode");
+				String city = result.getString("city");
+				String password = result.getString("password");
+				int credit = result.getInt("credit");
+				boolean isAdmin = result.getBoolean("is_admin");
+				user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
+						password, credit, isAdmin);
+			}
 		} catch (SQLException e) {
 			throw new DALException("User with email " + emailQ + " couldn't be fetched from dbTable USERS", e);
 		} finally {

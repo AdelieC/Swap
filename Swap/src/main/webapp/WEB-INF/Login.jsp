@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/includes/base.jspf" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -7,18 +6,17 @@
 		<title>Log in</title>
 	</head>
 	<body>
+	<h1>${true ? 'Login' : 'Login failed'}</h1>
 		<form action="login" method="post">
-			<table style="with: 50%">
-				<tr>
-					<td>UserName</td>
-					<td><input type="text" name="username" /></td>
-				</tr>
-				<tr>
-					<td>Password</td>
-					<td><input type="password" name="password" /></td>
-				</tr>
-			</table>
-			<input type="submit" value="Login" />
+			<fieldset>
+				<label for="username">UserName</label>
+				<input type="text" name="username" value="${username}"/>
+				
+				<label for="password">Password</label>
+				<input type="password" name="password" />
+				<input type="hidden" name="previousPath" value="${previousPath}" />
+				<input type="submit" value="Login" />
+			</fieldset>
 		</form>
 </body>
 </html>

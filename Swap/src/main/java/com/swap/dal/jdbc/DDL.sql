@@ -30,3 +30,4 @@ INSERT INTO USERS values (
 '0',
 '0'
 );
+UPDATE USERS SET password = 'Pa$$w0rd' WHERE user_id = '1';

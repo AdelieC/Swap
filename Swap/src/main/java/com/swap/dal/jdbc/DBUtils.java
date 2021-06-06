@@ -20,7 +20,9 @@ public class DBUtils {
 	}
 
 	public static String searchBy(String tableName, String col) {
-		return "SELECT * FROM " + tableName + " WHERE " + col + " LIKE ?";
+		return "SELECT * FROM " + tableName + " WHERE " + col + " LIKE ? ESCAPE '!'";
+		// you need to set your string like this in the preparedstatement
+		// -> setString(1, "%" + yourVariable + "%")
 	}
 
 	public static String selectWhereBetween(String tableName, String col) {
@@ -52,6 +54,10 @@ public class DBUtils {
 		for (int i = 2; i < columns.length; i++)
 			cols += (", " + columns[i] + " = ?");
 		return "UPDATE " + tableName + " SET " + cols + " WHERE " + colId + " = ?";
+	}
+
+	public static String updateWhere(String tableName, String colId, String colToUpdate) {
+		return "UPDATE " + tableName + " SET " + colToUpdate + "= ? WHERE " + colId + " = ?";
 	}
 
 	public static String deleteWhere(String tableName, String col) {

@@ -1,38 +1,66 @@
 package com.swap.ihm;
 
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FormCleaner {
+	public final static String PWREG = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$",
+			STREETREG = "^\\w+(\\s\\w+){2,}$", NAMEREG = "^[\\w'-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,30}$",
+			POSTREG = "^\\d{5}[-\\s]?(?:\\d{4})?$",
+			MAILREG = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
+			TELREG = "^[0-9]{6,15}$", DATEREG = "[-/0-9]{6,11}$";
+
 	private static boolean isSafe(String inputValue) {
 		// TODO : check for special chars, js, java, and sql injections
 		return true;
 	}
 
-	private static String encode(String password) {
+	public static String encode(String password) {
 		// TODO : logic here
 		return password;
 	}
 
-	public static String cleanInputEmail(String email) {
-		return (isSafe(email) && email.trim().matches("^[A-Z0-9@._%+-]{6,254}$")) ? email.trim() : null;
+	public static String cleanEmail(String email) {
+		Pattern p = Pattern.compile(MAILREG);
+		Matcher m = p.matcher(email.trim());
+		return (isSafe(email) && m.matches()) ? email.trim() : null;
 	}
 
-	public static LocalDate cleanInputDate(String date) {
-		return (isSafe(date) && date.matches("^[0-9-]{11}$")) ? LocalDate.parse(date) : null;
+	public static LocalDate cleanDate(String date) {
+		Pattern p = Pattern.compile(DATEREG);
+		Matcher m = p.matcher(date.trim());
+		return (isSafe(date) && m.matches()) ? LocalDate.parse(date) : null;
 	}
 
-	public static String cleanInputPassword(String password) {
-		return (isSafe(password) && password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%&.?]).{8,32}$"))
-				? encode(password)
-				: null;
+	public static String cleanPassword(String password) {
+		Pattern p = Pattern.compile(PWREG);
+		Matcher m = p.matcher(password.trim());
+		return (isSafe(password) && m.matches()) ? password : null;
 	}
 
-	public static String cleanInputTel(String tel) {
-		return (isSafe(tel) && tel.matches("^[0-9-+]{15}$")) ? tel : null;
+	public static String cleanTel(String tel) {
+		Pattern p = Pattern.compile(TELREG);
+		Matcher m = p.matcher(tel.trim());
+		return (isSafe(tel) && m.matches()) ? tel : null;
 	}
 
-	public static String cleanInputText(String text, int max) {
-		return (isSafe(text) && text.trim().length() < max) ? text.trim() : null;
+	public static String cleanName(String name) {
+		Pattern p = Pattern.compile(NAMEREG);
+		Matcher m = p.matcher(name.trim());
+		return (isSafe(name) && m.matches()) ? name.trim() : null;
+	}
+
+	public static String cleanStreet(String street) {
+		Pattern p = Pattern.compile(STREETREG);
+		Matcher m = p.matcher(street.trim());
+		return (isSafe(street) && m.matches()) ? street.trim() : null;
+	}
+
+	public static String cleanPostcode(String postcode) {
+		Pattern p = Pattern.compile(POSTREG);
+		Matcher m = p.matcher(postcode.trim());
+		return (isSafe(postcode) && m.matches()) ? postcode.trim() : null;
 	}
 
 }

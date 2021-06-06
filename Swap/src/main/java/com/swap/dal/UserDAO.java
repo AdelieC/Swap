@@ -9,9 +9,9 @@ public interface UserDAO extends DAO<User> {
 
 	public User selectByUsername(String username) throws DALException;
 
-	public User selectByEmail(String email) throws DALException;
+	public List<User> searchByUsername(String username) throws DALException;
 
-	public List<User> selectByCity(String city) throws DALException;
+	public List<User> searchByCity(String city) throws DALException;
 
 	public List<User> selectAllAdmins() throws DALException;
 
@@ -19,4 +19,5 @@ public interface UserDAO extends DAO<User> {
 
 	public boolean exists(User u) throws DALException;
 
+	public void updatePassword(User u) throws DALException;
 }

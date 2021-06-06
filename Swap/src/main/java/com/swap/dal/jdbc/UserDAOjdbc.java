@@ -13,7 +13,7 @@ import com.swap.dal.UserDAO;
 
 public class UserDAOjdbc implements UserDAO {
 	private final static String[] COLS = { "user_id", "username", "last_name", "first_name", "email", "telephone",
-			"street", "postcode", "city", "password", "credit", "is_admin" };
+			"street", "postcode", "city", "password", "balance", "is_admin" };
 	private final static String TABLENAME = "USERS";
 
 	@Override
@@ -33,7 +33,7 @@ public class UserDAOjdbc implements UserDAO {
 			stmt.setString(7, u.getPostcode());
 			stmt.setString(8, u.getCity());
 			stmt.setString(9, u.getPassword());
-			stmt.setInt(10, u.getCredit());
+			stmt.setInt(10, u.getBalance());
 			stmt.setBoolean(11, u.isAdmin());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -66,10 +66,10 @@ public class UserDAOjdbc implements UserDAO {
 				String postcode = result.getString("postcode");
 				String city = result.getString("city");
 				String password = result.getString("password");
-				int credit = result.getInt("credit");
+				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
 				allUsers.add(new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, credit, isAdmin));
+						password, balance, isAdmin));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Read failed - couldn't retrieve list of all users from db", e);
@@ -97,7 +97,7 @@ public class UserDAOjdbc implements UserDAO {
 			stmt.setString(7, u.getPostcode());
 			stmt.setString(8, u.getCity());
 			stmt.setString(9, u.getPassword());
-			stmt.setInt(10, u.getCredit());
+			stmt.setInt(10, u.getBalance());
 			stmt.setBoolean(11, u.isAdmin());
 			stmt.setInt(12, u.getUserId());
 			stmt.executeUpdate();
@@ -155,10 +155,10 @@ public class UserDAOjdbc implements UserDAO {
 				String postcode = result.getString("postcode");
 				String city = result.getString("city");
 				String password = result.getString("password");
-				int credit = result.getInt("credit");
+				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
 				user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, credit, isAdmin);
+						password, balance, isAdmin);
 			}
 		} catch (SQLException e) {
 			throw new DALException("User with id " + id + " couldn't be fetched from dbTable USERS", e);
@@ -170,7 +170,7 @@ public class UserDAOjdbc implements UserDAO {
 	}
 
 	@Override
-	public User selectByUsername(String usernameQ) throws DALException {
+	public User selectByUsername(String name) throws DALException {
 		User user = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -179,7 +179,7 @@ public class UserDAOjdbc implements UserDAO {
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);
-			stmt.setString(1, usernameQ);
+			stmt.setString(1, name);
 			result = stmt.executeQuery();
 			if (result.next()) {
 				int userId = result.getInt("user_id");
@@ -192,13 +192,13 @@ public class UserDAOjdbc implements UserDAO {
 				String postcode = result.getString("postcode");
 				String city = result.getString("city");
 				String password = result.getString("password");
-				int credit = result.getInt("credit");
+				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
 				user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, credit, isAdmin);
+						password, balance, isAdmin);
 			}
 		} catch (SQLException e) {
-			throw new DALException("User with name " + usernameQ + " couldn't be fetched from dbTable USERS", e);
+			throw new DALException("User with name " + name + " couldn't be fetched from dbTable USERS", e);
 		} finally {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);
@@ -207,53 +207,16 @@ public class UserDAOjdbc implements UserDAO {
 	}
 
 	@Override
-	public User selectByEmail(String emailQ) throws DALException {
-		User user = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet result = null;
-		String SQLQuery = DBUtils.selectBy(TABLENAME, "email");
-		try {
-			conn = ConnectionProvider.getConnection();
-			stmt = conn.prepareStatement(SQLQuery);
-			stmt.setString(1, emailQ.trim());
-			result = stmt.executeQuery();
-			if (result.next()) {
-				int userId = result.getInt("user_id");
-				String username = result.getString("username");
-				String lastName = result.getString("last_name");
-				String firstName = result.getString("first_name");
-				String email = result.getString("email");
-				String telephone = result.getString("telephone");
-				String street = result.getString("street");
-				String postcode = result.getString("postcode");
-				String city = result.getString("city");
-				String password = result.getString("password");
-				int credit = result.getInt("credit");
-				boolean isAdmin = result.getBoolean("is_admin");
-				user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, credit, isAdmin);
-			}
-		} catch (SQLException e) {
-			throw new DALException("User with email " + emailQ + " couldn't be fetched from dbTable USERS", e);
-		} finally {
-			DBUtils.closePrepStmt(stmt);
-			DBUtils.closeConnection(conn);
-		}
-		return user;
-	}
-
-	@Override
-	public List<User> selectByCity(String cityQ) throws DALException {
+	public List<User> searchByUsername(String usernameQ) throws DALException {
 		List<User> users = new ArrayList<User>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String SQLQuery = DBUtils.selectBy(TABLENAME, "city");
+		String SQLQuery = DBUtils.searchBy(TABLENAME, "username");
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);
-			stmt.setString(1, cityQ);
+			stmt.setString(1, "%" + usernameQ + "%");
 			result = stmt.executeQuery();
 			while (result.next()) {
 				int userId = result.getInt("user_id");
@@ -266,10 +229,47 @@ public class UserDAOjdbc implements UserDAO {
 				String postcode = result.getString("postcode");
 				String city = result.getString("city");
 				String password = result.getString("password");
-				int credit = result.getInt("credit");
+				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
 				users.add(new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, credit, isAdmin));
+						password, balance, isAdmin));
+			}
+		} catch (SQLException e) {
+			throw new DALException("User with name " + usernameQ + " couldn't be fetched from dbTable USERS", e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+		return users;
+	}
+
+	@Override
+	public List<User> searchByCity(String cityQ) throws DALException {
+		List<User> users = new ArrayList<User>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String SQLQuery = DBUtils.searchBy(TABLENAME, "city");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(SQLQuery);
+			stmt.setString(1, "%" + cityQ + "%");
+			result = stmt.executeQuery();
+			while (result.next()) {
+				int userId = result.getInt("user_id");
+				String username = result.getString("username");
+				String lastName = result.getString("last_name");
+				String firstName = result.getString("first_name");
+				String email = result.getString("email");
+				String telephone = result.getString("telephone");
+				String street = result.getString("street");
+				String postcode = result.getString("postcode");
+				String city = result.getString("city");
+				String password = result.getString("password");
+				int balance = result.getInt("balance");
+				boolean isAdmin = result.getBoolean("is_admin");
+				users.add(new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
+						password, balance, isAdmin));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Read failed - couldn't retrieve list of users from city " + cityQ, e);
@@ -303,10 +303,10 @@ public class UserDAOjdbc implements UserDAO {
 				String postcode = result.getString("postcode");
 				String city = result.getString("city");
 				String password = result.getString("password");
-				int credit = result.getInt("credit");
+				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
 				users.add(new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, credit, isAdmin));
+						password, balance, isAdmin));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Read failed - couldn't retrieve list of all admin users ", e);
@@ -323,22 +323,12 @@ public class UserDAOjdbc implements UserDAO {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String SQLQuery = DBUtils.findExactMatchIn(TABLENAME, COLS);
+		String SQLQuery = DBUtils.twoCriteriasSearch(TABLENAME, "user_id", "username");
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);
 			stmt.setInt(1, u.getUserId());
 			stmt.setString(2, u.getUsername());
-			stmt.setString(3, u.getLastName());
-			stmt.setString(4, u.getFirstName());
-			stmt.setString(5, u.getEmail());
-			stmt.setString(6, u.getTelephone());
-			stmt.setString(7, u.getStreet());
-			stmt.setString(8, u.getPostcode());
-			stmt.setString(9, u.getCity());
-			stmt.setString(10, u.getPassword());
-			stmt.setInt(11, u.getCredit());
-			stmt.setBoolean(12, u.isAdmin());
 			result = stmt.executeQuery();
 			found = result.next();
 		} catch (SQLException e) {
@@ -349,6 +339,26 @@ public class UserDAOjdbc implements UserDAO {
 			DBUtils.closeConnection(conn);
 		}
 		return found;
+	}
+
+	@Override
+	public void updatePassword(User u) throws DALException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String SQLQuery = DBUtils.updateWhere(TABLENAME, "user_id", "password");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(SQLQuery);
+			stmt.setInt(1, u.getUserId());
+			stmt.setString(2, u.getPassword());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Couldn't update password for User named " + u.getUsername(), e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+
 	}
 
 }

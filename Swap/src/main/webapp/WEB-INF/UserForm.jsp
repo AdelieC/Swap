@@ -1,69 +1,65 @@
-<%@ include file="/WEB-INF/includes/base.jspf" %>
+<%@ include file="./includes/base.jsp" %>
+<c:set var="user" value="${sessionScope.user}"/>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>${sessionScope.user == null ? 'Register' : 'Edit Profile'}</title>
-</head>
-<body>
-	<h1>${sessionScope.user == null ? 'Register' : 'Edit Profile'}</h1>
-	<form action="userForm" method="post">
-		<fieldset>
-			<legend>Identity</legend>
-			
-			<label for="username">UserName</label>
-			<input type="text" name="username" value="${username}"/>
-			
-			<label for="password1">Password</label>
-			<input type="password" name="password1" />
-			
-			<label for="password2">Confirm password</label>
-			<input type="password" name="password2" />
-		</fieldset>
-		<fieldset>
-			<legend>Informations</legend>
-			<label for="lastname">Last name</label>
-			<input type="text" name="lastName" value="${lastname}"/>
-		
-			<label for="firstname">First name</label>
-			<input type="text" name="firstname" value="${firstname}"/>
-		
-			<label for="email">Email</label>
-			<input type="email" name="email" value="${email}"/>
-		
-			<label for="telephone">Telephone</label>
-			<input type="tel" name="telephone" value="${telephone}"/>
-		</fieldset>
-		<fieldset>
-			<legend>Address</legend>
-		
-			<label for="street">Street (number and name)</label>
-			<input type="text" name="street" value="${street}"/>
-
-			<label for="postcode">Postcode</label>
-			<input type="text" name="postcode" value="${postcode}"/>
-		
-			<label for="city">City</label>
-			<input type="text" name="city" value="${city}"/>
-		</fieldset>
-		<input type="submit" value="${true ? 'Update' : 'Register'}" />
-		<c:choose>
-        	<c:when test = "${salary <= 0}">
-           		<a href="/Swap">Cancel</a>
-         	</c:when>
-         	<c:otherwise>
-             	<a href="/account/delete">Cancel</a>
-         	</c:otherwise>
-     	</c:choose>
-	</form>
-	<c:if test="" >
-   
-</c:if>
-<c:choose>
-	<p>${'test'}</p>
-   
-</c:choose>
-</body>
-</html>
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<title>${user != null ? 'Register' : 'Edit Profile'}</title>
+	</head>
+	<body>
+		<h1>${user == null && errors == null ? 'Register' : 'Edit Profile'}</h1>
+		<form action="/Swap/register" method="post">
+			<fieldset>
+				<legend>Identity</legend>
+				
+				<label for="username">UserName</label>
+				<input type="text" name="username" value="${user.getUsername()}"/>
+				<c:if test="${errors.containsKey('username')}" >
+	   				<div class="form-error">Invalid field : ${errors.get('username')}</div>
+				</c:if>
+				<label for="password1">Password</label>
+				<input type="password" name="password1" value="${user.getPassword()}"/>
+				<label for="password2">Confirm password</label>
+				<input type="password" name="password2" value="${user.getPassword()}"/>
+				<c:if test="${errors.containsKey('password')}" >
+	   				<div class="form-error">Invalid field : ${errors.get('password')}</div>
+				</c:if>
+			</fieldset>
+			<fieldset>
+				<legend>Informations</legend>
+				<label for="lastName">Last name</label>
+				<input type="text" name="lastName" value="${user.getLastName()}"/>
+				<c:if test="${errors.containsKey('lastName')}" >
+	   				<div class="form-error">Invalid field : ${errors.get('lastName')}</div>
+				</c:if>
+				<label for="firstName">First name</label>
+				<input type="text" name="firstName" value="${user.getFirstName()}"/>
+				<c:if test="${errors.containsKey('firstName')}" >
+	   				<div class="form-error">Invalid field : ${errors.get('firstName')}</div>
+				</c:if>
+				<label for="email">Email</label>
+				<input type="email" name="email" value="${user.getEmail()}"/>
+				<c:if test="${errors.containsKey('email')}" >
+	   				<div class="form-error">Invalid field : ${errors.get('email')}</div>
+				</c:if>
+				<label for="telephone">Telephone</label>
+				<input type="tel" name="telephone" value="${user.getTelephone()}"/>
+				<c:if test="${errors.containsKey('telephone')}" >
+	   				<div class="form-error">Invalid field : ${errors.get('telephone')}</div>
+				</c:if>
+			</fieldset>
+			<jsp:include page="./includes/addressFieldset.jsp">
+    			<jsp:param name="errors" value="${errors}"/>
+			</jsp:include>	
+			<c:if test="${user != null}" >
+	   			<div>Current balance : ${user.getBalance()}</div>
+			</c:if>
+			<input type="submit" value="${user != null ? 'Update' : 'Register'}" />
+			<c:if test="${user != null}" >
+	        	<a href="/account/delete?confirm=true">Delete</a>
+	        </c:if>
+	        <a href="/Swap">Cancel</a>
+	     	
+		</form>
+	</body>
 </html>

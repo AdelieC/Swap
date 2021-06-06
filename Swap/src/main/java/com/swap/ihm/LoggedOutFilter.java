@@ -16,8 +16,8 @@ import java.io.IOException;
  * Servlet Filter implementation class LoggedInFilter Prevents access to
  * specific pages if user is not logged in
  */
-@WebFilter(description = "Filters access to pages depending on session.loggedIn value", urlPatterns = { "/my-homepage",
-		"/account", "/account/my-profile", "/account/my-profile/edit", "/create-new-auction", "/edit-auction" })
+@WebFilter(description = "Filters access to pages depending on session.loggedIn value", urlPatterns = { "/home",
+		"/account", "/logout", "/account/edit", "/account/delete", "/auction/create", "/auction/edit" })
 public class LoggedOutFilter implements Filter {
 
 	/**
@@ -29,9 +29,10 @@ public class LoggedOutFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		HttpSession session = request.getSession();
-		if (session.getAttribute("user") == null)
-			response.sendRedirect("/login");
-		chain.doFilter(request, response);
+		if (session.getAttribute("user") == null) {
+			response.sendRedirect("/Swap/login");
+		} else {
+			chain.doFilter(req, res);
+		}
 	}
-
 }

@@ -41,7 +41,7 @@ public class Login extends SwapServlet {
 			UserManager userM = new UserManager();
 			String username = FormCleaner.cleanUsername(request.getParameter("username"));
 			String password = FormCleaner.cleanPassword(request.getParameter("password"));
-			if (username == null || password == null) {
+			if (username == null || username == null) {
 				doGet(request, response);
 			}
 			User user = new User();
@@ -54,7 +54,7 @@ public class Login extends SwapServlet {
 				redirectBecauseLoggedIn(request, response);
 			}
 		} catch (BLLException e) {
-			// TODO Auto-generated catch block
+			// TODO Redirect to error page : 500
 			e.printStackTrace();
 		}
 	}

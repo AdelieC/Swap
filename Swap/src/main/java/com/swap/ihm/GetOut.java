@@ -16,17 +16,22 @@ import com.swap.bo.User;
  * Servlet handling index page, homepage (when logged in), logout and delete
  * user
  */
-@WebServlet(description = "Handles index page, homepage (when logged in), logout and delete", urlPatterns = { "/",
+@WebServlet(description = "Handles index page, homepage (when logged in), logout and delete", urlPatterns = {
 		"/account/logout", "/account/delete" })
-public class IndexPage extends SwapServlet {
+public class GetOut extends SwapServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String INDEX_JSP = "/WEB-INF/Index.jsp";
+	private static final String OUTCOME_JSP = "/WEB-INF/GetOut.jsp";
 	private static final String HOME_PATH = "/Swap";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		sendToJSP(INDEX_JSP, request, response);
+		if (request.getRequestURI().contains("logout")) {
+			request.setAttribute("actionCompleted", "logout");
+		} else {
+			request.setAttribute("actionCompleted", "delete");
+		}
+		sendToJSP(OUTCOME_JSP, request, response);
 	}
 
 	@Override
@@ -41,7 +46,7 @@ public class IndexPage extends SwapServlet {
 			}
 			session.setAttribute("user", null);
 			session.invalidate();
-			response.sendRedirect(HOME_PATH);
+			doGet(request, response);
 		} catch (BLLException e) {
 			// TODO send to error page = 500
 			e.printStackTrace();

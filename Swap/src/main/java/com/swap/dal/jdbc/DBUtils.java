@@ -19,14 +19,14 @@ public class DBUtils {
 		return "SELECT * FROM " + tableName + " WHERE " + col + " = ?";
 	}
 
+	public static String selectWhereBetween(String tableName, String col) {
+		return "SELECT * FROM " + tableName + " WHERE " + col + " BETWEEN (? AND ?)";
+	}
+
 	public static String searchBy(String tableName, String col) {
 		return "SELECT * FROM " + tableName + " WHERE " + col + " LIKE ? ESCAPE '!'";
 		// you need to set your string like this in the preparedstatement
 		// -> setString(1, "%" + yourVariable + "%")
-	}
-
-	public static String selectWhereBetween(String tableName, String col) {
-		return "SELECT * FROM " + tableName + " WHERE " + col + " BETWEEN (? AND ?)";
 	}
 
 	public static String findExactMatchIn(String tableName, String[] columns) {
@@ -38,6 +38,15 @@ public class DBUtils {
 
 	public static String twoCriteriasSearch(String tableName, String col1, String col2) {
 		return "SELECT * FROM " + tableName + " WHERE " + col1 + " LIKE ? OR " + col2 + " LIKE ?";
+	}
+
+	public static String twoCriteriaMatchingSearch(String tableName, String col1, String col2) {
+		return "SELECT * FROM " + tableName + " WHERE " + col1 + " LIKE ? AND " + col2 + " LIKE ?";
+	}
+
+	public static String selectMax(String tableName, String col, String[] columns) {
+		// TODO
+		return "";
 	}
 
 	public static String insert(String tableName, String[] columns) {

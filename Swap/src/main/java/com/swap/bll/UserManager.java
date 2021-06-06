@@ -119,29 +119,11 @@ public class UserManager {
 	}
 
 	public boolean isValid(User u) {
-		Boolean allGood = true;
-
-		allGood = BLLValidator.isValidUsername(u.getUsername());
-		if (allGood)
-			allGood = BLLValidator.isValidName(u.getLastName());
-		if (allGood)
-			allGood = BLLValidator.isValidName(u.getFirstName());
-		if (allGood)
-			allGood = BLLValidator.isValidEmail(u.getEmail());
-		if (allGood)
-			allGood = BLLValidator.isValidTelephone(u.getTelephone());
-		if (allGood)
-			allGood = BLLValidator.isValidStreet(u.getStreet());
-		if (allGood)
-			allGood = BLLValidator.isValidPostCode(u.getPostcode());
-		if (allGood)
-			allGood = BLLValidator.isValidCity(u.getCity());
-		if (allGood)
-			allGood = BLLValidator.isValidPassword(u.getPassword());
-		if (allGood)
-			allGood = BLLValidator.isValidAmount(u.getBalance());
-
-		return allGood;
+		return BLLValidator.isValidUsername(u.getUsername()) && BLLValidator.isValidName(u.getLastName())
+				&& BLLValidator.isValidName(u.getFirstName()) && BLLValidator.isValidEmail(u.getEmail())
+				&& BLLValidator.isValidTelephone(u.getTelephone()) && BLLValidator.isValidStreet(u.getStreet())
+				&& BLLValidator.isValidPostCode(u.getPostcode()) && BLLValidator.isValidCity(u.getCity())
+				&& BLLValidator.isValidPassword(u.getPassword()) && BLLValidator.isValidAmount(u.getBalance());
 	}
 
 	private boolean exists(User u) throws BLLException {

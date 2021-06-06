@@ -11,7 +11,7 @@ import com.swap.bo.User;
 import com.swap.dal.DALException;
 import com.swap.dal.UserDAO;
 
-public class UserDAOjdbc implements UserDAO {
+public class UserDAOJdbc implements UserDAO {
 	private final static String[] COLS = { "user_id", "username", "last_name", "first_name", "email", "telephone",
 			"street", "postcode", "city", "password", "balance", "is_admin" };
 	private final static String TABLENAME = "USERS";

@@ -249,4 +249,31 @@ public class BidDAOJdbc implements BidDAO {
 		return list;
 	}
 
+	@Override
+	public Bid selectMax(int auction_id) throws DALException {
+		Bid bid = null;
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String query = "SELECT * FROM BIDS WHERE auction_id = ? and bid_price=(SELECT MAX(bid_price) FROM BIDS where auction_id= ?)";
+		try {
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setInt(1, auction_id);
+			stmt.setInt(2, auction_id);
+			result = stmt.executeQuery();
+			if (result.next()) {
+				int auctionId = result.getInt("auction_id");
+				int id = result.getInt("bid_id");
+				int userId = result.getInt("user_id");
+				int bidPrice = result.getInt("bid_price");
+				LocalDate date = result.getDate("bid_date").toLocalDate();
+				bid = new Bid(id, userId, auctionId, bidPrice, date);
+			}
+		} catch (SQLException e) {
+			throw new DALException("READ - Max bid failed ");
+		}
+		return bid;
+	}
+
 }

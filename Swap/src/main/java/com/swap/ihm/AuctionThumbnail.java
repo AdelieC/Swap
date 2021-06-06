@@ -6,13 +6,14 @@ import java.time.LocalDate;
 public class AuctionThumbnail implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String item, seller;
-	private int price, auctionId;
+	private int price, id;
 	private LocalDate date;
 
 	public AuctionThumbnail() {
 	}
 
-	public AuctionThumbnail(String item, int price, LocalDate date, String seller) {
+	public AuctionThumbnail(int id, String item, int price, LocalDate date, String seller) {
+		this.id = id;
 		this.item = item;
 		this.price = price;
 		this.date = date;
@@ -51,12 +52,12 @@ public class AuctionThumbnail implements Serializable {
 		this.date = date;
 	}
 
-	public int getAuctionId() {
-		return auctionId;
+	public int getId() {
+		return id;
 	}
 
-	public void setAuctionId(int auctionId) {
-		this.auctionId = auctionId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

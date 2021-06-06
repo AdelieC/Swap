@@ -9,9 +9,11 @@ import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.CategoryManager;
 import com.swap.bll.PickUpPointManager;
+import com.swap.bll.UserManager;
 import com.swap.bo.Auction;
 import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
+import com.swap.bo.User;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -39,11 +41,16 @@ public class AuctionConfigServlet extends HttpServlet {
 		String title = "Create auction";
 		List<Category> categorieslist = new ArrayList<Category>();
 		CategoryManager catmng = new CategoryManager();
-		if (request.getAttribute("auctionId") != null) {
+		AuctionManager aucmng = new AuctionManager();
+		if (request.getParameter("id") != null) {
 			title = "Update auction";
-			// TODO Get ${auctionId}
-			// -> Auction auction = selectById(auctionId)
-			// -> request.setAtt(auction)
+			int id = Integer.valueOf(request.getParameter("id"));
+			try {
+				Auction auction = aucmng.getById(id);
+				request.setAttribute("auction", auction);
+			} catch (BLLException e) {
+				e.printStackTrace();
+			}
 		}
 		try {
 			categorieslist = catmng.getAll();
@@ -64,6 +71,13 @@ public class AuctionConfigServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Get user id from session
 		int userId = 1;
+		UserManager usmng = new UserManager();
+		User user = null;
+		try {
+			user = usmng.getById(1);
+		} catch (BLLException e1) {
+			e1.printStackTrace();
+		}
 
 		AuctionManager aucmng = new AuctionManager();
 		PickUpPointManager pupmng = new PickUpPointManager();
@@ -73,13 +87,22 @@ public class AuctionConfigServlet extends HttpServlet {
 		LocalDate startDate = RequestVerification.getLocalDate(request, "start-date");
 		LocalDate endDate = RequestVerification.getLocalDate(request, "end-date");
 		int initialPrice = RequestVerification.getInteger(request, "initial-price");
-		// TODO Pick up point should default to user adress
-		String street = RequestVerification.getString(request, "street");
-		String postcode = RequestVerification.getString(request, "postcode");
-		String city = RequestVerification.getString(request, "city");
+		String street = RequestVerification.getString(request, "street").length() > 0
+				? RequestVerification.getString(request, "street")
+				: user.getStreet();
+		String postcode = RequestVerification.getString(request, "postcode").length() > 0
+				? RequestVerification.getString(request, "postcode")
+				: user.getPostcode();
+		String city = RequestVerification.getString(request, "city").length() > 0
+				? RequestVerification.getString(request, "city")
+				: user.getCity();
 		Auction auction = new Auction(name, description, startDate, endDate, categoryId, initialPrice, userId);
 		PickUpPoint pup = new PickUpPoint(0, street, postcode, city);
+
 		if (request.getAttribute("auction") != null) {
+			// UNREACHABLE BLOCK
+			// Invalid condition
+			// TODO
 			auction = (Auction) request.getAttribute("auction");
 			try {
 				aucmng.update(auction);
@@ -95,8 +118,6 @@ public class AuctionConfigServlet extends HttpServlet {
 				aucmng.create(auction);
 				pup.setAuctionId(auction.getId());
 				pupmng.create(pup);
-				request.setAttribute("auction", auction);
-				request.setAttribute("pickUpPoint", pup);
 
 			} catch (BLLException e) {
 				e.printStackTrace();

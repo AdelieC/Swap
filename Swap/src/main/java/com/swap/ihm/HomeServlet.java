@@ -44,8 +44,8 @@ public class HomeServlet extends HttpServlet {
 			list = aucmng.getAll();
 			for (Auction auction : list) {
 				User user = usmng.getById(auction.getUserId());
-				AuctionThumbnail thumbnail = new AuctionThumbnail(auction.getName(), auction.getSalePrice(),
-						auction.getEndDate(), user.getUsername());
+				AuctionThumbnail thumbnail = new AuctionThumbnail(auction.getId(), auction.getName(),
+						auction.getSalePrice(), auction.getEndDate(), user.getUsername());
 				thumbnails.add(thumbnail);
 				request.setAttribute("thumbnails", thumbnails);
 			}
@@ -88,8 +88,8 @@ public class HomeServlet extends HttpServlet {
 			}
 			for (Auction auction : list) {
 				User user = usmng.getById(auction.getUserId());
-				AuctionThumbnail thumbnail = new AuctionThumbnail(auction.getName(), auction.getSalePrice(),
-						auction.getEndDate(), user.getUsername());
+				AuctionThumbnail thumbnail = new AuctionThumbnail(auction.getId(), auction.getName(),
+						auction.getSalePrice(), auction.getEndDate(), user.getUsername());
 				thumbnails.add(thumbnail);
 				request.setAttribute("thumbnails", thumbnails);
 			}

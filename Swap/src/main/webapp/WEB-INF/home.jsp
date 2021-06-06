@@ -42,7 +42,7 @@
 		</form>
 		<c:forEach var="auction" items="${thumbnails}">
 			<fieldset class="auction-thumbnail">
-				<a href="">${auction.item}</a>
+				<a href="view-auction?id=${auction.id}">${auction.item}</a>
 				<p>Price: ${auction.price}</p>
 				<p>End date: ${auction.date}</p>
 				<p>Seller: ${auction.seller}</p>

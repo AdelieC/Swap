@@ -159,17 +159,19 @@ public class AuctionDAOJdbc implements AuctionDAO {
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, id);
 			result = stmt.executeQuery();
-			String name = result.getString("auction_name");
-			String description = result.getString("description");
-			LocalDate startDate = result.getDate("start_date").toLocalDate();
-			LocalDate endDate = result.getDate("end_date").toLocalDate();
-			int initialPrice = result.getInt("initial_price");
-			int salePrice = result.getInt("sale_price");
-			int userId = result.getInt("user_id");
-			int categoryId = result.getInt("category_id");
-			String status = result.getString("status");
-			auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
-					userId, status);
+			while (result.next()) {
+				String name = result.getString("auction_name");
+				String description = result.getString("description");
+				LocalDate startDate = result.getDate("start_date").toLocalDate();
+				LocalDate endDate = result.getDate("end_date").toLocalDate();
+				int initialPrice = result.getInt("initial_price");
+				int salePrice = result.getInt("sale_price");
+				int userId = result.getInt("user_id");
+				int categoryId = result.getInt("category_id");
+				String status = result.getString("status");
+				auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice, salePrice,
+						userId, status);
+			}
 		} catch (SQLException e) {
 			throw new DALException("READ - Auction by ID failed ");
 		}

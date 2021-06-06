@@ -38,6 +38,7 @@
 	            <input class="auction-form-input" type="date" name="start-date" value="${auction.startDate}" required>
 	            <label class="auction-form-label" for="end-date">End date:</label>
 	            <input class="auction-form-input" type="date" name="end-date" value="${auction.endDate}" required>
+	            <!-- INCLUDE ADRESS FORM -->
 	            <fieldset>
 	            	<legend>Pick Up Point</legend>
 		            <label class="auction-form-label" for="street">Street:</label>
@@ -46,12 +47,13 @@
 		            <input class="auction-form-input" type="text" name="postcode" value="${pickUpPoint.postcode}">
 		            <label class="auction-form-label" for="city">City:</label>
 		            <input class="auction-form-input" type="text" name="city" value="${pickUpPoint.postcode}">
-	            </fieldset>         
+	            </fieldset>     
 	            <input type="submit" value="Save">
             </fieldset>
         </form>
-        <!-- TODO --><a href="">Back</a>
-<!--        <form>
+        <!-- TODO -->
+<!--    <a href="">Back</a>   
+		<form>
         	<input type="submit" name="cancel-auction" value="Cancel auction">
         </form> -->
     </main>

@@ -53,13 +53,18 @@ public class DBUtils {
 
 	public static String updateWhere(String tableName, String colId, String[] columns) {
 		String cols = columns[1] + " = ?";
-		for (int i = 2; i < columns.length - 1; i++)
+		for (int i = 2; i < columns.length; i++)
 			cols += (", " + columns[i] + " = ?");
 		return "UPDATE " + tableName + " SET " + cols + " WHERE " + colId + " = ?";
 	}
 
 	public static String deleteWhere(String tableName, String col) {
 		return "DELETE FROM " + tableName + " WHERE " + col + " = ?";
+	}
+
+	public static String selectMax(String tableName, String col, String[] columns) {
+		// TODO
+		return "";
 	}
 
 	public static void closeConnection(Connection conn) throws DALException {

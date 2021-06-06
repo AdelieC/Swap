@@ -23,9 +23,9 @@ public class PickUpPoint implements Serializable {
 	}
 
 	public String toString() {
-		String result = "Auction ID: " + this.auctionId;
-		result += "  Street: " + this.street + "\n";
-		result += "Postcode: " + this.postcode + " City: " + this.city;
+		String result = "";
+		result += this.street + "\n";
+		result += this.postcode + " " + this.city;
 		return result;
 	}
 

@@ -15,4 +15,6 @@ public interface BidDAO extends DAO<Bid> {
 	public List<Bid> selectByPrice(int price) throws DALException;
 
 	public List<Bid> selectByDate(LocalDate date) throws DALException;
+
+	public Bid selectMax(int auction_id) throws DALException;
 }

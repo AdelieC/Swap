@@ -104,6 +104,16 @@ public class BidManager {
 		return list;
 	}
 
+	public Bid getMaxBid(int auction_id) throws BLLException {
+		Bid bid = null;
+		try {
+			bid = bidDAO.selectMax(auction_id);
+		} catch (DALException e) {
+			throw new BLLException("BLL - GET MAX BID failure");
+		}
+		return bid;
+	}
+
 	private boolean isValid(Bid bid) {
 		// TODO
 		return true;

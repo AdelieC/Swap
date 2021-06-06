@@ -127,7 +127,9 @@ public class UserManager {
 		 * 
 		 * return allGood;
 		 */
-		return u.getUserId() > 0;
+		// return u.getUserId() > 0;
+		// THE ABOVE LIGN IS A TERRIBLE IDEA, USERS CAN'T BE CREATED THAT WAY !!
+		return true;
 	}
 
 	private boolean exists(User u) throws BLLException {

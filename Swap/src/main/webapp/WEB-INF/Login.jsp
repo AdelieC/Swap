@@ -7,8 +7,8 @@
 	</head>
 	<body>
 	<h1>Login</h1>
-	<jsp:include page="./includes/idForm.jsp">
-		<jsp:param value="false" name="delete"/>
-	</jsp:include>
+	<jsp:include page="./includes/loginForm.jsp"/>
+	<a class="btn" href="/Swap">Cancel</a>
+	<a class="btn" href="/Swap/register">Register</a>
 </body>
 </html>

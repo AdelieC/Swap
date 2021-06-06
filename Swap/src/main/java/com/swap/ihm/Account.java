@@ -16,8 +16,7 @@ import com.swap.bo.User;
 /**
  * Servlet implementation class Account
  */
-@WebServlet(description = "Handles showing profile page, deleting account or logging out", urlPatterns = { "/account",
-		"/user" })
+@WebServlet(description = "Handles showing profile page", urlPatterns = { "/account", "/user" })
 public class Account extends SwapServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String PROFILE_JSP = "/WEB-INF/Profile.jsp";

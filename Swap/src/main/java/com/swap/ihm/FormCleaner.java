@@ -9,7 +9,7 @@ public class FormCleaner {
 			STREETREG = "^\\w+(\\s\\w+){2,}$", NAMEREG = "^[\\w'-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,30}$",
 			UNREG = "^(?=[a-zA-Z0-9._]{6,30}$)(?!.*[_.]{2})[^_.].*[^_.]$", POSTREG = "^\\d{5}[-\\s]?(?:\\d{4})?$",
 			MAILREG = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
-			TELREG = "^[0-9]{6,15}$", DATEREG = "[-/0-9]{6,11}$";
+			TELREG = "^[0-9]{6,15}$", DATEREG = "[-/0-9]{6,11}$", IDREG = "^[0-9]{1,20}$";
 
 	private static boolean isSafe(String inputValue) {
 		// TODO : check for special chars, js, java, and sql injections
@@ -67,6 +67,12 @@ public class FormCleaner {
 		Pattern p = Pattern.compile(POSTREG);
 		Matcher m = p.matcher(postcode.trim());
 		return (isSafe(postcode) && m.matches()) ? postcode.trim() : null;
+	}
+
+	public static int cleanId(String strId) {
+		Pattern p = Pattern.compile(IDREG);
+		Matcher m = p.matcher(strId.trim());
+		return (isSafe(strId) && m.matches()) ? Integer.parseInt(strId.trim()) : null;
 	}
 
 }

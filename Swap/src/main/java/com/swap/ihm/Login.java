@@ -15,8 +15,7 @@ import com.swap.bo.User;
 /**
  * Servlet to display and process user login OR delete account
  */
-@WebServlet(description = "Handles login or register page depending on session variable", urlPatterns = { "/login",
-		"/account/delete" })
+@WebServlet(description = "Handles login or register page depending on session variable", urlPatterns = { "/login" })
 public class Login extends SwapServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String LOGIN_JSP = "/WEB-INF/Login.jsp";
@@ -26,21 +25,12 @@ public class Login extends SwapServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (userIsLoggedIn(request)) {
-			if (isDeleteRequest(request)) {
-				request.setAttribute("delete", true);
-				sendToJSP(LOGIN_JSP, request, response);
-			} else {
-				request.setAttribute("previousPath", request.getHeader("referer"));
-				redirectBecauseLoggedIn(request, response);
-			}
+			request.setAttribute("previousPath", request.getHeader("referer"));
+			redirectBecauseLoggedIn(request, response);
 		} else {
 			request.setAttribute("previousPath", request.getHeader("referer"));
 			sendToJSP(LOGIN_JSP, request, response);
 		}
-	}
-
-	private boolean isDeleteRequest(HttpServletRequest request) {
-		return Boolean.parseBoolean(request.getParameter("confirm"));
 	}
 
 	@Override
@@ -54,31 +44,19 @@ public class Login extends SwapServlet {
 			if (username == null || password == null) {
 				doGet(request, response);
 			}
-			if (userIsLoggedIn(request) && checkCredentials(username, FormCleaner.encode(password), session)) {
-				userM.delete(((User) session.getAttribute("user")));
-				session.invalidate();
-				response.sendRedirect(HOME_PATH);
+			User user = new User();
+			user = userM.login(username, FormCleaner.encode(password));
+			if (user == null) {
+				request.setAttribute("username", username);
+				doGet(request, response);
 			} else {
-				User user = new User();
-				user = userM.login(username, FormCleaner.encode(password));
-				if (user != null) {
-					session.setAttribute("user", user);
-					redirectBecauseLoggedIn(request, response);
-				} else {
-					request.setAttribute("username", username);
-					doGet(request, response);
-				}
+				session.setAttribute("user", user);
+				redirectBecauseLoggedIn(request, response);
 			}
-
 		} catch (BLLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	private boolean checkCredentials(String username, String password, HttpSession session) {
-		return ((User) session.getAttribute("user")).getUsername().equals(username)
-				&& ((User) session.getAttribute("user")).getPassword().equals(password);
 	}
 
 	/**

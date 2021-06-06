@@ -17,8 +17,8 @@ import com.swap.bo.User;
 /**
  * Servlet handling creation and edition of user profile
  */
-@WebServlet(description = "Handles register or edit profile page depending on session variable", urlPatterns = {
-		"/register", "/account/edit" })
+@WebServlet(description = "Handles creation and edition of user profile", urlPatterns = { "/register",
+		"/account/edit" })
 public class UserForm extends SwapServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String USERFORM_JSP = "/WEB-INF/UserForm.jsp";

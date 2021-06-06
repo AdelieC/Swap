@@ -7,6 +7,7 @@
 		<title>${user.getUserId() > 0 ? 'Register' : 'Edit Profile'}</title>
 	</head>
 	<body>
+	<jsp:include page="./includes/header.jsp"/>
 		<h1>${user.getUserId() > 0 ? 'Edit Profile' : 'Register'}</h1>
 		<form action="/Swap/register" method="post">
 			<fieldset>
@@ -53,11 +54,10 @@
 	   			<div>Current balance : ${user.getBalance()}</div>
 			</c:if>
 			<input type="submit" value="${user.getUserId() > 0 ? 'Update' : 'Register'}" />
-			<c:if test="${user.getUserId() > 0}" >
-	        	<a href="/Swap/account/delete?confirm=true">Delete</a>
-	        </c:if>
 	        <a href="/Swap">Cancel</a>
-	     	
 		</form>
+		<c:if test="${user.getUserId() > 0}" >
+			<jsp:include page="./includes/deleteAccount.jsp"/>
+	    </c:if>
 	</body>
 </html>

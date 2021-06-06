@@ -1,13 +1,13 @@
 <%@ include file="./includes/base.jsp" %>
-<c:set var="user" value="${sessionScope.user}"/>
+<c:set var="user" scope="request" value="${sessionScope.user == null ? tempUser : sessionScope.user}"/>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>${user != null ? 'Register' : 'Edit Profile'}</title>
+		<title>${user.getUserId() > 0 ? 'Register' : 'Edit Profile'}</title>
 	</head>
 	<body>
-		<h1>${user == null && errors == null ? 'Register' : 'Edit Profile'}</h1>
+		<h1>${user.getUserId() > 0 ? 'Edit Profile' : 'Register'}</h1>
 		<form action="/Swap/register" method="post">
 			<fieldset>
 				<legend>Identity</legend>
@@ -48,15 +48,13 @@
 	   				<div class="form-error">Invalid field : ${errors.get('telephone')}</div>
 				</c:if>
 			</fieldset>
-			<jsp:include page="./includes/addressFieldset.jsp">
-    			<jsp:param name="errors" value="${errors}"/>
-			</jsp:include>	
-			<c:if test="${user != null}" >
+			<jsp:include page="./includes/addressFieldset.jsp"/>
+			<c:if test="${user.getUserId() > 0}" >
 	   			<div>Current balance : ${user.getBalance()}</div>
 			</c:if>
-			<input type="submit" value="${user != null ? 'Update' : 'Register'}" />
-			<c:if test="${user != null}" >
-	        	<a href="/account/delete?confirm=true">Delete</a>
+			<input type="submit" value="${user.getUserId() > 0 ? 'Update' : 'Register'}" />
+			<c:if test="${user.getUserId() > 0}" >
+	        	<a href="/Swap/account/delete?confirm=true">Delete</a>
 	        </c:if>
 	        <a href="/Swap">Cancel</a>
 	     	

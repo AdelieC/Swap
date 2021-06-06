@@ -21,13 +21,13 @@ import com.swap.bo.User;
 		"/register", "/account/edit" })
 public class UserForm extends SwapServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String USERFORM_PATH = "/WEB-INF/UserForm.jsp";
+	private static final String USERFORM_JSP = "/WEB-INF/UserForm.jsp";
 	private static final String SUCCESS_PATH = "/Swap/account";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		sendToJSP(USERFORM_PATH, request, response);
+		sendToJSP(USERFORM_JSP, request, response);
 	}
 
 	@Override
@@ -49,13 +49,14 @@ public class UserForm extends SwapServlet {
 			User user = new User(inputs.get("username"), inputs.get("lastName"), inputs.get("firstName"),
 					inputs.get("email"), inputs.get("telephone"), inputs.get("street"), inputs.get("postcode"),
 					inputs.get("city"), inputs.get("password"), 0, false);
-			session.setAttribute("user", user);
 			if (errors.size() > 0) {
+				request.setAttribute("tempUser", user);
 				request.setAttribute("errors", errors);
 				doGet(request, response);
 			} else {
 				UserManager userM = new UserManager();
 				userM.create(user);
+				session.setAttribute("user", userM.getByUsername(inputs.get("username")));
 				response.sendRedirect(SUCCESS_PATH);
 			}
 		} catch (BLLException e) {
@@ -99,7 +100,7 @@ public class UserForm extends SwapServlet {
 			password1 = null;
 		}
 
-		inputValues.put("username", FormCleaner.cleanName(request.getParameter("username")));
+		inputValues.put("username", FormCleaner.cleanUsername(request.getParameter("username")));
 		inputValues.put("password", FormCleaner.encode(password1));
 		inputValues.put("lastName", FormCleaner.cleanName(request.getParameter("lastName")));
 		inputValues.put("firstName", FormCleaner.cleanName(request.getParameter("firstName")));

@@ -29,25 +29,21 @@ public class Account extends SwapServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		User user = null;
-		if (request.getRequestURI().contains("user") && request.getParameter("id") != null) {
-			UserManager userM = new UserManager();
-			try {
+		try {
+			HttpSession session = request.getSession();
+			User user = null;
+			if (request.getRequestURI().contains("user") && request.getParameter("id") != null) {
+				UserManager userM = new UserManager();
 				user = userM.getById(Integer.parseInt(request.getParameter("id")));
-			} catch (NumberFormatException | BLLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (user == null) {
-				// TODO : handle 404
 			} else {
-				request.setAttribute("user", user);
+				user = (User) session.getAttribute("user");
 			}
-		} else {
-			request.setAttribute("user", session.getAttribute("user"));
+			request.setAttribute("user", user);
+			sendToJSP(PROFILE_JSP, request, response);
+		} catch (NumberFormatException | BLLException e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
-		sendToJSP(PROFILE_JSP, request, response);
 	}
 
 	/**

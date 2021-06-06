@@ -5,13 +5,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
 /**
  * Servlet implementation class IndexPage
  */
-@WebServlet(description = "Shows either homepage or user homepage", urlPatterns = { "/" })
+@WebServlet(description = "Shows either homepage or user homepage", urlPatterns = { "/", "/account/logout" })
 public class IndexPage extends SwapServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String INDEX_PATH = "/WEB-INF/Index.jsp";
@@ -33,7 +34,9 @@ public class IndexPage extends SwapServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user") != null)
+			session.invalidate();
 		doGet(request, response);
 	}
 

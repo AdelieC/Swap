@@ -6,8 +6,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<c:if test="${sessionScope.user == null}"><p>User is not logged in</p></c:if>
-<c:if test="${sessionScope.user != null}"><p>User ${sessionScope.user.getUsername()} is logged in</p></c:if>
+<jsp:include page="./includes/header.jsp"/>
 <a href="/Swap/">Home</a>
 <a href="/Swap/home">Home (when logged in)</a>
 <a href="/Swap/login">Login</a>

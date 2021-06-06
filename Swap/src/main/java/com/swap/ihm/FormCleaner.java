@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class FormCleaner {
 	public final static String PWREG = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$",
 			STREETREG = "^\\w+(\\s\\w+){2,}$", NAMEREG = "^[\\w'-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,30}$",
-			POSTREG = "^\\d{5}[-\\s]?(?:\\d{4})?$",
+			UNREG = "^(?=[a-zA-Z0-9._]{6,30}$)(?!.*[_.]{2})[^_.].*[^_.]$", POSTREG = "^\\d{5}[-\\s]?(?:\\d{4})?$",
 			MAILREG = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
 			TELREG = "^[0-9]{6,15}$", DATEREG = "[-/0-9]{6,11}$";
 
@@ -43,6 +43,12 @@ public class FormCleaner {
 		Pattern p = Pattern.compile(TELREG);
 		Matcher m = p.matcher(tel.trim());
 		return (isSafe(tel) && m.matches()) ? tel : null;
+	}
+
+	public static String cleanUsername(String name) {
+		Pattern p = Pattern.compile(UNREG);
+		Matcher m = p.matcher(name.trim());
+		return (isSafe(name) && m.matches()) ? name.trim() : null;
 	}
 
 	public static String cleanName(String name) {

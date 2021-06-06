@@ -18,5 +18,4 @@ public abstract class SwapServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.getRequestDispatcher(path).forward(request, response);
 	}
-
 }

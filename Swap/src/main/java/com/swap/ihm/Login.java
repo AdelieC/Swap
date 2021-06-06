@@ -49,16 +49,18 @@ public class Login extends SwapServlet {
 		try {
 			HttpSession session = request.getSession();
 			UserManager userM = new UserManager();
-			String username = FormCleaner.cleanName(request.getParameter("username"));
+			String username = FormCleaner.cleanUsername(request.getParameter("username"));
 			String password = FormCleaner.cleanPassword(request.getParameter("password"));
-
-			if (userIsLoggedIn(request) && checkCredentials(username, password, session)) {
-				userM.delete(((User) session.getAttribute("user")).getUserId());
+			if (username == null || password == null) {
+				doGet(request, response);
+			}
+			if (userIsLoggedIn(request) && checkCredentials(username, FormCleaner.encode(password), session)) {
+				userM.delete(((User) session.getAttribute("user")));
 				session.invalidate();
 				response.sendRedirect(HOME_PATH);
 			} else {
 				User user = new User();
-				user = userM.login(username, password);
+				user = userM.login(username, FormCleaner.encode(password));
 				if (user != null) {
 					session.setAttribute("user", user);
 					redirectBecauseLoggedIn(request, response);

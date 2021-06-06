@@ -29,13 +29,19 @@
 			<p>Seller: <a href="">${seller.username}</a></p>
 		</fieldset>
 		<!-- TODO -->
-		<form method="post" action="bid">
-			<label for="offer">My offer: </label>
-			<input type="number" name="offer" min="${auction.salePrice + 1}" placeholder="${auction.salePrice + 1}" required>
-			<input type="submit" value="Bid">
-		</form>
-		<c:if test="${user.userId == seller.userId}">
-			<a href="auction?id=${auction.id}">Update auction</a>
+		<c:if test="${!empty user}">
+			<c:choose>
+				<c:when test="${user.userId != seller.userId}">
+					<form method="post" action="bid">
+						<label for="offer">My offer: </label>
+						<input type="number" name="offer" min="${auction.salePrice + 1}" placeholder="${auction.salePrice + 1}" required>
+						<input type="submit" value="Bid">
+					</form>
+				</c:when>
+				<c:otherwise>
+					<a href="auction?id=${auction.id}">Update auction</a>
+				</c:otherwise>
+			</c:choose>
 		</c:if>
 	</main>
 

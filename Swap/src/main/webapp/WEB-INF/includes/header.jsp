@@ -4,7 +4,6 @@
 	<div id="app-name">Swap</div>
 	<c:choose>
 		<c:when test="${sessionScope.user == null}">
-			<p>SWAP</p>
 			<jsp:include page="loginForm.jsp"/>
 		</c:when>
 		<c:otherwise>

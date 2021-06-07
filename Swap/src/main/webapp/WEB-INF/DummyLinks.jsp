@@ -18,7 +18,7 @@
 <!-- <a href="/Swap/auction?${auction.id}">View auction details</a>-->
 <a href="/Swap/auction/create">Create auction</a>
 <a href="/Swap/auction/edit">Edit auction</a>
-<a href="/Swap/auction/delete">Delete auction</a>
+<a href="/Swap/auction/cancel">Delete auction</a>
 <!-- <a href="/Swap/user?${user.userId}">View seller details</a>-->
 </body>
 </html>

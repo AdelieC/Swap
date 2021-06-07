@@ -10,7 +10,7 @@
 	<main>
 	<c:choose>
 		<c:when test="${bid == null}">
-			<p>Uhoh... You just tried to bid more than you have. Sorry, you need to Swap some more before you can bid on this one!</p>
+			<p>Uhoh... Either you did not bid enough points, or you bid more than you actually have!</p>
 		</c:when>
 		<c:otherwise>
 			<p>Congratulations!! You just bid ${bid.getBidPrice()} on auction number ${bid.getAuctionId()}.</p>

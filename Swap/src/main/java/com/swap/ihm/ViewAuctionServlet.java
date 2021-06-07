@@ -23,7 +23,8 @@ import com.swap.bo.User;
 /**
  * Servlet implementation class ViewAuctionServlet
  */
-@WebServlet("/view-auction")
+@WebServlet(description = "Handles display of single auction + delete auction", urlPatterns = { "/auction",
+		"/auction/delete" })
 public class ViewAuctionServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW_AUCT_JSP = "/WEB-INF/ViewAuction.jsp";
@@ -75,7 +76,8 @@ public class ViewAuctionServlet extends MotherServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO
+		// TODO : Delete auction with session.getAttribute("user").getUserId() check?
+		// -> see what I did for user deletion in GetOutServlet, for example?
 	}
 
 }

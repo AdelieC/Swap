@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="./includes/base.jsp" %>
+<c:set var="user" scope="request" value="${sessionScope.user}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +8,7 @@
 </head>
 <body>
     <main>
-        <!-- Include header -->
+        <jsp:include page="./includes/header.jsp"/>
         <h1>${title}</h1>
         <form method="post" action="auction">
         	<fieldset>
@@ -38,7 +37,7 @@
 	            <input class="auction-form-input" type="date" name="start-date" value="${auction.startDate}" required>
 	            <label class="auction-form-label" for="end-date">End date:</label>
 	            <input class="auction-form-input" type="date" name="end-date" value="${auction.endDate}" required>
-	            <!-- INCLUDE ADRESS FORM -->
+	            <jsp:include page="./includes/addressFieldset.jsp"/>
 	            <fieldset>
 	            	<legend>Pick Up Point</legend>
 		            <label class="auction-form-label" for="street">Street:</label>
@@ -51,12 +50,12 @@
 	            <input type="submit" value="Save">
             </fieldset>
         </form>
-        <!-- TODO -->
-<!--    <a href="">Back</a>   
-		<form>
+		<a href="/Swap">Back to homepage</a>   
+		<form method="post" action="/Swap/auction/cancel">
+			<input type="hidden" name="auctionId" value="${auction.getId()}">
         	<input type="submit" name="cancel-auction" value="Cancel auction">
-        </form> -->
+        </form>
     </main>
-
+	<jsp:include page="./includes/footer.jsp"/>
 </body>
 </html>

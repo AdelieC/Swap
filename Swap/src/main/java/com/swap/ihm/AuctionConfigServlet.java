@@ -16,7 +16,6 @@ import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.CategoryManager;
 import com.swap.bll.PickUpPointManager;
-import com.swap.bll.UserManager;
 import com.swap.bo.Auction;
 import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
@@ -70,16 +69,9 @@ public class AuctionConfigServlet extends MotherServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Get user id from session
-		int userId = 1;
-		UserManager usmng = new UserManager();
-		User user = null;
-		try {
-			user = usmng.getById(1);
-		} catch (BLLException e1) {
-			e1.printStackTrace();
-		}
-
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		// Just added session user + changed path + mother class. Did not check code
 		AuctionManager aucmng = new AuctionManager();
 		PickUpPointManager pupmng = new PickUpPointManager();
 		String name = RequestVerification.getString(request, "name");
@@ -97,7 +89,8 @@ public class AuctionConfigServlet extends MotherServlet {
 		String city = RequestVerification.getString(request, "city").length() > 0
 				? RequestVerification.getString(request, "city")
 				: user.getCity();
-		Auction auction = new Auction(name, description, startDate, endDate, categoryId, initialPrice, userId);
+		Auction auction = new Auction(name, description, startDate, endDate, categoryId, initialPrice,
+				user.getUserId());
 		PickUpPoint pup = new PickUpPoint(0, street, postcode, city);
 
 		if (request.getAttribute("auction") != null) {

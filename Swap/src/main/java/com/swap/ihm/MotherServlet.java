@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public abstract class SwapServlet extends HttpServlet {
+public abstract class MotherServlet extends HttpServlet {
 
 	protected boolean userIsLoggedIn(HttpServletRequest request) {
 		return request.getSession().getAttribute("user") != null;

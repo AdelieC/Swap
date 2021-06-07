@@ -19,7 +19,7 @@ import com.swap.bo.User;
  */
 @WebServlet(description = "Handles creation and edition of user profile", urlPatterns = { "/register",
 		"/account/edit" })
-public class UserForm extends SwapServlet {
+public class UserFormServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String USERFORM_JSP = "/WEB-INF/UserForm.jsp";
 	private static final String SUCCESS_PATH = "/Swap/account";

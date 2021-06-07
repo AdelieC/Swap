@@ -16,7 +16,7 @@ import com.swap.bo.User;
  * Servlet to display and process user login OR delete account
  */
 @WebServlet(description = "Handles login or register page depending on session variable", urlPatterns = { "/login" })
-public class Login extends SwapServlet {
+public class LoginServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String LOGIN_JSP = "/WEB-INF/Login.jsp";
 	private static final String HOME_PATH = "/Swap";

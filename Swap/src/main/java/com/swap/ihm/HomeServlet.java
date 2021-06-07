@@ -22,7 +22,7 @@ import com.swap.bo.User;
  * Servlet handling index page or homepage (when logged in) display user
  */
 @WebServlet(description = "Handles index page or homepage (when logged in)", urlPatterns = { "/" })
-public class HomeServlet extends SwapServlet {
+public class HomeServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String HOME_JSP = "/WEB-INF/Home.jsp";
 	private static final String HOME_PATH = "/Swap";

@@ -1,5 +1,12 @@
 package com.swap.ihm;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,25 +22,19 @@ import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
 import com.swap.bo.User;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 /**
  * Servlet implementation class auctionConfigServlet
  */
 @WebServlet("/auction")
-public class AuctionConfigServlet extends HttpServlet {
+public class AuctionConfigServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String AUCT_CONF_JSP = "/WEB-INF/AuctionConfig.jsp";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
@@ -59,14 +60,14 @@ public class AuctionConfigServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("title", title);
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/auctionConfig.jsp");
-		rd.forward(request, response);
+		sendToJSP(AUCT_CONF_JSP, request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Get user id from session

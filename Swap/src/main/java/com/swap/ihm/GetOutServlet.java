@@ -13,12 +13,10 @@ import com.swap.bll.UserManager;
 import com.swap.bo.User;
 
 /**
- * Servlet handling index page, homepage (when logged in), logout and delete
- * user
+ * Servlet handling logout and delete user
  */
-@WebServlet(description = "Handles index page, homepage (when logged in), logout and delete", urlPatterns = {
-		"/account/logout", "/account/delete" })
-public class GetOut extends SwapServlet {
+@WebServlet(description = "Handles logout and delete", urlPatterns = { "/account/logout", "/account/delete" })
+public class GetOutServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String OUTCOME_JSP = "/WEB-INF/GetOut.jsp";
 	private static final String HOME_PATH = "/Swap";
@@ -61,7 +59,6 @@ public class GetOut extends SwapServlet {
 		int userId = FormCleaner.cleanId(request.getParameter("userId"));
 		System.out.println("Deleting user " + userId);
 		if (((User) session.getAttribute("user")).getUserId() == userId) {
-			System.out.println("Conditions to delete are met.");
 			userM.delete(userId);
 		}
 	}

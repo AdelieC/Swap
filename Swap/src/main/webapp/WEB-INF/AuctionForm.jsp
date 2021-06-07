@@ -50,11 +50,13 @@
 	            <input type="submit" value="Save">
             </fieldset>
         </form>
-		<a href="/Swap">Back to homepage</a>   
-		<form method="post" action="/Swap/auction/cancel">
-			<input type="hidden" name="auctionId" value="${auction.getId()}">
-        	<input type="submit" name="cancel-auction" value="Cancel auction">
-        </form>
+		<a href="/Swap">Back to homepage</a>
+		<c:if test="${!empty auction}">
+			<form method="post" action="/Swap/auction/cancel">
+				<input type="hidden" name="auctionId" value="${auction.getId()}">
+	        	<input type="submit" name="cancel-auction" value="Cancel auction">
+	        </form>
+        </c:if> 
     </main>
 	<jsp:include page="./includes/footer.jsp"/>
 </body>

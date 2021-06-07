@@ -1,12 +1,5 @@
 package com.swap.ihm;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -19,10 +12,17 @@ import com.swap.bo.BOException;
 import com.swap.bo.Bid;
 import com.swap.bo.User;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 /**
  * Servlet implementation class BidServlet
  */
-@WebServlet("/bid")
+@WebServlet("/auction/bid")
 public class BidServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String BID_JSP = "/WEB-INF/BidDone.jsp";
@@ -45,9 +45,8 @@ public class BidServlet extends MotherServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		// TODO Get auctionID -> in hidden input in the bid form?
+
 		// TODO Refactorize and test ;-)
-		// ?? Put managers inside the try block ?? -> no need
 		UserManager usmng = new UserManager();
 		BidManager bidmng = new BidManager();
 		AuctionManager aucmng = new AuctionManager();
@@ -55,7 +54,7 @@ public class BidServlet extends MotherServlet {
 		Bid bid, previousBid;
 		User user, previousBidder;
 		int offer = Integer.valueOf(request.getParameter("offer"));
-		int auctionId = Integer.valueOf(request.getParameter("auctionId"));
+		int auctionId = Integer.valueOf(request.getParameter("id"));
 		try {
 			user = ((User) session.getAttribute("user"));
 			if (user.getBalance() < offer) {
@@ -63,10 +62,6 @@ public class BidServlet extends MotherServlet {
 				doGet(request, response);
 			} else {
 				previousBid = bidmng.getMaxBid(auctionId);
-				if (offer < previousBid.getBidPrice()) {
-					// TODO : add error msg "offer was too low"
-					doGet(request, response);
-				}
 				bid = new Bid(user.getUserId(), auctionId, offer, LocalDate.now());
 				bidmng.create(bid);
 				user.setBalance(user.getBalance() - offer);
@@ -85,10 +80,6 @@ public class BidServlet extends MotherServlet {
 			// TODO : send to 500 page
 			e.printStackTrace();
 		}
-		/// TODO Decide what page to forward to and how
-		// -> decided to let bidder choose himself by sending him on an "outcome page"?
-//		RequestDispatcher rd = request.getRequestDispatcher(request.getHeader("referer"));
-//		rd.forward(request, response);
 		doGet(request, response);
 	}
 }

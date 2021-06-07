@@ -85,10 +85,10 @@ public class AuctionFormServlet extends MotherServlet {
 		Auction auction = new Auction(name, description, startDate, endDate, categoryId, initialPrice,
 				user.getUserId());
 		PickUpPoint pup = new PickUpPoint(0, street, postcode, city);
-		if (request.getParameter("auction") == null) {
+		if (request.getParameter("id") == null) {
 			createAuction(auction, pup);
 		} else {
-			auction = getAuctionById(Integer.valueOf(request.getParameter("auction")));
+			auction = getAuctionById(Integer.valueOf(request.getParameter("id")));
 			if (auction.getStartDate().isAfter(LocalDate.now())) {
 				updateAuction(auction, pup);
 			} else {

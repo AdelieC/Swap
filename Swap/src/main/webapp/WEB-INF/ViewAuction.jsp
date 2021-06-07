@@ -28,18 +28,19 @@
 			<p>Pick up point: ${pickUpPoint}</p>
 			<p>Seller: <a href="">${seller.username}</a></p>
 		</fieldset>
-		<!-- TODO -->
-		<c:if test="${!empty user}">
+		<c:if test="${!empty sessionScope.user}">
 			<c:choose>
-				<c:when test="${user.userId != seller.userId}">
-					<form method="post" action="bid">
+				<c:when test="${sessionScope.user.getUserId() != seller.userId && auction.status.equals('ONGOING')}">
+					<form method="post" action="/Swap/auction/bid?id=${auction.id}">
 						<label for="offer">My offer: </label>
 						<input type="number" name="offer" min="${auction.salePrice + 1}" placeholder="${auction.salePrice + 1}" required>
 						<input type="submit" value="Bid">
 					</form>
 				</c:when>
 				<c:otherwise>
-					<a href="auction?id=${auction.id}">Update auction</a>
+				<c:if test="${auction.status.equals('CREATED')}">>
+					<a href="/Swap/auction?id=${auction.id}">Update auction</a>
+				</c:if>
 				</c:otherwise>
 			</c:choose>
 		</c:if>

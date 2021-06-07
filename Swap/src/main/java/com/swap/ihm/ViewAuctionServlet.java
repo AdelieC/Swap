@@ -1,11 +1,5 @@
 package com.swap.ihm;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 
 import com.swap.bll.AuctionManager;
@@ -19,6 +13,12 @@ import com.swap.bo.Bid;
 import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
 import com.swap.bo.User;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class ViewAuctionServlet

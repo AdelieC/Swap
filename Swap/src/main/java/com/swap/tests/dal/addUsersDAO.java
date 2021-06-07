@@ -29,15 +29,15 @@ public class addUsersDAO extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		UserDAO userDAO = DAOFactory.getUserDAO();
-		User user1 = new User("Bloony", "BLOON", "Georges", "gbloon@mail.com", "01.23.45.67.89", "Sesame street",
+		User user1 = new User("Bloony", "BLOON", "Ginger", "gbloon@mail.com", "01.23.45.67.89", "Sesame street",
 				"XXXXXX", "Supercity", "password", 0, false);
 		User user2 = new User("jim32", "MICHAEL", "Jim", "jim@mail.com", "01.23.45.67.99", "Main street", "XXXXXX",
 				"Supercity", "password", 0, false);
 		User user3 = new User("sweetyPie", "HOP", "Leah", "leah.hop@mail.com", "01.23.45.77.89", "Sesame street",
 				"XXXXXX", "Supercity", "password", 0, false);
-		User user4 = new User("Virginie", "TRAN", "Virginie", "vivi78@mail.com", "01.23.44.67.89", "Main Street",
+		User user4 = new User("Virginie", "TRAN", "Vivian", "vivi78@mail.com", "01.23.44.67.89", "Main Street",
 				"XXXXXZ", "Mehcity", "password", 0, false);
-		User user5 = new User("Sasuke", "TRAORE", "Demba", "dtraore@mail.net", "01.22.45.67.89", "21, private drive",
+		User user5 = new User("Sasuke", "DUPONT", "Georges", "g.dupont@mail.net", "01.22.45.67.89", "21, private drive",
 				"XXXXXY", "Ouchcity", "password", 0, false);
 		try {
 			// TEST CRUD

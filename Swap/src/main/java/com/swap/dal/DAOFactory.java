@@ -7,6 +7,10 @@ import com.swap.dal.jdbc.PickUpPointDAOJdbc;
 import com.swap.dal.jdbc.UserDAOJdbc;
 
 public class DAOFactory {
+	public static UserDAO getUserDAO() {
+		return new UserDAOJdbc();
+	}
+
 	public static AuctionDAO getAuctionDAO() {
 		return new AuctionDAOJdbc();
 	}
@@ -21,9 +25,5 @@ public class DAOFactory {
 
 	public static CategoryDAO getCategoryDAO() {
 		return new CategoryDAOJdbc();
-	}
-
-	public static UserDAO getUserDAO() {
-		return new UserDAOJdbc();
 	}
 }

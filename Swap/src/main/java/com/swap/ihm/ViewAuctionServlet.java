@@ -1,5 +1,11 @@
 package com.swap.ihm;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 import com.swap.bll.AuctionManager;
@@ -14,24 +20,20 @@ import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
 import com.swap.bo.User;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 /**
  * Servlet implementation class ViewAuctionServlet
  */
-@WebServlet("/view-auction")
-public class ViewAuctionServlet extends HttpServlet {
+@WebServlet(description = "Handles display of single auction + delete auction", urlPatterns = { "/auction/view",
+		"/auction/delete" })
+public class ViewAuctionServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String VIEW_AUCT_JSP = "/WEB-INF/ViewAuction.jsp";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		AuctionManager aucmng = new AuctionManager();
@@ -64,18 +66,18 @@ public class ViewAuctionServlet extends HttpServlet {
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}
-
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/viewAuction.jsp");
-		rd.forward(request, response);
+		sendToJSP(VIEW_AUCT_JSP, request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO
+		// TODO : Delete auction with session.getAttribute("user").getUserId() check?
+		// -> see what I did for user deletion in GetOutServlet, for example?
 	}
 
 }

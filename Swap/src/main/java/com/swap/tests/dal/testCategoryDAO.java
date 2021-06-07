@@ -60,12 +60,12 @@ public class testCategoryDAO extends HttpServlet {
 			}
 			cat3.setLabel("Sports, Hobbies & Leisure");
 			categoryDAO.update(cat3);
-			categoryDAO.delete(cat2);
-			categoryDAO.create(cat2);
+//			categoryDAO.delete(cat2);
+//			categoryDAO.create(cat2);
 
 			// TEST SELECTS
 			System.out.println("SELECT BY ID:");
-			Category cat = categoryDAO.selectById(7);
+			Category cat = categoryDAO.selectById(42);
 			System.out.println(cat.toString());
 			System.out.println("SELECT BY LABEL:");
 			cat = categoryDAO.selectByLabel("Pets");

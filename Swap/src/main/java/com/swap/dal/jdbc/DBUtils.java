@@ -24,7 +24,9 @@ public class DBUtils {
 	}
 
 	public static String searchBy(String tableName, String col) {
-		return "SELECT * FROM " + tableName + " WHERE " + col + " LIKE ?";
+		return "SELECT * FROM " + tableName + " WHERE " + col + " LIKE ? ESCAPE '!'";
+		// you need to set your string like this in the preparedstatement
+		// -> setString(1, "%" + yourVariable + "%")
 	}
 
 	public static String findExactMatchIn(String tableName, String[] columns) {
@@ -36,10 +38,6 @@ public class DBUtils {
 
 	public static String twoCriteriaSearch(String tableName, String col1, String col2) {
 		return "SELECT * FROM " + tableName + " WHERE " + col1 + " LIKE ? OR " + col2 + " LIKE ?";
-	}
-
-	public static String twoCriteriaMatchingSearch(String tableName, String col1, String col2) {
-		return "SELECT * FROM " + tableName + " WHERE " + col1 + " LIKE ? AND " + col2 + " LIKE ?";
 	}
 
 	public static String insert(String tableName, String[] columns) {
@@ -58,13 +56,12 @@ public class DBUtils {
 		return "UPDATE " + tableName + " SET " + cols + " WHERE " + colId + " = ?";
 	}
 
-	public static String deleteWhere(String tableName, String col) {
-		return "DELETE FROM " + tableName + " WHERE " + col + " = ?";
+	public static String updateWhere(String tableName, String colId, String colToUpdate) {
+		return "UPDATE " + tableName + " SET " + colToUpdate + "= ? WHERE " + colId + " = ?";
 	}
 
-	public static String selectMax(String tableName, String col, String[] columns) {
-		// TODO
-		return "";
+	public static String deleteWhere(String tableName, String col) {
+		return "DELETE FROM " + tableName + " WHERE " + col + " = ?";
 	}
 
 	public static void closeConnection(Connection conn) throws DALException {

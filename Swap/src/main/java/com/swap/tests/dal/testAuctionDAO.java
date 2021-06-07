@@ -39,8 +39,8 @@ public class testAuctionDAO extends HttpServlet {
 			auctionDAO.create(auction1);
 			auctionDAO.create(auction2);
 			auctionDAO.create(auction3);
-			auctionDAO.read();
-			auction3.setSalePrice(5);
+//			auctionDAO.read();
+//			auction3.setSalePrice(5);
 			auctionDAO.update(auction3);
 			auctionDAO.delete(auction2);
 

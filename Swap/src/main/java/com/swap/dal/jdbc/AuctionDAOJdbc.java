@@ -218,7 +218,7 @@ public class AuctionDAOJdbc implements AuctionDAO {
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.twoCriteriaMatchingSearch(tableName, "auction_name", "category_id");
+		String query = DBUtils.twoCriteriaSearch(tableName, "auction_name", "category_id");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);

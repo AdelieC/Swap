@@ -4,11 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO : add constraints in setters to transform what should get transformed (trimed, checked with business rules, parsed) before getting to the BLL
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String username, lastName, firstName, email, telephone, street, postcode, city, password;
-	private int userId, credit;
+	private int userId, balance;
 	private boolean isAdmin;
 	private List<Auction> auctionList = new ArrayList<>();
 
@@ -16,7 +15,7 @@ public class User implements Serializable {
 	}
 
 	public User(String username, String lastName, String firstName, String email, String telephone, String street,
-			String postcode, String city, String password, int credit, boolean isAdmin) {
+			String postcode, String city, String password, int balance, boolean isAdmin) {
 		try {
 			this.setUsername(username);
 			this.setLastName(lastName);
@@ -27,7 +26,7 @@ public class User implements Serializable {
 			this.setPostcode(postcode);
 			this.setCity(city);
 			this.setPassword(password);
-			this.setCredit(credit);
+			this.setBalance(balance);
 			this.setIsAdmin(isAdmin);
 		} catch (BOException e) {
 			e.printStackTrace();
@@ -35,8 +34,8 @@ public class User implements Serializable {
 	}
 
 	public User(int userId, String username, String lastName, String firstName, String email, String telephone,
-			String street, String postcode, String city, String password, int credit, boolean isAdmin) {
-		this(username, lastName, firstName, email, telephone, street, postcode, city, password, credit, isAdmin);
+			String street, String postcode, String city, String password, int balance, boolean isAdmin) {
+		this(username, lastName, firstName, email, telephone, street, postcode, city, password, balance, isAdmin);
 		this.setUserId(userId);
 	}
 
@@ -80,8 +79,8 @@ public class User implements Serializable {
 		return telephone;
 	}
 
-	public int getCredit() {
-		return credit;
+	public int getBalance() {
+		return balance;
 	}
 
 	public List<Auction> getAuctionList() {
@@ -168,11 +167,11 @@ public class User implements Serializable {
 		}
 	}
 
-	public void setCredit(int credit) throws BOException {
+	public void setBalance(int balance) throws BOException {
 		try {
-			this.credit = BOCleaner.cleanAmount(credit, 500000);
+			this.balance = BOCleaner.cleanAmount(balance, 500000);
 		} catch (BOException e) {
-			throw new BOException("Couldn't set credit", e);
+			throw new BOException("Couldn't set balance", e);
 		}
 	}
 
@@ -186,12 +185,6 @@ public class User implements Serializable {
 		this.auctionList = auctionList;
 	}
 
-	public String toString() {
-		return "User n°" + userId + " : " + username + " (" + lastName + ", " + firstName + ") " + "INFOS -> " + email
-				+ " | " + telephone + " | " + street + " | " + postcode + " | " + city + " | " + credit
-				+ " points | admin = " + isAdmin + " | pw = " + password;
-	}
-
 	public void addAuction(Auction auction) {
 		this.auctionList.add(auction);
 	}
@@ -201,6 +194,13 @@ public class User implements Serializable {
 			throw new BOException(
 					"List of auctions for user " + this.username + " does not have entry number " + index);
 		this.auctionList.remove(index);
+	}
+
+	@Override
+	public String toString() {
+		return "User n°" + userId + " : " + username + " (" + lastName + ", " + firstName + ") " + "INFOS -> " + email
+				+ " | " + telephone + " | " + street + " | " + postcode + " | " + city + " | " + balance
+				+ " points | admin = " + isAdmin + " | pw = " + password;
 	}
 
 }

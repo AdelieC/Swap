@@ -1,5 +1,5 @@
 <%@ include file="base.jsp" %>
-<form action="login" method="post">
+<form action="/Swap/login" method="post">
 	<fieldset>
 		<label for="username">UserName</label>
 		<input type="text" name="username" value="${username}"/>

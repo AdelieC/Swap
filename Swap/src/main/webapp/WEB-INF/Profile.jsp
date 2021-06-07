@@ -1,5 +1,5 @@
 <%@ include file="./includes/base.jsp" %>
-<c:set var="isMyProfile" scope="request" value="${sessionScope.user != null && sessionScope.user == user}"/>
+<c:set var="isMyProfile" scope="request" value="${sessionScope.user != null && sessionScope.user == targetUser}"/>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -7,37 +7,39 @@
 		<title>My profile</title>
 	</head>
 	<body>
-		<h1>${isMyProfile ? 'My Profile' : user.getUsername().concat("'s profile")}</h1>
-		<section>
-			<h2>Credentials</h2>
-			
-			<div>UserName</div>
-			<div>${user.getUsername()}</div>
-			<c:if test="${isMyProfile}">
-				<div>My balance</div>
-				<div>${user.getBalance()}</div>
-			</c:if>
-		</section>
-		<c:if test="${isMyProfile}">
+	<jsp:include page="./includes/header.jsp"/>
+		<main>
+			<h1>${isMyProfile ? 'My Profile' : targetUser.username.concat("'s profile")}</h1>
 			<section>
-				<h2>Informations</h2>
+				<h2>Credentials</h2>
 				
-				<div>Last name</div>
-				<div>${user.getLastName()}</div>
-			
-				<div>First name</div>
-				<div>${user.getFirstName()}</div>
-			
-				<div>Email</div>
-				<div>${user.getEmail()}</div>
-			
-				<div>Telephone</div>
-				<div>${user.getTelephone()}</div>
+				<div>UserName</div>
+				<div>${targetUser.username}</div>
+				<c:if test="${isMyProfile}">
+					<div>My balance</div>
+					<div>${targetUser.balance}</div>
+				</c:if>
 			</section>
-			<jsp:include page="./includes/addressSection.jsp">
-	    			<jsp:param name="user" value="${user}"/>
-			</jsp:include>
-		<a class="btn" href="/Swap/account/edit">Edit my profile</a>
-		</c:if>
+			<c:if test="${isMyProfile}">
+				<section>
+					<h2>Informations</h2>
+					
+					<div>Last name</div>
+					<div>${targetUser.lastName}</div>
+				
+					<div>First name</div>
+					<div>${targetUser.firstName}</div>
+				
+					<div>Email</div>
+					<div>${targetUser.email}</div>
+				
+					<div>Telephone</div>
+					<div>${targetUser.telephone}</div>
+				</section>
+				<jsp:include page="./includes/addressSection.jsp"/>
+			<a class="btn" href="/Swap/account/edit">Edit my profile</a>
+			</c:if>
+		</main>
+		<jsp:include page="./includes/footer.jsp"/>
 	</body>
 </html>

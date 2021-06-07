@@ -11,7 +11,33 @@
 		<form method="get" action="/Swap">
 			<fieldset>
 			<legend>Filters</legend>
-				<input type="text" name="filter" placeholder="Item name contains..." value="${filter}">
+				<input type="checkbox" name="filter" placeholder="Item name contains..." value="${filter}">
+				<label>Category: </label>
+	            <select name="category" required>
+	            	<c:choose>
+	            		<c:when test="${categoryId == 0}">
+	            			<option value="0" selected>All</option>
+	            		</c:when>
+	            		<c:otherwise>
+							<option value="0">All</option>
+						</c:otherwise>
+	            	</c:choose>
+	                <c:forEach var="category" items="${categoriesList}">
+	                	<c:choose>
+		                	<c:when test="${categoryId > 0 && categoryId == category.id}">
+								<option value="${category.id}" selected>${category.label}</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${category.id}">${category.label}</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+	            </select>
+	            <input type="submit" value="Search">
+        	</fieldset>
+			<fieldset>
+			<legend>Search</legend>
+				<input type="text" name="search" placeholder="Item name contains..." value="${search}">
 				<label>Category: </label>
 	            <select name="category" required>
 	            	<c:choose>

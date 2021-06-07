@@ -49,13 +49,14 @@ public class UserFormServlet extends MotherServlet {
 			User user = new User(inputs.get("username"), inputs.get("lastName"), inputs.get("firstName"),
 					inputs.get("email"), inputs.get("telephone"), inputs.get("street"), inputs.get("postcode"),
 					inputs.get("city"), inputs.get("password"), 0, false);
+			session.setAttribute("user", user);
 			if (errors.size() > 0) {
-				request.setAttribute("tempUser", user);
 				request.setAttribute("errors", errors);
 				doGet(request, response);
 			} else {
 				UserManager userM = new UserManager();
 				userM.create(user);
+				// Following line = to get new user id!
 				session.setAttribute("user", userM.getByUsername(inputs.get("username")));
 				response.sendRedirect(SUCCESS_PATH);
 			}
@@ -82,7 +83,8 @@ public class UserFormServlet extends MotherServlet {
 			} else {
 				UserManager userM = new UserManager();
 				userM.update(user);
-				session.setAttribute("user", user);
+				// No need to reset session user to get id and modifs
+				// -> user set around line 79 is the right one
 				response.sendRedirect(SUCCESS_PATH);
 			}
 		} catch (BLLException e) {
@@ -122,5 +124,4 @@ public class UserFormServlet extends MotherServlet {
 		});
 		return errors;
 	}
-
 }

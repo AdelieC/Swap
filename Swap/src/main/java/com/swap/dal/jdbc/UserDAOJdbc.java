@@ -323,7 +323,7 @@ public class UserDAOJdbc implements UserDAO {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String SQLQuery = DBUtils.twoCriteriasSearch(TABLENAME, "user_id", "username");
+		String SQLQuery = DBUtils.twoCriteriaSearch(TABLENAME, "user_id", "username");
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);

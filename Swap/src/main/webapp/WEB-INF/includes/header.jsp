@@ -1,6 +1,7 @@
 <%@ include file="base.jsp" %>
 <header>
-	<a href=""><img  src="./img/logo.png" alt="Logo" /></a>
+	<a href="/Swap/home"><img  src="./img/logo.png" alt="Logo" /></a>
+	<div id="app-name">Swap</div>
 	<c:choose>
 		<c:when test="${sessionScope.user == null}">
 			<p>SWAP</p>

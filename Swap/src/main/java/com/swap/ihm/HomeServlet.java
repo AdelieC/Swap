@@ -40,27 +40,27 @@ public class HomeServlet extends MotherServlet {
 		List<AuctionThumbnail> thumbnails = new ArrayList<>();
 		List<Category> categorieslist = new ArrayList<>();
 		int categoryId = 0;
-		String filter = null;
+		String search = null;
 		try {
 			categorieslist = catmng.getAll();
 			if (null != request.getParameter("category")) {
 				categoryId = Integer.valueOf(request.getParameter("category"));
-				filter = request.getParameter("filter");
+				search = request.getParameter("search");
 				if (categoryId > 0) {
-					if (filter == null) {
+					if (search == null) {
 						auctionsList = aucmng.getByCategory(categoryId);
 					} else {
-						auctionsList = aucmng.getByNameAndCategory(filter, categoryId);
+						auctionsList = aucmng.getByNameAndCategory(search, categoryId);
 					}
-				} else if (filter != null) {
-					auctionsList = aucmng.getByName(filter);
+				} else if (search != null) {
+					auctionsList = aucmng.getByName(search);
 				}
 			} else {
 				auctionsList = aucmng.getAll();
 			}
 			thumbnails = getThumbnails(auctionsList);
 			request.setAttribute("categoryId", categoryId);
-			request.setAttribute("filter", filter);
+			request.setAttribute("search", search);
 			request.setAttribute("thumbnails", thumbnails);
 			request.setAttribute("categoriesList", categorieslist);
 			sendToJSP(HOME_JSP, request, response);

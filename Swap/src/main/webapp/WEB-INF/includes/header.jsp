@@ -1,6 +1,6 @@
 <%@ include file="base.jsp" %>
 <header>
-	<a href=""><img alt="Logo" src="/img/logo.png"></a>
+	<a href=""><img  src="./img/logo.png" alt="Logo" /></a>
 	<c:choose>
 		<c:when test="${sessionScope.user == null}">
 			<p>SWAP</p>

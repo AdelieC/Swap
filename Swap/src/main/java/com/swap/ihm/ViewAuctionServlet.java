@@ -23,7 +23,7 @@ import com.swap.bo.User;
 /**
  * Servlet implementation class ViewAuctionServlet
  */
-@WebServlet(description = "Handles display of single auction + delete auction", urlPatterns = { "/auction",
+@WebServlet(description = "Handles display of single auction + delete auction", urlPatterns = { "/auction/view",
 		"/auction/delete" })
 public class ViewAuctionServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;

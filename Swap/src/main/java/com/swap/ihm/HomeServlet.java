@@ -21,7 +21,7 @@ import com.swap.bo.User;
 /**
  * Servlet handling index page or homepage (when logged in) display user
  */
-@WebServlet(description = "Handles index page or homepage (when logged in)", urlPatterns = { "/" })
+@WebServlet(description = "Handles index page or homepage (when logged in)", urlPatterns = { "/home" })
 public class HomeServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String HOME_JSP = "/WEB-INF/Home.jsp";
@@ -43,22 +43,24 @@ public class HomeServlet extends MotherServlet {
 		String filter = null;
 		try {
 			categorieslist = catmng.getAll();
-			categoryId = Integer.valueOf(request.getParameter("category"));
-			filter = request.getParameter("filter");
-			if (categoryId > 0) {
-				if (filter == null) {
-					auctionsList = aucmng.getByCategory(categoryId);
-				} else {
-					auctionsList = aucmng.getByNameAndCategory(filter, categoryId);
+			if (null != request.getParameter("category")) {
+				categoryId = Integer.valueOf(request.getParameter("category"));
+				filter = request.getParameter("filter");
+				if (categoryId > 0) {
+					if (filter == null) {
+						auctionsList = aucmng.getByCategory(categoryId);
+					} else {
+						auctionsList = aucmng.getByNameAndCategory(filter, categoryId);
+					}
+				} else if (filter != null) {
+					auctionsList = aucmng.getByName(filter);
 				}
-			} else if (filter != null) {
-				auctionsList = aucmng.getByName(filter);
 			} else {
 				auctionsList = aucmng.getAll();
 			}
 			thumbnails = getThumbnails(auctionsList);
 			request.setAttribute("categoryId", categoryId);
-			request.setAttribute("filter", request.getParameter("filter"));
+			request.setAttribute("filter", filter);
 			request.setAttribute("thumbnails", thumbnails);
 			request.setAttribute("categoriesList", categorieslist);
 			sendToJSP(HOME_JSP, request, response);

@@ -37,7 +37,7 @@ public class AuctionConfigServlet extends MotherServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		// TODO DEAL WITH USER SESSION
+		// TODO DEAL WITH USER SESSION -> added some things in post
 		String title = "Create auction";
 		List<Category> categorieslist = new ArrayList<Category>();
 		CategoryManager catmng = new CategoryManager();

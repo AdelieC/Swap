@@ -19,7 +19,6 @@ import com.swap.bo.User;
 public class GetOutServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String OUTCOME_JSP = "/WEB-INF/GetOut.jsp";
-	private static final String HOME_PATH = "/Swap";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,7 +36,7 @@ public class GetOutServlet extends MotherServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		try {
-			if (session.getAttribute("user") == null)
+			if (!userIsLoggedIn(request))
 				throw new IHMException("Action not permitted");
 			if ("Delete".equals(request.getParameter("submit"))) {
 				deleteCurrentUser(request, session);

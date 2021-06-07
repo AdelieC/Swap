@@ -46,3 +46,18 @@ CREATE TABLE PICK_UP_POINTS (
     city            VARCHAR(30) NOT NULL,
     FOREIGN KEY(auction_id) REFERENCES AUCTIONS(auction_id)
 );
+
+INSERT INTO CATEGORIES VALUES 
+(1, "Fashion"),
+(2, "Home & Garden"),
+(3, "Toys"),
+(4, "Electronics"),
+(5, "Motors"),
+(6, "Pets"),
+(7, "Collectables & Art"),
+(8, "Health & Beauty"),
+(9, "Media"),
+(10, "Business & Office Supplies"),
+(11, "Others")
+;
+SELECT * FROM CATEGORIES;

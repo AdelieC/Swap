@@ -37,7 +37,7 @@ public class AccountServlet extends MotherServlet {
 			} else {
 				user = (User) session.getAttribute("user");
 			}
-			request.setAttribute("targetUuserser", user);
+			request.setAttribute("targetUser", user);
 			sendToJSP(PROFILE_JSP, request, response);
 		} catch (NumberFormatException | BLLException e) {
 			e.printStackTrace();

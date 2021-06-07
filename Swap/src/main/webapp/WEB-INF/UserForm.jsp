@@ -14,7 +14,7 @@
 					<legend>Identity</legend>
 					
 					<label for="username">UserName</label>
-					<input type="text" pattern="^(?=[a-zA-Z0-9._]{6,30}$)(?!.*[_.]{2})[^_.].*[^_.]$" placeholder="ex : OldSophie68" name="username" value="${user.username}"/>
+					<input type="text" pattern="^(?=[a-zA-Z0-9._]{2,30}$)(?!.*[_.]{2})[^_.].*[^_.]$" placeholder="ex : OldSophie68" name="username" value="${user.username}"/>
 					<c:if test="${errors.containsKey('username')}" >
 		   				<div class="form-error">Invalid field : ${errors.get('username')}</div>
 					</c:if>

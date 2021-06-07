@@ -45,41 +45,64 @@ public class BidServlet extends MotherServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-
-		// TODO Refactorize and test ;-)
-		UserManager usmng = new UserManager();
-		BidManager bidmng = new BidManager();
-		AuctionManager aucmng = new AuctionManager();
-		Auction auction;
-		Bid bid, previousBid;
-		User user, previousBidder;
+		Bid bid;
+		User user;
 		int offer = Integer.valueOf(request.getParameter("offer"));
 		int auctionId = Integer.valueOf(request.getParameter("id"));
+		user = ((User) session.getAttribute("user"));
+		if (user.getBalance() < offer) {
+			// TODO : add error msg "insufficient funds"
+			doGet(request, response);
+		} else {
+			bid = createBid(auctionId, offer, user);
+			request.setAttribute("bid", bid);
+		}
+		doGet(request, response);
+	}
+
+	private Bid createBid(int auctionId, int offer, User user) {
+		BidManager bidmng = new BidManager();
+		UserManager usmng = new UserManager();
+		Bid bid = null, previousBid;
 		try {
-			user = ((User) session.getAttribute("user"));
-			if (user.getBalance() < offer) {
-				// TODO : add error msg "insufficient funds"
-				doGet(request, response);
-			} else {
-				previousBid = bidmng.getMaxBid(auctionId);
-				bid = new Bid(user.getUserId(), auctionId, offer, LocalDate.now());
-				bidmng.create(bid);
-				user.setBalance(user.getBalance() - offer);
-				usmng.update((User) session.getAttribute("user"));
-				if (previousBid != null) {
-					previousBidder = usmng.getById(previousBid.getUserId());
-					previousBidder.setBalance(previousBidder.getBalance() + previousBid.getBidPrice());
-					usmng.update(previousBidder);
-				}
-				auction = aucmng.getById(auctionId);
-				auction.setSalePrice(offer);
-				aucmng.update(auction);
-				request.setAttribute("bid", bid);
+
+			previousBid = bidmng.getMaxBid(auctionId);
+			bid = new Bid(user.getUserId(), auctionId, offer, LocalDate.now());
+			bidmng.create(bid);
+			user.setBalance(user.getBalance() - offer);
+			usmng.update(user);
+			if (previousBid != null) {
+				refundPreviousBidder(previousBid);
 			}
+			updateAuction(auctionId, offer);
 		} catch (BLLException | BOException e) {
 			// TODO : send to 500 page
 			e.printStackTrace();
 		}
-		doGet(request, response);
+		return bid;
+	}
+
+	private void refundPreviousBidder(Bid previousBid) {
+		UserManager usmng = new UserManager();
+		try {
+			User previousBidder = usmng.getById(previousBid.getUserId());
+			previousBidder.setBalance(previousBidder.getBalance() + previousBid.getBidPrice());
+			usmng.update(previousBidder);
+		} catch (BLLException | BOException e) {
+			// TODO : send to 500 page
+			e.printStackTrace();
+		}
+	}
+
+	private void updateAuction(int auctionId, int offer) {
+		AuctionManager aucmng = new AuctionManager();
+		try {
+			Auction auction = aucmng.getById(auctionId);
+			auction.setSalePrice(offer);
+			aucmng.update(auction);
+		} catch (BLLException e) {
+			// TODO : send to 500 page
+			e.printStackTrace();
+		}
 	}
 }

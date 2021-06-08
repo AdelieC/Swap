@@ -376,17 +376,49 @@ public class AuctionDAOJdbc implements AuctionDAO {
 	}
 
 	@Override
-	public List<Auction> selectByDate(LocalDate date) throws DALException {
+	public List<Auction> selectAllByStatus(String status) throws DALException {
 		List<Auction> list = new ArrayList<Auction>();
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.selectWhereBetween(tableName, "end_date");
+		String query = DBUtils.selectBy(tableName, "status");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setDate(1, Date.valueOf(LocalDate.now()));
-			stmt.setDate(2, Date.valueOf(date));
+			stmt.setString(1, status);
+			result = stmt.executeQuery();
+			while (result.next()) {
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
+				String description = result.getString("description");
+				LocalDate startDate = result.getDate("start_date").toLocalDate();
+				LocalDate endDate = result.getDate("end_date").toLocalDate();
+				int initialPrice = result.getInt("initial_price");
+				int salePrice = result.getInt("sale_price");
+				int userId = result.getInt("user_id");
+				int categoryId = result.getInt("category_id");
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId, status);
+				list.add(auction);
+			}
+		} catch (SQLException e) {
+			throw new DALException("READ - Auctions by PRICE failed ");
+		}
+		return list;
+	}
+
+	@Override
+	public List<Auction> selectByStatusAndUser(String status, int userId) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String query = DBUtils.selectByTwoCols(tableName, "status", "user_id");
+		try {
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setString(1, status);
+			stmt.setInt(2, userId);
 			result = stmt.executeQuery();
 			while (result.next()) {
 				int id = result.getInt("auction_id");
@@ -397,7 +429,40 @@ public class AuctionDAOJdbc implements AuctionDAO {
 				int initialPrice = result.getInt("initial_price");
 				int salePrice = result.getInt("sale_price");
 				int categoryId = result.getInt("category_id");
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId, status);
+				list.add(auction);
+			}
+		} catch (SQLException e) {
+			throw new DALException("READ - Auctions by PRICE failed ");
+		}
+		return list;
+	}
+
+	@Override
+	public List<Auction> selectAllNotOver() throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String query = DBUtils.selectWhereNotIn(tableName, "status");
+		try {
+			System.out.println(query);
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setString(1, "OVER");
+			stmt.setString(2, "PICKED_UP");
+			result = stmt.executeQuery();
+			while (result.next()) {
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
+				String description = result.getString("description");
+				LocalDate startDate = result.getDate("start_date").toLocalDate();
+				LocalDate endDate = result.getDate("end_date").toLocalDate();
+				int initialPrice = result.getInt("initial_price");
+				int salePrice = result.getInt("sale_price");
 				int userId = result.getInt("user_id");
+				int categoryId = result.getInt("category_id");
 				String status = result.getString("status");
 				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
 						salePrice, userId, status);
@@ -410,18 +475,17 @@ public class AuctionDAOJdbc implements AuctionDAO {
 	}
 
 	@Override
-	public List<Auction> selectByUserAndDate(int userId, LocalDate date) throws DALException {
+	public List<Auction> selectNotOverByUser(int userId) throws DALException {
 		List<Auction> list = new ArrayList<Auction>();
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.twoCriteriaSearch(tableName, "end_date", "user_id");
+		String query = DBUtils.selectWhereAndWhereNot(tableName, "user_id", "status");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
-			stmt.setDate(1, Date.valueOf(LocalDate.now()));
-			stmt.setDate(2, Date.valueOf(date));
-			stmt.setInt(3, userId);
+			stmt.setInt(1, userId);
+			stmt.setString(2, "OVER");
 			result = stmt.executeQuery();
 			while (result.next()) {
 				int id = result.getInt("auction_id");
@@ -441,5 +505,45 @@ public class AuctionDAOJdbc implements AuctionDAO {
 			throw new DALException("READ - Auctions by PRICE failed ");
 		}
 		return list;
+	}
+
+	@Override
+	public List<Auction> selectByWinner(int userId) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String query = DBUtils.selectBy(tableName, "status")
+				+ DBUtils.innerJoinTwoCols("BIDS", "auction_id", "user_id");
+		try {
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setString(1, "OVER");
+			stmt.setInt(2, userId);
+			result = stmt.executeQuery();
+			while (result.next()) {
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
+				String description = result.getString("description");
+				LocalDate startDate = result.getDate("start_date").toLocalDate();
+				LocalDate endDate = result.getDate("end_date").toLocalDate();
+				int initialPrice = result.getInt("initial_price");
+				int salePrice = result.getInt("sale_price");
+				int categoryId = result.getInt("category_id");
+				String status = result.getString("status");
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId, status);
+				list.add(auction);
+			}
+		} catch (SQLException e) {
+			throw new DALException("READ - Auctions by PRICE failed ");
+		}
+		return list;
+	}
+
+	@Override
+	public List<Auction> selectNotOverByCategory(int categoryId) throws DALException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -26,7 +26,7 @@
 	<main>
 		<form method="get" action="/Swap">
 			<c:if test="${isLoggedIn}">
-				<jsp:include page="./includes/loggedInPanel.jsp">
+				<jsp:include page="./includes/loggedInPanel.jsp"/>
 			</c:if>
 			<fieldset>
 			<legend>Search</legend>

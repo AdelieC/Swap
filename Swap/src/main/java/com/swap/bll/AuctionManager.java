@@ -1,6 +1,5 @@
 package com.swap.bll;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.swap.bo.Auction;
@@ -123,22 +122,52 @@ public class AuctionManager {
 		return list;
 	}
 
-	public List<Auction> getCurrentAuctions(LocalDate date) throws BLLException {
+	public List<Auction> getByStatus(String status) throws BLLException {
 		List<Auction> list = null;
 		try {
-			list = this.auctionDAO.selectByDate(date);
+			list = this.auctionDAO.selectAllByStatus(status);
 		} catch (DALException e) {
-			throw new BLLException("GET CURRENT AUCTIONS failure");
+			throw new BLLException("GET AUCTIONS BY STATUS failure");
 		}
 		return list;
 	}
 
-	public List<Auction> getCurrentAuctionsForUser(int userId, LocalDate date) throws BLLException {
+	public List<Auction> getByStatusAndUser(String status, int userId) throws BLLException {
 		List<Auction> list = null;
 		try {
-			list = this.auctionDAO.selectByUserAndDate(userId, date);
+			list = this.auctionDAO.selectByStatusAndUser(status, userId);
 		} catch (DALException e) {
-			throw new BLLException("GET CURRENT AUCTIONS FOR USER " + userId + "failure");
+			throw new BLLException("GET AUCTIONS BY WINNER failure");
+		}
+		return list;
+	}
+
+	public List<Auction> getAllNotOver() throws BLLException {
+		List<Auction> list = null;
+		try {
+			list = this.auctionDAO.selectAllNotOver();
+		} catch (DALException e) {
+			throw new BLLException("GET AUCTIONS NOT OVER failure");
+		}
+		return list;
+	}
+
+	public List<Auction> getNotOverByUser(int userId) throws BLLException {
+		List<Auction> list = null;
+		try {
+			list = this.auctionDAO.selectNotOverByUser(userId);
+		} catch (DALException e) {
+			throw new BLLException("GET AUCTIONS NOT OVER BY USER failure");
+		}
+		return list;
+	}
+
+	public List<Auction> getByWinner(int userId) throws BLLException {
+		List<Auction> list = null;
+		try {
+			list = this.auctionDAO.selectByWinner(userId);
+		} catch (DALException e) {
+			throw new BLLException("GET AUCTIONS BY WINNER failure");
 		}
 		return list;
 	}
@@ -147,4 +176,25 @@ public class AuctionManager {
 		// TODO
 		return true;
 	}
+
+	public List<Auction> getNotOverByCategory(int categoryId) throws BLLException {
+		List<Auction> list = null;
+		try {
+			list = this.auctionDAO.selectNotOverByCategory(categoryId);
+		} catch (DALException e) {
+			throw new BLLException("GET AUCTIONS BY WINNER failure");
+		}
+		return list;
+	}
+
+	public List<Auction> getNotOverByNameAndCategory(String q, int categoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Auction> getNotOverByName(String q) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

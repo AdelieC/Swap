@@ -2,7 +2,7 @@
 <fieldset>
 	<legend>Filters</legend>
 	<label for="bids">Bids</label>
-	<input type="radio" name="auctFilter"  id="bids" value="bids" ${filterType != null ? (filterType.equals("bids") ? 'checked' : '') : 'checked'}>
+	<input type="radio" name="auctFilter"  id="bids" value="bidsFilters" ${filterType != null ? (filterType.equals("bids") ? 'checked' : '') : 'checked'}>
 	<fieldset>
 		<input type="checkbox" name="all-bids-on"  id="all-bids-on" value="all-bids-on" ${filterList != null ? (filterList.contains("all-bids-on") ? 'checked' : '') : 'checked'}>
 		<label for="all-bids-on">All ongoing bids</label>
@@ -12,7 +12,7 @@
 		<label for="my-bids-won">My successful bids</label>
 	</fieldset>
 	<label for="all">My Auctions</label>
-	<input type="radio" name="auctFilter"  id="myAuctions" value="myAuctions" ${filterType != null && filterType.equals("myAuctions") ? 'checked' : ''}>
+	<input type="radio" name="auctFilter"  id="myAuctions" value="myAuctionsFilters" ${filterType != null && filterType.equals("myAuctions") ? 'checked' : ''}>
 	<fieldset>
 		<input type="checkbox" name="my-aucts-on"  id="my-aucts-on" value="my-aucts-on" ${filterList != null && filterList.contains("my-aucts-won") ? 'checked' : ''}>
 		<label for="my-aucts-on">My ongoing auctions</label>

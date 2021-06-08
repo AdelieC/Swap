@@ -35,7 +35,7 @@ public class HomeServlet extends MotherServlet {
 			throws ServletException, IOException {
 		try {
 			setCategoriesList(request);
-			if (request.getQueryString().length() > 0) {
+			if (request.getQueryString() != null && request.getQueryString().length() > 0) {
 				System.out.println("content : " + request.getQueryString()); // TODO : remove after debug
 				setThumbnailsWithBasicFilters(request);
 			} else {

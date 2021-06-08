@@ -44,10 +44,14 @@ public class UpdateAuctionsStatusServlet extends MotherServlet {
 			String status = auction.getStatus();
 			LocalDate startDate = auction.getStartDate();
 			LocalDate endDate = auction.getStartDate();
-			if (status.equals(AuctionStatus.CREATED.getStatus()) && startDate.isBefore(LocalDate.now())) {
+			if (status.equals(AuctionStatus.CREATED.getStatus())
+					&& (startDate.isBefore(LocalDate.now()) || startDate.isEqual(LocalDate.now()))) {
 				auction.setStatus(AuctionStatus.ONGOING.getStatus());
-			} else if (status.equals(AuctionStatus.ONGOING.getStatus()) && endDate.isBefore(LocalDate.now())) {
+				updateAuction(auction);
+			} else if (status.equals(AuctionStatus.ONGOING.getStatus())
+					&& (endDate.isBefore(LocalDate.now()) || endDate.isEqual(LocalDate.now()))) {
 				auction.setStatus(AuctionStatus.OVER.getStatus());
+				updateAuction(auction);
 			}
 		}
 	}
@@ -61,6 +65,15 @@ public class UpdateAuctionsStatusServlet extends MotherServlet {
 			e.printStackTrace();
 		}
 		return auctions;
+	}
+
+	private void updateAuction(Auction auction) {
+		AuctionManager aucmng = new AuctionManager();
+		try {
+			aucmng.update(auction);
+		} catch (BLLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -80,7 +80,7 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			stmt.setString(2, s.getStreet());
 			stmt.setString(3, s.getPostcode());
 			stmt.setString(4, s.getCity());
-			stmt.setInt(5, s.getAuctionId());
+			stmt.setInt(5, s.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Pick-up Point --" + s.getStreet() + "-- update failed", e);

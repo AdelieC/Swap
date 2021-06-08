@@ -84,13 +84,11 @@ public class AuctionFormServlet extends MotherServlet {
 		Auction auction = new Auction(name, description, startDate, endDate, categoryId, initialPrice,
 				user.getUserId());
 		PickUpPoint pup = new PickUpPoint(0, street, postcode, city);
-		if (request.getParameter("auctionId") == null) {
-			System.out.println("CREATE");
+		if (request.getParameter("auctionId").equals("")) {
 			createAuction(auction, pup);
 		} else {
-			auction = getAuctionById(Integer.valueOf(request.getParameter("auctionId")));
+			auction.setId(Integer.valueOf(request.getParameter("auctionId")));
 			if (auction.getStartDate().isAfter(LocalDate.now())) {
-				System.out.println("UPDATE");
 				updateAuction(auction, pup);
 				request.setAttribute("cancellable", true);
 			} else {
@@ -115,24 +113,35 @@ public class AuctionFormServlet extends MotherServlet {
 
 	private void updateAuction(Auction auction, PickUpPoint pup) {
 		AuctionManager aucmng = new AuctionManager();
-		PickUpPointManager pupmng = new PickUpPointManager();
 		try {
 			aucmng.update(auction);
-			pup.setAuctionId(auction.getId());
+			updatePickUpPoint(pup, auction.getId());
+		} catch (BLLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void updatePickUpPoint(PickUpPoint pup, int auctionId) {
+		PickUpPointManager pupmng = new PickUpPointManager();
+		pup.setAuctionId(auctionId);
+		pup.setId(getPupIdWithAuctionId(auctionId));
+		try {
 			pupmng.update(pup);
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private Auction getAuctionById(int id) {
-		AuctionManager aucmng = new AuctionManager();
-		Auction auction = null;
+	private int getPupIdWithAuctionId(int auctionId) {
+		PickUpPointManager pupmng = new PickUpPointManager();
+		PickUpPoint pup = null;
+		int id = 0;
 		try {
-			auction = aucmng.getById(id);
+			pup = pupmng.getByAuctionId(auctionId);
+			id = pup.getId();
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}
-		return auction;
+		return id;
 	}
 }

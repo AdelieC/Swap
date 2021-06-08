@@ -106,7 +106,7 @@ public class AuctionDAOJdbc implements AuctionDAO {
 			stmt.setInt(6, s.getSalePrice());
 			stmt.setInt(7, s.getUserId());
 			stmt.setInt(8, s.getCategoryId());
-			stmt.setString(9, "status");
+			stmt.setString(9, s.getStatus());
 			stmt.setInt(10, s.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {

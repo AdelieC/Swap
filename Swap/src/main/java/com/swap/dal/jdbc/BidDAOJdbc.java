@@ -177,7 +177,7 @@ public class BidDAOJdbc implements BidDAO {
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.selectBy(tableName, "auction_id");
+		String query = DBUtils.selectBy(tableName, "auction_id") + " ORDER BY bid_price DESC";
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);

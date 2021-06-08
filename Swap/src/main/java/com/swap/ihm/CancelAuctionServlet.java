@@ -37,8 +37,25 @@ public class CancelAuctionServlet extends MotherServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int auctionId = Integer.valueOf(request.getParameter("auctionId"));
-		deleteAuction(auctionId);
+		if (canDelete(auctionId)) {
+			deleteAuction(auctionId);
+		}
 		response.sendRedirect(request.getServletContext().getContextPath());
+	}
+
+	private boolean canDelete(int auctionId) {
+		AuctionManager aucmng = new AuctionManager();
+		Auction auction = null;
+		try {
+			auction = aucmng.getById(auctionId);
+			String status = auction.getStatus();
+			if (status.equals(AuctionStatus.CREATED.getStatus()) || status.equals(AuctionStatus.ONGOING.getStatus())) {
+				return true;
+			}
+		} catch (BLLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	private void deleteAuction(int auctionId) {

@@ -37,16 +37,15 @@
 	            <input class="auction-form-input" type="date" name="start-date" value="${auction.startDate}" required>
 	            <label class="auction-form-label" for="end-date">End date:</label>
 	            <input class="auction-form-input" type="date" name="end-date" value="${auction.endDate}" required>
-	            <jsp:include page="./includes/addressFieldset.jsp"/>
-<%-- 	            <fieldset>
+ 	            <fieldset>
 	            	<legend>Pick Up Point</legend>
 		            <label class="auction-form-label" for="street">Street:</label>
 		            <input class="auction-form-input" type="text" name="street" value="${pickUpPoint.street}">
 		            <label class="auction-form-label" for="postcode">Postcode:</label>
 		            <input class="auction-form-input" type="text" name="postcode" value="${pickUpPoint.postcode}">
 		            <label class="auction-form-label" for="city">City:</label>
-		            <input class="auction-form-input" type="text" name="city" value="${pickUpPoint.postcode}">
-	            </fieldset> --%>
+		            <input class="auction-form-input" type="text" name="city" value="${pickUpPoint.city}">
+	            </fieldset>
 	            <input type="hidden" name="auctionId" value="${auction.getId()}">
 	            <input type="submit" value="Save">
             </fieldset>

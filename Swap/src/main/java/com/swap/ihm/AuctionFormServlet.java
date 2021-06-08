@@ -36,20 +36,23 @@ public class AuctionFormServlet extends MotherServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
 		String title = "Create auction";
 		List<Category> categorieslist = new ArrayList<Category>();
 		CategoryManager catmng = new CategoryManager();
-		AuctionManager aucmng = new AuctionManager();
+		PickUpPoint pup = null;
 		if (request.getParameter("id") != null) {
 			title = "Update auction";
 			int id = Integer.valueOf(request.getParameter("id"));
-			try {
-				Auction auction = aucmng.getById(id);
-				request.setAttribute("auction", auction);
-			} catch (BLLException e) {
-				e.printStackTrace();
-			}
+			Auction auction = getAuctionById(id);
+			pup = getPUPByAuctionId(id);
+			request.setAttribute("auction", auction);
+
+		} else {
+			pup = new PickUpPoint(0, user.getStreet(), user.getPostcode(), user.getCity());
 		}
+		request.setAttribute("pickUpPoint", pup);
 		try {
 			categorieslist = catmng.getAll();
 			request.setAttribute("categoriesList", categorieslist);
@@ -88,7 +91,7 @@ public class AuctionFormServlet extends MotherServlet {
 			createAuction(auction, pup);
 		} else {
 			auction.setId(Integer.valueOf(request.getParameter("auctionId")));
-			if (auction.getStartDate().isAfter(LocalDate.now())) {
+			if (auction.getStatus().equals(AuctionStatus.CREATED.getStatus())) {
 				updateAuction(auction, pup);
 				request.setAttribute("cancellable", true);
 			} else {
@@ -132,16 +135,33 @@ public class AuctionFormServlet extends MotherServlet {
 		}
 	}
 
-	private int getPupIdWithAuctionId(int auctionId) {
-		PickUpPointManager pupmng = new PickUpPointManager();
-		PickUpPoint pup = null;
-		int id = 0;
+	private Auction getAuctionById(int auctionId) {
+		AuctionManager aucmng = new AuctionManager();
+		Auction auction = null;
 		try {
-			pup = pupmng.getByAuctionId(auctionId);
-			id = pup.getId();
+			auction = aucmng.getById(auctionId);
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}
+		return auction;
+	}
+
+	private PickUpPoint getPUPByAuctionId(int id) {
+		PickUpPointManager pupmng = new PickUpPointManager();
+		PickUpPoint pup = null;
+		try {
+			pup = pupmng.getById(id);
+		} catch (BLLException e) {
+			e.printStackTrace();
+		}
+		return pup;
+	}
+
+	private int getPupIdWithAuctionId(int auctionId) {
+		PickUpPoint pup = null;
+		int id = 0;
+		pup = getPUPByAuctionId(id);
+		id = pup.getId();
 		return id;
 	}
 }

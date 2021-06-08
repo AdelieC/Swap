@@ -65,7 +65,7 @@ public class BidManager {
 	}
 
 	public List<Bid> getByUserId(int id) throws BLLException {
-		List<Bid> list = new ArrayList<Bid>();
+		List<Bid> list = null;
 		try {
 			list = bidDAO.selectByUser(id);
 		} catch (DALException e) {
@@ -75,7 +75,7 @@ public class BidManager {
 	}
 
 	public List<Bid> getByAuctionId(int id) throws BLLException {
-		List<Bid> list = new ArrayList<Bid>();
+		List<Bid> list = null;
 		try {
 			list = bidDAO.selectByAuctionId(id);
 		} catch (DALException e) {
@@ -85,7 +85,7 @@ public class BidManager {
 	}
 
 	public List<Bid> getByPrice(int price) throws BLLException {
-		List<Bid> list = new ArrayList<Bid>();
+		List<Bid> list = null;
 		try {
 			list = bidDAO.selectByPrice(price);
 		} catch (DALException e) {
@@ -95,7 +95,7 @@ public class BidManager {
 	}
 
 	public List<Bid> getByDate(LocalDate date) throws BLLException {
-		List<Bid> list = new ArrayList<Bid>();
+		List<Bid> list = null;
 		try {
 			list = bidDAO.selectByDate(date);
 		} catch (DALException e) {

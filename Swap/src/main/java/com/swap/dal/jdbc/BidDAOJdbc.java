@@ -187,7 +187,7 @@ public class BidDAOJdbc implements BidDAO {
 				int bidPrice = result.getInt("bid_price");
 				int id = result.getInt("bid_id");
 				int userId = result.getInt("user_id");
-				LocalDate date = result.getDate("date").toLocalDate();
+				LocalDate date = result.getDate("bid_date").toLocalDate();
 				Bid bid = new Bid(id, userId, auctionId, bidPrice, date);
 				list.add(bid);
 			}

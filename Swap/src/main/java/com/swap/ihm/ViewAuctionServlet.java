@@ -23,8 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ViewAuctionServlet
  */
-@WebServlet(description = "Handles display of single auction + delete auction", urlPatterns = { "/auction/view",
-		"/auction/delete" })
+@WebServlet(description = "Handles display of single auction + delete auction", urlPatterns = { "/auction/view" })
 public class ViewAuctionServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW_AUCT_JSP = "/WEB-INF/ViewAuction.jsp";

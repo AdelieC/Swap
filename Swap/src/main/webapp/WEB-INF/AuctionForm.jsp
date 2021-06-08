@@ -46,7 +46,8 @@
 		            <input class="auction-form-input" type="text" name="postcode" value="${pickUpPoint.postcode}">
 		            <label class="auction-form-label" for="city">City:</label>
 		            <input class="auction-form-input" type="text" name="city" value="${pickUpPoint.postcode}">
-	            </fieldset> --%>     
+	            </fieldset> --%>
+	            <input type="hidden" name="auctionId" value="${auction.getId()}">
 	            <input type="submit" value="Save">
             </fieldset>
         </form>

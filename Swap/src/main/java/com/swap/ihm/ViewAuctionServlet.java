@@ -76,8 +76,7 @@ public class ViewAuctionServlet extends MotherServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO : Delete auction with session.getAttribute("user").getUserId() check?
-		// -> see what I did for user deletion in GetOutServlet, for example?
+		doGet(request, response);
 	}
 
 }

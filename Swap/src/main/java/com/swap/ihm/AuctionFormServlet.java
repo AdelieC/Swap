@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * Servlet implementation class auctionConfigServlet
  */
-@WebServlet("/auction")
+@WebServlet(description = "Handles creation of a single auction", urlPatterns = { "/auction" })
 public class AuctionFormServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String AUCT_CONF_JSP = "/WEB-INF/AuctionForm.jsp";
@@ -36,7 +36,6 @@ public class AuctionFormServlet extends MotherServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		HttpSession session = request.getSession();
 		String title = "Create auction";
 		List<Category> categorieslist = new ArrayList<Category>();
 		CategoryManager catmng = new CategoryManager();
@@ -85,12 +84,15 @@ public class AuctionFormServlet extends MotherServlet {
 		Auction auction = new Auction(name, description, startDate, endDate, categoryId, initialPrice,
 				user.getUserId());
 		PickUpPoint pup = new PickUpPoint(0, street, postcode, city);
-		if (request.getParameter("id") == null) {
+		if (request.getParameter("auctionId") == null) {
+			System.out.println("CREATE");
 			createAuction(auction, pup);
 		} else {
-			auction = getAuctionById(Integer.valueOf(request.getParameter("id")));
+			auction = getAuctionById(Integer.valueOf(request.getParameter("auctionId")));
 			if (auction.getStartDate().isAfter(LocalDate.now())) {
+				System.out.println("UPDATE");
 				updateAuction(auction, pup);
+				request.setAttribute("cancellable", true);
 			} else {
 				// TODO Errors management
 			}

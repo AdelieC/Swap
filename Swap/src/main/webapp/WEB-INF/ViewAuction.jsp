@@ -38,7 +38,7 @@
 					</form>
 				</c:when>
 				<c:otherwise>
-				<c:if test="${auction.status.equals('CREATED')}">>
+				<c:if test="${auction.status.equals('CREATED')}">
 					<a href="/Swap/auction?id=${auction.id}">Update auction</a>
 				</c:if>
 				</c:otherwise>

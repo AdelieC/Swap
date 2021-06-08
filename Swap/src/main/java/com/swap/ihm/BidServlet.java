@@ -50,14 +50,32 @@ public class BidServlet extends MotherServlet {
 		int offer = Integer.valueOf(request.getParameter("offer"));
 		int auctionId = Integer.valueOf(request.getParameter("id"));
 		user = ((User) session.getAttribute("user"));
-		if (user.getBalance() < offer) {
-			// TODO : add error msg "insufficient funds"
-			doGet(request, response);
-		} else {
+		if (isValid(offer, auctionId) && user.getBalance() > offer) {
 			bid = createBid(auctionId, offer, user);
 			request.setAttribute("bid", bid);
+		} else {
+			// TODO : add error msg "insufficient funds"
 		}
 		doGet(request, response);
+	}
+
+	private boolean isValid(int offer, int auctionId) {
+		Auction auction = getAuction(auctionId);
+		if (offer > auction.getSalePrice()) {
+			return true;
+		}
+		return false;
+	}
+
+	private Auction getAuction(int auctionId) {
+		Auction auction = null;
+		AuctionManager aucmng = new AuctionManager();
+		try {
+			auction = aucmng.getById(auctionId);
+		} catch (BLLException e) {
+			e.printStackTrace();
+		}
+		return auction;
 	}
 
 	private Bid createBid(int auctionId, int offer, User user) {

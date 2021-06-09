@@ -1,10 +1,4 @@
-package com.swap.ihm;
-
-import java.io.IOException;
-
-import com.swap.bll.BLLException;
-import com.swap.bll.UserManager;
-import com.swap.bo.User;
+package com.swap.ihm.account;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,10 +7,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.IOException;
+
+import com.swap.bll.BLLException;
+import com.swap.bll.UserManager;
+import com.swap.bo.User;
+import com.swap.ihm.MotherServlet;
+
 /**
  * Servlet implementation class Account
  */
-@WebServlet(description = "Handles showing profile page", urlPatterns = { "/account", "/user" })
+@WebServlet(urlPatterns = { "/account", "/user" })
 public class AccountServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String PROFILE_JSP = "/WEB-INF/Profile.jsp";

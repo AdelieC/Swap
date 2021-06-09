@@ -1,4 +1,11 @@
-package com.swap.ihm;
+package com.swap.ihm.bid;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -11,13 +18,8 @@ import com.swap.bo.Auction;
 import com.swap.bo.BOException;
 import com.swap.bo.Bid;
 import com.swap.bo.User;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import com.swap.ihm.AuctionStatus;
+import com.swap.ihm.MotherServlet;
 
 /**
  * Servlet implementation class BidServlet

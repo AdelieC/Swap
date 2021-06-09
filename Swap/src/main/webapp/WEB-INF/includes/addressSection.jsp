@@ -2,11 +2,11 @@
 	<h2>Address</h2>
 	
 	<div>Street</div>
-	<div>${user.getStreet()}</div>
+	<div>${user.street}</div>
 
 	<div>PostCode</div>
-	<div>${user.getPostcode()}</div>
+	<div>${user.postcode}</div>
 
 	<div>City</div>
-	<div>${user.getCity()}</div>
+	<div>${user.city}</div>
 </section>

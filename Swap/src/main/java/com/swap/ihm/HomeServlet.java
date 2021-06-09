@@ -2,21 +2,22 @@ package com.swap.ihm;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.CategoryManager;
 import com.swap.bll.UserManager;
 import com.swap.bo.Auction;
 import com.swap.bo.Category;
 import com.swap.bo.User;
+import com.swap.ihm.auction.AuctionThumbnail;
 
 /**
  * Servlet handling index page or homepage (when logged in) display user
@@ -25,55 +26,83 @@ import com.swap.bo.User;
 public class HomeServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String HOME_JSP = "/WEB-INF/Home.jsp";
-	private static final String HOME_PATH = "/Swap";
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		AuctionManager aucmng = new AuctionManager();
-		CategoryManager catmng = new CategoryManager();
-		List<Auction> auctionsList = new ArrayList<>();
-		List<AuctionThumbnail> thumbnails = new ArrayList<>();
-		List<Category> categorieslist = new ArrayList<>();
-		int categoryId = 0;
-		String search = null;
 		try {
-			categorieslist = catmng.getAll();
-			if (null != request.getParameter("category")) {
-				categoryId = Integer.valueOf(request.getParameter("category"));
-				search = request.getParameter("search");
-				if (categoryId > 0) {
-					if (search == null) {
-						auctionsList = aucmng.getByCategory(categoryId);
-					} else {
-						auctionsList = aucmng.getByNameAndCategory(search, categoryId);
-					}
-				} else if (search != null) {
-					auctionsList = aucmng.getByName(search);
-				}
+			setCategoriesList(request);
+			if (request.getQueryString() != null && request.getQueryString().length() > 0) {
+				setThumbnailsWithBasicFilters(request);
 			} else {
-				auctionsList = aucmng.getAll();
+				setThumbnails(request);
 			}
-			thumbnails = getThumbnails(auctionsList);
-			request.setAttribute("categoryId", categoryId);
-			request.setAttribute("search", search);
-			request.setAttribute("thumbnails", thumbnails);
-			request.setAttribute("categoriesList", categorieslist);
 			sendToJSP(HOME_JSP, request, response);
-		} catch (BLLException e) {
+		} catch (BLLException e1) {
 			// TODO send to error page 500
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
-
 	}
 
-	private List<AuctionThumbnail> getThumbnails(List<Auction> auctionsList) {
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		if (!userIsLoggedIn(request))
+			doGet(request, response);
+		try {
+			setThumbnailsWithUserFilters(request);
+			sendToJSP(HOME_JSP, request, response);
+		} catch (BLLException e1) {
+			// TODO send to error page 500
+			e1.printStackTrace();
+		}
+	}
+
+	private void setThumbnails(HttpServletRequest request) throws BLLException {
+		AuctionsList auctions = new AuctionsList();
 		List<AuctionThumbnail> thumbnails = new ArrayList<>();
-		auctionsList.forEach(auction -> thumbnails.add(getThumbnailByUserId(auction)));
+		thumbnails = getThumbnails(auctions.getAllOngoingAuctions());
+		request.setAttribute("thumbnails", thumbnails);
+	}
+
+	private void setThumbnailsWithBasicFilters(HttpServletRequest request) throws BLLException {
+		AuctionsList auctions = new AuctionsList();
+		List<AuctionThumbnail> thumbnails = new ArrayList<>();
+		int categoryId = Integer.valueOf(request.getParameter("category"));
+		String q = request.getParameter("search");// TODO clean with formcleaner
+		thumbnails = getThumbnails(auctions.getFilteredList(categoryId, q));
+		request.setAttribute("categoryId", categoryId);
+		request.setAttribute("search", q);
+		request.setAttribute("thumbnails", thumbnails);
+	}
+
+	private void setThumbnailsWithUserFilters(HttpServletRequest request) throws BLLException {
+		HttpSession session = request.getSession();
+		int userId = ((User) session.getAttribute("user")).getUserId();
+		AuctionsList auctions = new AuctionsList(userId);
+		List<Auction> auctionsList = new ArrayList<>();
+		List<AuctionThumbnail> thumbnails = new ArrayList<>();
+		Map<String, String[]> filters = request.getParameterMap();
+		int categoryId = Integer.valueOf(request.getParameter("category"));
+		String q = request.getParameter("search");// TODO clean with formcleaner
+		if (categoryId > 0 || q != null)
+			auctionsList = auctions.getFilteredList(categoryId, q);
+		auctionsList = auctions.getFilteredList(auctionsList, filters);
+		thumbnails = getThumbnails(auctionsList);
+		request.setAttribute("categoryId", categoryId);
+		request.setAttribute("search", q);
+		request.setAttribute("thumbnails", thumbnails);
+	}
+
+	private void setCategoriesList(HttpServletRequest request) throws BLLException {
+		CategoryManager catmng = new CategoryManager();
+		List<Category> categorieslist = catmng.getAll();
+		request.setAttribute("categoriesList", categorieslist);
+	}
+
+	private List<AuctionThumbnail> getThumbnails(List<Auction> auctions) {
+		List<AuctionThumbnail> thumbnails = new ArrayList<>();
+		auctions.forEach(auction -> thumbnails.add(getThumbnailByUserId(auction)));
 		return thumbnails;
 	}
 

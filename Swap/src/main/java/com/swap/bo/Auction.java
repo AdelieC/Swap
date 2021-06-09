@@ -8,7 +8,6 @@ public class Auction implements Serializable {
 	private int id, initialPrice, salePrice, userId, categoryId;
 	private String name, description, status;
 	private LocalDate startDate, endDate;
-	// private User user;
 
 	public Auction() {
 	}
@@ -39,6 +38,7 @@ public class Auction implements Serializable {
 		this.status = status;
 	}
 
+	@Override
 	public String toString() {
 		String result = "AUCTION:\n";
 		result += "Name: " + this.name + "\n";

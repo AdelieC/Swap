@@ -1,4 +1,10 @@
-package com.swap.ihm;
+package com.swap.ihm.auction;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
@@ -7,12 +13,8 @@ import com.swap.bll.BLLException;
 import com.swap.bll.PickUpPointManager;
 import com.swap.bo.Auction;
 import com.swap.bo.PickUpPoint;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.swap.ihm.AuctionStatus;
+import com.swap.ihm.MotherServlet;
 
 /**
  * Servlet implementation class CancelAuctionServlet
@@ -25,6 +27,7 @@ public class CancelAuctionServlet extends MotherServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO
@@ -34,6 +37,7 @@ public class CancelAuctionServlet extends MotherServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int auctionId = Integer.valueOf(request.getParameter("auctionId"));

@@ -1,4 +1,4 @@
-package com.swap.ihm;
+package com.swap.ihm.bid;
 
 import java.io.Serializable;
 

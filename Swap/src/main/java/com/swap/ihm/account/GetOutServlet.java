@@ -1,4 +1,4 @@
-package com.swap.ihm;
+package com.swap.ihm.account;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,6 +11,9 @@ import java.io.IOException;
 import com.swap.bll.BLLException;
 import com.swap.bll.UserManager;
 import com.swap.bo.User;
+import com.swap.ihm.FormCleaner;
+import com.swap.ihm.IHMException;
+import com.swap.ihm.MotherServlet;
 
 /**
  * Servlet handling logout and delete user
@@ -19,7 +22,6 @@ import com.swap.bo.User;
 public class GetOutServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String OUTCOME_JSP = "/WEB-INF/GetOut.jsp";
-	private static final String HOME_PATH = "/Swap";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,7 +39,7 @@ public class GetOutServlet extends MotherServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		try {
-			if (session.getAttribute("user") == null)
+			if (!userIsLoggedIn(request))
 				throw new IHMException("Action not permitted");
 			if ("Delete".equals(request.getParameter("submit"))) {
 				deleteCurrentUser(request, session);

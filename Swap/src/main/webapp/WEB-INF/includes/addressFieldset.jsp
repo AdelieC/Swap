@@ -2,7 +2,7 @@
 <fieldset>
 	<legend>Address</legend>
 	<label for="street">Street (number and name)</label>
-	<input type="text" pattern="^\w+(\s\w+){2,}$" placeholder="ex : 666 Moving Castle Street" name="street" value="${user.street}"/>
+	<input type="text" pattern="^[\w\s]*$" placeholder="ex : 666 Moving Castle Street" name="street" value="${user.street}"/>
 	<c:if test="${errors.containsKey('street')}" >
 	   	<div class="form-error">Invalid field : ${errors.get('street')}</div>
 	</c:if>

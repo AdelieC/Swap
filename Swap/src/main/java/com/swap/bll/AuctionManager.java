@@ -1,6 +1,5 @@
 package com.swap.bll;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.swap.bo.Auction;
@@ -13,6 +12,11 @@ public class AuctionManager {
 
 	public AuctionManager() {
 		this.auctionDAO = DAOFactory.getAuctionDAO();
+	}
+
+	private boolean isValid(Auction auction) {
+		// TODO complete this
+		return true;
 	}
 
 	public void create(Auction auction) throws BLLException {
@@ -123,28 +127,34 @@ public class AuctionManager {
 		return list;
 	}
 
-	public List<Auction> getCurrentAuctions(LocalDate date) throws BLLException {
+	public List<Auction> getByStatus(String status) throws BLLException {
 		List<Auction> list = null;
 		try {
-			list = this.auctionDAO.selectByDate(date);
+			list = this.auctionDAO.selectAllByStatus(status);
 		} catch (DALException e) {
-			throw new BLLException("GET CURRENT AUCTIONS failure");
+			throw new BLLException("GET AUCTIONS BY STATUS failure");
 		}
 		return list;
 	}
 
-	public List<Auction> getCurrentAuctionsForUser(int userId, LocalDate date) throws BLLException {
+	public List<Auction> getAllNotOver() throws BLLException {
 		List<Auction> list = null;
 		try {
-			list = this.auctionDAO.selectByUserAndDate(userId, date);
+			list = this.auctionDAO.selectAllNotOver();
 		} catch (DALException e) {
-			throw new BLLException("GET CURRENT AUCTIONS FOR USER " + userId + "failure");
+			throw new BLLException("GET AUCTIONS NOT OVER failure");
 		}
 		return list;
 	}
 
-	private boolean isValid(Auction auction) {
-		// TODO
-		return true;
+	public List<Auction> getAllOnGoing() throws BLLException {
+		List<Auction> list = null;
+		try {
+			list = this.auctionDAO.selectAllByStatus("ONGOING");
+		} catch (DALException e) {
+			throw new BLLException("GET AUCTIONS ONGOING failure");
+		}
+		return list;
 	}
+
 }

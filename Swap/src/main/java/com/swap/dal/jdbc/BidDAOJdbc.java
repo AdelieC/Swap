@@ -60,7 +60,7 @@ public class BidDAOJdbc implements BidDAO {
 				int bidPrice = result.getInt("bid_price");
 				int userId = result.getInt("user_id");
 				int auctionId = result.getInt("auction_id");
-				LocalDate date = result.getDate("date").toLocalDate();
+				LocalDate date = result.getDate("bid_date").toLocalDate();
 				Bid bid = new Bid(id, userId, auctionId, bidPrice, date);
 				list.add(bid);
 			}
@@ -137,7 +137,7 @@ public class BidDAOJdbc implements BidDAO {
 			int bidPrice = result.getInt("bid_price");
 			int userId = result.getInt("user_id");
 			int auctionId = result.getInt("auction_id");
-			LocalDate date = result.getDate("date").toLocalDate();
+			LocalDate date = result.getDate("bid_date").toLocalDate();
 			bid = new Bid(id, userId, auctionId, bidPrice, date);
 		} catch (SQLException e) {
 			throw new DALException("READ - Bid by ID failed ");
@@ -161,7 +161,7 @@ public class BidDAOJdbc implements BidDAO {
 				int bidPrice = result.getInt("bid_price");
 				int id = result.getInt("bid_id");
 				int auctionId = result.getInt("auction_id");
-				LocalDate date = result.getDate("date").toLocalDate();
+				LocalDate date = result.getDate("bid_date").toLocalDate();
 				Bid bid = new Bid(id, userId, auctionId, bidPrice, date);
 				list.add(bid);
 			}
@@ -213,7 +213,7 @@ public class BidDAOJdbc implements BidDAO {
 				int auctionId = result.getInt("auction_id");
 				int id = result.getInt("bid_id");
 				int userId = result.getInt("user_id");
-				LocalDate date = result.getDate("date").toLocalDate();
+				LocalDate date = result.getDate("bid_date").toLocalDate();
 				Bid bid = new Bid(id, userId, auctionId, price, date);
 				list.add(bid);
 			}
@@ -229,7 +229,7 @@ public class BidDAOJdbc implements BidDAO {
 		Connection cn = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		String query = DBUtils.selectBy(tableName, "date");
+		String query = DBUtils.selectBy(tableName, "bid_date");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);

@@ -13,3 +13,4 @@ CREATE TABLE USERS (
     is_admin        BOOLEAN DEFAULT 0,
     UNIQUE(username, email)
 );
+DROP TABLE USERS;

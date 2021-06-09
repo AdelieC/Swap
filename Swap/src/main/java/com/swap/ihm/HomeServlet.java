@@ -17,6 +17,7 @@ import com.swap.bll.UserManager;
 import com.swap.bo.Auction;
 import com.swap.bo.Category;
 import com.swap.bo.User;
+import com.swap.ihm.auction.AuctionThumbnail;
 
 /**
  * Servlet handling index page or homepage (when logged in) display user

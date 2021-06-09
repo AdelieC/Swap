@@ -16,7 +16,7 @@ INSERT INTO USERS values (
 INSERT INTO CATEGORIES VALUES 
 (1, "Fashion"),
 (2, "Home & Garden"),
-(3, "Toys"),
+(3, "Sports, Hobbies & Leisure"),
 (4, "Electronics"),
 (5, "Motors"),
 (6, "Pets"),

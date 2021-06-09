@@ -1,10 +1,4 @@
-package com.swap.ihm;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+package com.swap.ihm.auction;
 
 import java.io.IOException;
 
@@ -19,12 +13,18 @@ import com.swap.bo.Bid;
 import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
 import com.swap.bo.User;
+import com.swap.ihm.MotherServlet;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class ViewAuctionServlet
  */
-@WebServlet(description = "Handles display of single auction + delete auction", urlPatterns = { "/auction/view",
-		"/auction/delete" })
+@WebServlet(description = "Handles display of single auction + delete auction", urlPatterns = { "/auction/view" })
 public class ViewAuctionServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW_AUCT_JSP = "/WEB-INF/ViewAuction.jsp";
@@ -76,8 +76,7 @@ public class ViewAuctionServlet extends MotherServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO : Delete auction with session.getAttribute("user").getUserId() check?
-		// -> see what I did for user deletion in GetOutServlet, for example?
+		doGet(request, response);
 	}
 
 }

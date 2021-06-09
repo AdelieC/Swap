@@ -1,4 +1,4 @@
-package com.swap.ihm;
+package com.swap.ihm.auction;
 
 import java.io.Serializable;
 import java.time.LocalDate;

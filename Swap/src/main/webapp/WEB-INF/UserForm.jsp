@@ -39,7 +39,7 @@
 		   				<div class="form-error">Invalid field : ${errors.get('firstName')}</div>
 					</c:if>
 					<label for="email">Email</label>
-					<input type="email" pattern="^[\w!#$%&’*+/=?`{|}~^-]+(?:\.[\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$" placeholder="ex : sophy.hatter@gmail.com" name="email" value="${user.email}"/>
+					<input type="email" pattern="^[\w!#$%&’*+/=?`{|}~^-]+(?:\.[\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$" placeholder="ex : sophie.hatter@gmail.com" name="email" value="${user.email}"/>
 					<c:if test="${errors.containsKey('email')}" >
 		   				<div class="form-error">Invalid field : ${errors.get('email')}</div>
 					</c:if>

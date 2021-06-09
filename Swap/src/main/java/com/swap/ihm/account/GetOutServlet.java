@@ -1,4 +1,4 @@
-package com.swap.ihm;
+package com.swap.ihm.account;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,6 +11,9 @@ import java.io.IOException;
 import com.swap.bll.BLLException;
 import com.swap.bll.UserManager;
 import com.swap.bo.User;
+import com.swap.ihm.FormCleaner;
+import com.swap.ihm.IHMException;
+import com.swap.ihm.MotherServlet;
 
 /**
  * Servlet handling logout and delete user

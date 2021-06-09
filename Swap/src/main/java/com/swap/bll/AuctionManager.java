@@ -15,7 +15,7 @@ public class AuctionManager {
 	}
 
 	private boolean isValid(Auction auction) {
-		// TODO
+		// TODO complete this
 		return true;
 	}
 
@@ -137,16 +137,6 @@ public class AuctionManager {
 		return list;
 	}
 
-	public List<Auction> getByStatusAndUser(String status, int userId) throws BLLException {
-		List<Auction> list = null;
-		try {
-			list = this.auctionDAO.selectByStatusAndUser(status, userId);
-		} catch (DALException e) {
-			throw new BLLException("GET AUCTIONS BY WINNER failure");
-		}
-		return list;
-	}
-
 	public List<Auction> getAllNotOver() throws BLLException {
 		List<Auction> list = null;
 		try {
@@ -155,11 +145,6 @@ public class AuctionManager {
 			throw new BLLException("GET AUCTIONS NOT OVER failure");
 		}
 		return list;
-	}
-
-	public List<Auction> getNotOverByNameAndCategory(String q, int categoryId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public List<Auction> getAllOnGoing() throws BLLException {

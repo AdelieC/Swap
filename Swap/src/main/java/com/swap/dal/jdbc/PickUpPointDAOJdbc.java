@@ -80,6 +80,7 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			stmt.setString(2, s.getStreet());
 			stmt.setString(3, s.getPostcode());
 			stmt.setString(4, s.getCity());
+			stmt.setInt(5, s.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Pick-up Point --" + s.getStreet() + "-- update failed", e);
@@ -104,10 +105,6 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setInt(1, s.getId());
-			stmt.setInt(2, s.getAuctionId());
-			stmt.setString(3, s.getStreet());
-			stmt.setString(3, s.getPostcode());
-			stmt.setString(3, s.getCity());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Pick-up Point --" + s.getStreet() + "-- deletion failed", e);

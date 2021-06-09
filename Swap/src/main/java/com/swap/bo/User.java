@@ -1,15 +1,12 @@
 package com.swap.bo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String username, lastName, firstName, email, telephone, street, postcode, city, password;
 	private int userId, balance;
 	private boolean isAdmin;
-	private List<Auction> auctionList = new ArrayList<>();
 
 	public User() {
 	}
@@ -81,10 +78,6 @@ public class User implements Serializable {
 
 	public int getBalance() {
 		return balance;
-	}
-
-	public List<Auction> getAuctionList() {
-		return auctionList;
 	}
 
 	public boolean isAdmin() {
@@ -179,28 +172,9 @@ public class User implements Serializable {
 		this.isAdmin = isAdmin;
 	}
 
-	public void setAuctionList(List<Auction> auctionList) throws BOException {
-		if (auctionList.isEmpty())
-			throw new BOException("Cannot set auction list with empty list for user " + this.username);
-		this.auctionList = auctionList;
-	}
-
-	public void addAuction(Auction auction) {
-		this.auctionList.add(auction);
-	}
-
-	public void removeAuction(int index) throws BOException {
-		if (index < 0 || index >= auctionList.size())
-			throw new BOException(
-					"List of auctions for user " + this.username + " does not have entry number " + index);
-		this.auctionList.remove(index);
-	}
-
 	@Override
 	public String toString() {
-		return "User n°" + userId + " : " + username + " (" + lastName + ", " + firstName + ") " + "INFOS -> " + email
-				+ " | " + telephone + " | " + street + " | " + postcode + " | " + city + " | " + balance
-				+ " points | admin = " + isAdmin + " | pw = " + password;
+		return "User n°" + userId + " : " + username;
 	}
 
 }

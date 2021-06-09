@@ -19,6 +19,27 @@ public class DBUtils {
 		return "SELECT * FROM " + tableName + " WHERE " + col + " = ?";
 	}
 
+	public static String innerJoinTwoCols(String tableName, String col1, String col2) {
+		// common column MUST HAVE SAME NAME!
+		return " INNER JOIN " + tableName + " WHERE " + col1 + " = " + col1 + " AND " + col2 + " = ?";
+	}
+
+	public static String selectWhereDifferent(String tableName, String col) {
+		return "SELECT * FROM " + tableName + " WHERE " + col + " != ?";
+	}
+
+	public static String selectWhereNotIn(String tableName, String col) {
+		return "SELECT * FROM " + tableName + " WHERE " + col + " NOT IN(?, ?)";
+	}
+
+	public static String selectWhereAndWhereNot(String tableName, String col, String colNot) {
+		return "SELECT * FROM " + tableName + " WHERE " + col + " = ? AND " + colNot + " != ?";
+	}
+
+	public static String selectByTwoCols(String tableName, String col1, String col2) {
+		return "SELECT * FROM " + tableName + " WHERE " + col1 + " = ? AND " + col2 + " = ?";
+	}
+
 	public static String selectWhereBetween(String tableName, String col) {
 		return "SELECT * FROM " + tableName + " WHERE " + col + " BETWEEN (? AND ?)";
 	}
@@ -83,4 +104,5 @@ public class DBUtils {
 			throw new DALException("Failed to close prepared statement - ", e);
 		}
 	}
+
 }

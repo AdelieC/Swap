@@ -1,4 +1,4 @@
-package com.swap.ihm;
+package com.swap.ihm.bid;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import com.swap.bll.BidManager;
 import com.swap.bll.UserManager;
 import com.swap.bo.Bid;
 import com.swap.bo.User;
+import com.swap.ihm.MotherServlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

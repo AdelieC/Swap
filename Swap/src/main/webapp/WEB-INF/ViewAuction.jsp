@@ -1,6 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="./includes/base.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +6,7 @@
 <title>Swap</title>
 </head>
 <body>
-	<!-- Include header -->
+	<jsp:include page="./includes/header.jsp"/>
 	<main>
 		<c:choose>
 			<c:when test="${empty bid}">
@@ -45,7 +43,7 @@
 			<p>Initial price: ${auction.initialPrice}</p>
 			<p>End date: ${auction.endDate}</p>
 			<p>Pick up point: ${pickUpPoint}</p>
-			<p>Seller: <a href="">${seller.username}</a></p>
+			<p>Seller: <a href="/Swap/user?id=${seller.userId}">${seller.username}</a></p>
 		</fieldset>
 		<c:if test="${!empty sessionScope.user}">
 			<c:choose>
@@ -67,6 +65,6 @@
 			</c:choose>
 		</c:if>
 	</main>
-
+	<jsp:include page="./includes/footer.jsp"/>
 </body>
 </html>

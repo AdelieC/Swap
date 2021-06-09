@@ -1,4 +1,4 @@
-package com.swap.ihm;
+package com.swap.ihm.auction;
 
 import java.io.IOException;
 
@@ -13,6 +13,7 @@ import com.swap.bo.Bid;
 import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
 import com.swap.bo.User;
+import com.swap.ihm.MotherServlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

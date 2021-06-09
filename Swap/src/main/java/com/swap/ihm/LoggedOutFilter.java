@@ -8,9 +8,10 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+
+import com.swap.bo.User;
 
 /**
  * Servlet Filter implementation class LoggedInFilter Prevents access to
@@ -19,6 +20,7 @@ import java.io.IOException;
 @WebFilter(description = "Filters access to pages depending on session.loggedIn value", urlPatterns = { "/account*",
 		"/logout", "/auction/create", "/auction/edit", "/auction/cancel", "/auction/bid*" })
 public class LoggedOutFilter implements Filter {
+	private final static String LOGIN_PATH = "/Swap/login";
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -28,11 +30,15 @@ public class LoggedOutFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
-		HttpSession session = request.getSession();
-		if (session.getAttribute("user") == null) {
-			response.sendRedirect("/Swap/login");
-		} else {
+		if (userIsLoggedIn(request)) {
 			chain.doFilter(req, res);
+		} else {
+			response.sendRedirect(LOGIN_PATH);
 		}
+	}
+
+	protected boolean userIsLoggedIn(HttpServletRequest request) {
+		return request.getSession().getAttribute("user") != null
+				&& ((User) request.getSession().getAttribute("user")).getUserId() > 0;
 	}
 }

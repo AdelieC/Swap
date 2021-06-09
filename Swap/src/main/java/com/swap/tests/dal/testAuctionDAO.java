@@ -80,12 +80,6 @@ public class testAuctionDAO extends HttpServlet {
 			for (Auction i : list) {
 				System.out.println(i.toString());
 			}
-			System.out.println("SELECT BY USER AND DATE:");
-			// TODO Update date test
-			list = auctionDAO.selectByUserAndDate(1, LocalDate.now());
-			for (Auction i : list) {
-				System.out.println(i.toString());
-			}
 		} catch (DALException e) {
 			e.printStackTrace();
 		}

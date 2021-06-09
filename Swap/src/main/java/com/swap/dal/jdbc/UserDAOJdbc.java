@@ -170,7 +170,7 @@ public class UserDAOJdbc implements UserDAO {
 	}
 
 	@Override
-	public User selectByUsername(String name) throws DALException {
+	public User selectByUsername(String username) throws DALException {
 		User user = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -179,11 +179,10 @@ public class UserDAOJdbc implements UserDAO {
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);
-			stmt.setString(1, name);
+			stmt.setString(1, username);
 			result = stmt.executeQuery();
 			if (result.next()) {
 				int userId = result.getInt("user_id");
-				String username = result.getString("username");
 				String lastName = result.getString("last_name");
 				String firstName = result.getString("first_name");
 				String email = result.getString("email");
@@ -198,7 +197,7 @@ public class UserDAOJdbc implements UserDAO {
 						password, balance, isAdmin);
 			}
 		} catch (SQLException e) {
-			throw new DALException("User with name " + name + " couldn't be fetched from dbTable USERS", e);
+			throw new DALException("User with name " + username + " couldn't be fetched from dbTable USERS", e);
 		} finally {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);
@@ -207,7 +206,7 @@ public class UserDAOJdbc implements UserDAO {
 	}
 
 	@Override
-	public List<User> searchByUsername(String usernameQ) throws DALException {
+	public List<User> searchByUsername(String username) throws DALException {
 		List<User> users = new ArrayList<User>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -216,11 +215,10 @@ public class UserDAOJdbc implements UserDAO {
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);
-			stmt.setString(1, "%" + usernameQ + "%");
+			stmt.setString(1, "%" + username + "%");
 			result = stmt.executeQuery();
 			while (result.next()) {
 				int userId = result.getInt("user_id");
-				String username = result.getString("username");
 				String lastName = result.getString("last_name");
 				String firstName = result.getString("first_name");
 				String email = result.getString("email");
@@ -235,7 +233,7 @@ public class UserDAOJdbc implements UserDAO {
 						password, balance, isAdmin));
 			}
 		} catch (SQLException e) {
-			throw new DALException("User with name " + usernameQ + " couldn't be fetched from dbTable USERS", e);
+			throw new DALException("User with name " + username + " couldn't be fetched from dbTable USERS", e);
 		} finally {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);
@@ -244,7 +242,7 @@ public class UserDAOJdbc implements UserDAO {
 	}
 
 	@Override
-	public List<User> searchByCity(String cityQ) throws DALException {
+	public List<User> searchByCity(String city) throws DALException {
 		List<User> users = new ArrayList<User>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -253,7 +251,7 @@ public class UserDAOJdbc implements UserDAO {
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);
-			stmt.setString(1, "%" + cityQ + "%");
+			stmt.setString(1, "%" + city + "%");
 			result = stmt.executeQuery();
 			while (result.next()) {
 				int userId = result.getInt("user_id");
@@ -264,7 +262,6 @@ public class UserDAOJdbc implements UserDAO {
 				String telephone = result.getString("telephone");
 				String street = result.getString("street");
 				String postcode = result.getString("postcode");
-				String city = result.getString("city");
 				String password = result.getString("password");
 				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
@@ -272,7 +269,7 @@ public class UserDAOJdbc implements UserDAO {
 						password, balance, isAdmin));
 			}
 		} catch (SQLException e) {
-			throw new DALException("Read failed - couldn't retrieve list of users from city " + cityQ, e);
+			throw new DALException("Read failed - couldn't retrieve list of users from city " + city, e);
 		} finally {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);

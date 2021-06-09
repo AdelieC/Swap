@@ -14,7 +14,7 @@
 					<legend>Identity</legend>
 					
 					<label for="username">UserName</label>
-					<input type="text" pattern="^(?=[a-zA-Z0-9._]{6,30}$)(?!.*[_.]{2})[^_.].*[^_.]$" placeholder="ex : OldSophie68" name="username" value="${user.username}"/>
+					<input type="text" pattern="^(?=[a-zA-Z0-9._]{2,30}$)(?!.*[_.]{2})[^_.].*[^_.]$" placeholder="ex : OldSophie68" name="username" value="${user.username}"/>
 					<c:if test="${errors.containsKey('username')}" >
 		   				<div class="form-error">Invalid field : ${errors.get('username')}</div>
 					</c:if>
@@ -39,7 +39,7 @@
 		   				<div class="form-error">Invalid field : ${errors.get('firstName')}</div>
 					</c:if>
 					<label for="email">Email</label>
-					<input type="email" pattern="^[\w!#$%&’*+/=?`{|}~^-]+(?:\.[\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$" placeholder="ex : sophy.hatter@gmail.com" name="email" value="${user.email}"/>
+					<input type="email" pattern="^[\w!#$%&’*+/=?`{|}~^-]+(?:\.[\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$" placeholder="ex : sophie.hatter@gmail.com" name="email" value="${user.email}"/>
 					<c:if test="${errors.containsKey('email')}" >
 		   				<div class="form-error">Invalid field : ${errors.get('email')}</div>
 					</c:if>

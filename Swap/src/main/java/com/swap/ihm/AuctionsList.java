@@ -161,9 +161,9 @@ public class AuctionsList {
 	}
 
 	public List<Auction> getFilteredList(List<Auction> auctions, Map<String, String[]> filters) {
-		if (filters.get("auctFilters")[0].equals("bidsFilters")) {
+		if (filters.get("auctionsFilters")[0].equals("allAuctionsFilters")) {
 			auctions = applyBidsFilters(auctions, filters);
-		} else if (filters.get("auctFilters")[0].equals("myAuctionsFilters")) {
+		} else if (filters.get("auctionsFilters")[0].equals("myAuctionsFilters")) {
 			auctions = applyMyAuctionsFilters(auctions, filters);
 		}
 		return auctions;
@@ -171,17 +171,17 @@ public class AuctionsList {
 
 	private List<Auction> applyBidsFilters(List<Auction> auctions, Map<String, String[]> filters) {
 		List<Auction> tempList = auctions;
-		if (filters.containsKey("all-bids-on")) {
+		if (filters.containsKey("allAuctsOn")) {
 			tempList = getAllOngoingAuctions();
-			if (filters.containsKey("my-bids-won")) {
+			if (filters.containsKey("myBidsWon")) {
 				tempList.addAll(getMyBidsWon());
 			}
-		} else if (filters.containsKey("my-bids-on")) {
+		} else if (filters.containsKey("myBidsOn")) {
 			tempList = getMyOngoingBids();
-			if (filters.containsKey("my-bids-won")) {
+			if (filters.containsKey("myBidsWon")) {
 				tempList.addAll(getMyBidsWon());
 			}
-		} else if (filters.containsKey("my-bids-won")) {
+		} else if (filters.containsKey("myBidsWon")) {
 			tempList = getMyBidsWon();
 		}
 		return tempList;
@@ -189,17 +189,17 @@ public class AuctionsList {
 
 	private List<Auction> applyMyAuctionsFilters(List<Auction> auctions, Map<String, String[]> filters) {
 		List<Auction> tempList = auctions;
-		if (filters.containsKey("my-aucts-on")) {
+		if (filters.containsKey("myAuctsOn")) {
 			tempList = getMyOngoingAuctions();
-			if (filters.containsKey("my-future-aucts")) {
+			if (filters.containsKey("myFutureAucts")) {
 				tempList.addAll(getMyFutureAuctions());
 			}
-		} else if (filters.containsKey("my-future-aucts")) {
+		} else if (filters.containsKey("myFutureAucts")) {
 			tempList = getMyFutureAuctions();
-			if (filters.containsKey("my-past-aucts")) {
+			if (filters.containsKey("myPastAucts")) {
 				tempList.addAll(getMyPastAuctions());
 			}
-		} else if (filters.containsKey("my-past-aucts")) {
+		} else if (filters.containsKey("myPastAucts")) {
 			tempList = getMyPastAuctions();
 		} else {
 			tempList = getMyAuctions();

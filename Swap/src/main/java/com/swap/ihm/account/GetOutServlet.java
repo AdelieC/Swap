@@ -18,7 +18,7 @@ import com.swap.ihm.MotherServlet;
 /**
  * Servlet handling logout and delete user
  */
-@WebServlet(description = "Handles logout and delete", urlPatterns = { "/account/logout", "/account/delete" })
+@WebServlet(urlPatterns = { "/account/logout", "/account/delete" })
 public class GetOutServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String OUTCOME_JSP = "/WEB-INF/GetOut.jsp";
@@ -59,7 +59,6 @@ public class GetOutServlet extends MotherServlet {
 	private void deleteCurrentUser(HttpServletRequest request, HttpSession session) throws BLLException {
 		UserManager userM = new UserManager();
 		int userId = FormCleaner.cleanId(request.getParameter("userId"));
-		System.out.println("Deleting user " + userId);
 		if (((User) session.getAttribute("user")).getUserId() == userId) {
 			userM.delete(userId);
 		}

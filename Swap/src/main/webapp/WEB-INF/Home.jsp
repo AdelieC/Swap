@@ -50,7 +50,7 @@
 						<p>End date: ${auction.date}</p>
 						<p>Seller: ${auction.seller}</p>
 					</article>
-			</c:forEach>
+				</c:forEach>
 			</section>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>

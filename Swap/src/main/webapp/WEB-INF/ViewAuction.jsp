@@ -57,10 +57,12 @@
 					</form>
 				</c:when>
 				<c:otherwise>
-				<c:if test="${auction.status.equals('CREATED')}">
-					<a href="/Swap/auction?id=${auction.id}">Update auction</a>
-				</c:if>
-				<a href="/Swap/auction/view/bidders?id=${auction.id}">View bidders</a>
+					<c:if test="${sessionScope.user.getUserId() == seller.userId}">
+						<c:if test="${auction.status.equals('CREATED')}">
+							<a href="/Swap/auction?id=${auction.id}">Update auction</a>
+						</c:if>
+						<a href="/Swap/auction/view/bidders?id=${auction.id}">View bidders</a>
+					</c:if>
 				</c:otherwise>
 			</c:choose>
 		</c:if>

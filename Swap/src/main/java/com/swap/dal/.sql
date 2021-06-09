@@ -13,3 +13,20 @@ CREATE TABLE USERS (
     is_admin        BOOLEAN DEFAULT 0,
     UNIQUE(username, email)
 );
+
+DROP TABLE USERS;
+SELECT * FROM USERS;
+INSERT INTO USERS values (
+'1',
+'adeliec',
+'castel',
+'adelie',
+'adelie@gmail.com',
+'0231936141',
+'60 rue des rosiers',
+'14000',
+'CAEN',
+'Pa$$w0rd',
+'0',
+'0'
+);

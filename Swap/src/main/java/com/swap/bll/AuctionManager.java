@@ -14,6 +14,11 @@ public class AuctionManager {
 		this.auctionDAO = DAOFactory.getAuctionDAO();
 	}
 
+	private boolean isValid(Auction auction) {
+		// TODO
+		return true;
+	}
+
 	public void create(Auction auction) throws BLLException {
 		if (isValid(auction)) {
 			try {
@@ -152,49 +157,19 @@ public class AuctionManager {
 		return list;
 	}
 
-	public List<Auction> getNotOverByUser(int userId) throws BLLException {
-		List<Auction> list = null;
-		try {
-			list = this.auctionDAO.selectNotOverByUser(userId);
-		} catch (DALException e) {
-			throw new BLLException("GET AUCTIONS NOT OVER BY USER failure");
-		}
-		return list;
-	}
-
-	public List<Auction> getByWinner(int userId) throws BLLException {
-		List<Auction> list = null;
-		try {
-			list = this.auctionDAO.selectByWinner(userId);
-		} catch (DALException e) {
-			throw new BLLException("GET AUCTIONS BY WINNER failure");
-		}
-		return list;
-	}
-
-	private boolean isValid(Auction auction) {
-		// TODO
-		return true;
-	}
-
-	public List<Auction> getNotOverByCategory(int categoryId) throws BLLException {
-		List<Auction> list = null;
-		try {
-			list = this.auctionDAO.selectNotOverByCategory(categoryId);
-		} catch (DALException e) {
-			throw new BLLException("GET AUCTIONS BY WINNER failure");
-		}
-		return list;
-	}
-
 	public List<Auction> getNotOverByNameAndCategory(String q, int categoryId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<Auction> getNotOverByName(String q) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Auction> getAllOnGoing() throws BLLException {
+		List<Auction> list = null;
+		try {
+			list = this.auctionDAO.selectAllByStatus("ONGOING");
+		} catch (DALException e) {
+			throw new BLLException("GET AUCTIONS ONGOING failure");
+		}
+		return list;
 	}
 
 }

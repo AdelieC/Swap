@@ -24,7 +24,7 @@
 <body>
 	<jsp:include page="./includes/header.jsp"/>
 	<main>
-		<form method="${isLoggedIn ? 'post' : 'get'}" action="/Swap">
+		<form method="${isLoggedIn ? 'post' : 'get'}" action="/Swap/home">
 			<c:if test="${isLoggedIn}">
 				<jsp:include page="./includes/loggedInPanel.jsp"/>
 			</c:if>

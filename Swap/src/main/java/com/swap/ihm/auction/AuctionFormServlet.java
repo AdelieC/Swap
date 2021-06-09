@@ -1,4 +1,4 @@
-package com.swap.ihm;
+package com.swap.ihm.auction;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -13,6 +13,8 @@ import com.swap.bo.Auction;
 import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
 import com.swap.bo.User;
+import com.swap.ihm.AuctionStatus;
+import com.swap.ihm.MotherServlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -91,7 +93,8 @@ public class AuctionFormServlet extends MotherServlet {
 			createAuction(auction, pup);
 		} else {
 			auction.setId(Integer.valueOf(request.getParameter("auctionId")));
-			if (auction.getStatus().equals(AuctionStatus.CREATED.getStatus())) {
+			if (auction.getUserId() == user.getUserId()
+					&& auction.getStatus().equals(AuctionStatus.CREATED.getStatus())) {
 				updateAuction(auction, pup);
 				request.setAttribute("cancellable", true);
 			} else {

@@ -2,6 +2,7 @@
 <c:set var="isLoggedIn" scope="request" value="${user != null && user.userId > 0}"/>
 <!DOCTYPE html>
 <html>
+	<style><%@include file="/css/layout.css"%></style>
 	<head>
 		<meta charset="UTF-8">
 		<link href="/Swap/css/index.css" rel="stylesheet">
@@ -9,7 +10,7 @@
 	</head>
 	<body>
 		<jsp:include page="./includes/header.jsp"/>
-		<main>
+		<main id="home-main">
 			<form method="${isLoggedIn ? 'post' : 'get'}" action="/Swap/home">
 				<c:if test="${isLoggedIn}">
 					<jsp:include page="./includes/loggedInPanel.jsp"/>
@@ -42,15 +43,17 @@
 	        	</fieldset>
 			</form>
 			<section>
-				<c:forEach var="auction" items="${thumbnails}">	
-					<article class="auction-thumbnail">
-						<a href="/Swap/auction/view?id=${auction.id}">${auction.item}</a>
-						<a href="/Swap/auction/view?id=${auction.id}"><div class="placeholder" style="background: center url('/Swap/img/dummy.jpg');"></div></a>
-						<p>Price: ${auction.price}</p>
-						<p>End date: ${auction.date}</p>
-						<p>Seller: ${auction.seller}</p>
-					</article>
-			</c:forEach>
+				<c:forEach var="auction" items="${thumbnails}">
+					<a href="/Swap/auction/view?id=${auction.id}">
+						<article>
+							<h3>${auction.item}</h3>
+							<div class="placeholder" style="background: center url('/Swap/img/dummy.jpg');"></div>
+							<p>Price: ${auction.price}</p>
+							<p>End date: ${auction.date}</p>
+							<p>Seller: ${auction.seller}</p>
+						</article>
+					</a>
+				</c:forEach>
 			</section>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>

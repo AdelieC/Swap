@@ -11,5 +11,4 @@
 			<jsp:include page="logoutForm.jsp"/>
 		</c:otherwise>
 	</c:choose>
-	<jsp:include page="nav.jsp"/>
 </header>

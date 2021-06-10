@@ -16,7 +16,7 @@
 			<p>Congratulations!! You just bid ${bid.getBidPrice()} on auction number ${bid.getAuctionId()}.</p>
 		</c:otherwise>
 	</c:choose>
-		<a href="/Swap">Back to Homepage</a>
+		<a class="btn" href="/Swap">Back to Homepage</a>
 	</main>
 	<jsp:include page="./includes/footer.jsp"/>
 </body>

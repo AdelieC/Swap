@@ -1,18 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ include file="./includes/base.jsp" %>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-	<main>
-		<form action="update-auctions" method="post">
-			<input type="submit" value="Update auctions status">
-		</form>
-	</main>
-
-</body>
+	<head>
+		<jsp:include page="./includes/basicLinks.html"/>
+		<title>Swap</title>
+	</head>
+	<body>
+	<jsp:include page="./includes/header.jsp"/>
+		<main>
+			<form action="update-auctions" method="post">
+				<input type="submit" value="Update auctions status">
+			</form>
+		</main>
+		<jsp:include page="./includes/footer.jsp"/>
+	</body>
 </html>

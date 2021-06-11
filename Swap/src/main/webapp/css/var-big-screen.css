@@ -1,0 +1,42 @@
+@charset "UTF-8";
+/*****************VARIABLES MOBILE******************/
+:root {
+/*--------> BLOCKS SIZES */
+--nav-width: 100vw;
+--nav-shift: -100vw;
+--mx-w-btn: 15em;
+
+/*--------> PADDING */
+--header-pdg: 1vw;
+--main-pdg: 0 10vw 0 10vw;
+--btn-pdg: 0.5em;
+--footer-pdg: 3vh 2em 2em 2em;
+--action-btn-pdg:1em;
+--input-padding: 0.5em;
+--fieldset-pdg: 1em;
+
+/*--------> MARGIN */
+--under-header-mg: 15em;
+--menu-dots-mg: 0.2em;
+--form-el-mg: 0.5em;
+--light-vertical-mg: 1em 0 1em 0;
+--after-h1-mg: 2vh;
+--after-h2-mg: 1.5vh;
+--after-h34-mg: 1vh;
+
+/*--------> IMAGES */
+--logo-size: 4em;
+--menu-ic-size: 2em;
+--menu-dots-size: 0.6em;
+--action-ic-size: 2em;
+
+/*--------> FONT-SIZE */
+--body-fs: 1em;
+--app-title-fs: 4em;
+--h1-fs: 3em;
+--h2-fs: 2em;
+--h3-fs: 1.5em;
+--h4-fs: 1.3em;
+--btn-fs: 1em;
+--txt-fs: 1em;
+}

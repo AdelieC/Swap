@@ -1,0 +1,13 @@
+@charset "UTF-8";
+:root {
+--main-bg-color: #fff;
+--header-nav-color: #fff;
+--cta-color: #f2856dff;
+--logo-color-d: #28a955ff;
+--logo-color-l: #b7f07dff;
+--main-font-color: #484349;
+/*--------> SHADOWS */
+--thumbnail-shdw: 3px 3px 6px rgba(0,0,0,0.3);
+--btn-shdw: 2px 3px 2px rgba(0,0,0,0.2);
+--far-shdw: 2px 3px 15px rgba(0,0,0,0.2);
+}

@@ -86,14 +86,16 @@ public class HomeServlet extends MotherServlet {
 		List<Auction> auctionsList = new ArrayList<>();
 		List<AuctionThumbnail> thumbnails = new ArrayList<>();
 		Map<String, String[]> filters = request.getParameterMap();
-		int categoryId = Integer.valueOf(request.getParameter("category"));
-		String q = request.getParameter("search");// TODO clean with formcleaner
-		if (categoryId > 0 || q != null)
-			auctionsList = auctions.getFilteredList(categoryId, q);
-		auctionsList = auctions.getFilteredList(auctionsList, filters);
-		thumbnails = getThumbnails(auctionsList);
-		setFilterAttributes(request, filters);
-		request.setAttribute("thumbnails", thumbnails);
+		if (filters != null) {
+			int categoryId = Integer.valueOf(request.getParameter("category"));
+			String q = request.getParameter("search");// TODO clean with formcleaner
+			if (categoryId > 0 || q != null)
+				auctionsList = auctions.getFilteredList(categoryId, q);
+			auctionsList = auctions.getFilteredList(auctionsList, filters);
+			thumbnails = getThumbnails(auctionsList);
+			setFilterAttributes(request, filters);
+			request.setAttribute("thumbnails", thumbnails);
+		}
 	}
 
 	private void setFilterAttributes(HttpServletRequest request, Map<String, String[]> filters) {

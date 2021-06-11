@@ -31,7 +31,7 @@ public class HomeServlet extends MotherServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			setCategoriesList(request);
+			setCatListAttribute(request);
 			if (request.getQueryString() != null && request.getQueryString().length() > 0) {
 				setThumbnailsWithBasicFilters(request);
 			} else {
@@ -47,14 +47,17 @@ public class HomeServlet extends MotherServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (!userIsLoggedIn(request))
+		if (!userIsLoggedIn(request) || request.getParameter("auctionsFilters") == null) {
 			doGet(request, response);
-		try {
-			setThumbnailsWithUserFilters(request);
-			sendToJSP(HOME_JSP, request, response);
-		} catch (BLLException e1) {
-			// TODO send to error page 500
-			e1.printStackTrace();
+		} else {
+			try {
+				setCatListAttribute(request);
+				setThumbnailsWithUserFilters(request);
+				sendToJSP(HOME_JSP, request, response);
+			} catch (BLLException e1) {
+				// TODO send to error page 500
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -89,12 +92,17 @@ public class HomeServlet extends MotherServlet {
 			auctionsList = auctions.getFilteredList(categoryId, q);
 		auctionsList = auctions.getFilteredList(auctionsList, filters);
 		thumbnails = getThumbnails(auctionsList);
-		request.setAttribute("categoryId", categoryId);
-		request.setAttribute("search", q);
+		setFilterAttributes(request, filters);
 		request.setAttribute("thumbnails", thumbnails);
 	}
 
-	private void setCategoriesList(HttpServletRequest request) throws BLLException {
+	private void setFilterAttributes(HttpServletRequest request, Map<String, String[]> filters) {
+		filters.forEach((key, arrValues) -> {
+			request.setAttribute(key, arrValues[0]);
+		});
+	}
+
+	private void setCatListAttribute(HttpServletRequest request) throws BLLException {
 		CategoryManager catmng = new CategoryManager();
 		List<Category> categorieslist = catmng.getAll();
 		request.setAttribute("categoriesList", categorieslist);

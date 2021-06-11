@@ -1,13 +1,12 @@
 <%@ include file="./includes/base.jsp" %>
 <!DOCTYPE html>
 <html>
-	<style><%@include file="/css/layout.css"%></style>
 	<head>
-		<meta charset="UTF-8">
+		<jsp:include page="./includes/basicLinks.html"/>
 		<title>${user.userId > 0 ? 'Edit Profile' : 'Register'}</title>
 	</head>
 	<body>
-		<jsp:include page="./includes/headerLight.jsp"/>
+		<jsp:include page="./includes/header.jsp"/>
 		<main>
 			<h1>${user.userId > 0 ? 'Edit Profile' : 'Register'}</h1>
 			<form action="/Swap/register" method="post">
@@ -68,13 +67,13 @@
 		   			<p id="user-balance">Current balance: ${user.balance}</p>
 				</c:if>
 				<div class="btn-panel">
-					<input type="submit" value="${user.userId > 0 ? 'Update' : 'Register'}" />
+					<input type="submit" class="btn submit1" value="${user.userId > 0 ? 'Update' : 'Register'}" />
+					<a class="btn submit2" href="/Swap">Cancel</a>
 					<c:if test="${user.userId > 0}" >
 						<jsp:include page="./includes/deleteAccount.jsp"/>
 			    	</c:if>
 		    	</div>
 			</form>
-		    <a class="btn cancel-btn" href="/Swap">Cancel</a>
 		    <jsp:include page="./includes/footer.jsp"/>
 		</main>
 	</body>

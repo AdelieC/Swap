@@ -2,14 +2,14 @@
 <c:set var="user" scope="request" value="${sessionScope.user}"/>
 <!DOCTYPE html>
 <html>
-	<style><%@include file="/css/layout.css"%></style>
+	<jsp:include page="./includes/basicLinks.html"/>
 	<head>
 		<meta charset="UTF-8">
 	    <title>Swap</title>
 	</head>
 	<body>
+	 	<jsp:include page="./includes/header.jsp"/>
 	    <main id="auction-form-main">
-	        <jsp:include page="./includes/header.jsp"/>
 	        <h1>${title}</h1>
 	        <form id="auction-form" method="post" action="auction">
 	        	<fieldset>
@@ -53,6 +53,7 @@
 			            <label for="end-date">End date:</label>
 			            <input type="date" name="end-date" value="${auction.endDate}" required>
 		            </div>
+		            </fieldset>
 	 	            <fieldset class="pup">
 		            	<legend>Pick Up Point</legend>
 		            	<div class="form-field">
@@ -68,17 +69,19 @@
 				            <input type="text" name="city" value="${pickUpPoint.city}">
 			            </div>
 		            </fieldset>
-		            <input type="hidden" name="auctionId" value="${auction.getId()}">
-		            <input type="submit" value="Save">
-	            </fieldset>
-	        </form>
-			<a class="btn cancel-btn" href="/Swap">Cancel</a>
-			<c:if test="${!empty auction}">
-				<form method="post" action="/Swap/auction/cancel">
-					<input type="hidden" name="auctionId" value="${auction.getId()}">
-		        	<input type="submit" name="cancel-auction" value="Cancel auction">
-		        </form>
-	        </c:if> 
+		            </form>
+		            <div class="btn-group">
+		            	<input type="hidden" form="auction-form" name="auctionId" value="${auction.getId()}">
+		            	<input type="submit" form="auction-form" class="btn submit1" value="Save">
+		            	<a class="btn submit2" href="/Swap">Cancel</a>
+						<c:if test="${!empty auction}">
+							<form method="post" action="/Swap/auction/cancel">
+								<input type="hidden" name="auctionId" value="${auction.getId()}">
+		        				<input type="submit" class="btn cta" name="cancel-auction" value="Cancel auction">
+		        			</form>
+	       	 			</c:if> 
+	       	 		</div>
+			
 	    </main>
 		<jsp:include page="./includes/footer.jsp"/>
 	</body>

@@ -2,9 +2,8 @@
 <c:set var="isMyProfile" scope="request" value="${sessionScope.user != null && sessionScope.user == targetUser}"/>
 <!DOCTYPE html>
 <html>
-	<style><%@include file="/css/layout.css"%></style>
 	<head>
-		<meta charset="UTF-8">
+		<jsp:include page="./includes/basicLinks.html"/>
 		<title>My profile</title>
 	</head>
 	<body>
@@ -24,7 +23,8 @@
 					</c:if>
 				</div>
 			</section>
-			<c:if test="${isMyProfile}">
+			<c:choose>
+			<c:when test="${isMyProfile}">
 				<section class="display-section">
 					<h3>Informations</h3>
 					<div class="display-field">
@@ -45,9 +45,15 @@
 					</div>
 				</section>
 				<jsp:include page="./includes/addressSection.jsp"/>
-				<a class="btn" href="/Swap/account/edit">Edit my profile</a>
-			</c:if>
-			<a class="btn cancel-btn" href="/Swap">Back to homepage</a>
+				<div class="center">
+					<a class="btn submit1" href="/Swap/account/edit">Edit my profile</a>
+					<a class="btn submit2" href="/Swap">Back to homepage</a>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<a class="btn submit2" href="/Swap">Back to homepage</a>
+			</c:otherwise>
+			</c:choose>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>
 	</body>

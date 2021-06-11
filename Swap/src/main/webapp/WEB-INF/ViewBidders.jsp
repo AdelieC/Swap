@@ -1,10 +1,9 @@
 <%@ include file="./includes/base.jsp" %>
 <!DOCTYPE html>
 <html>
-	<style><%@include file="/css/layout.css"%></style>
 	<head>
-	<meta charset="UTF-8">
-	<title>Swap</title>
+		<jsp:include page="./includes/basicLinks.html"/>
+		<title>Swap</title>
 	</head>
 	<body>
 		<jsp:include page="./includes/header.jsp"/>
@@ -20,7 +19,7 @@
 				</div>
 			</article>
 			</c:forEach>
-			<a class="btn cancel-btn" href="/Swap/home">Back to homepage</a>
+			<a class="btn submit2" href="/Swap/home">Back to homepage</a>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>
 	</body>

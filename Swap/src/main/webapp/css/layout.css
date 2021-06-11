@@ -1,4 +1,4 @@
-@charset "UTF-8";
+/****************** RESET *******************/
 html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {
     margin: 0;
     padding: 0;
@@ -6,15 +6,16 @@ html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquot
     font-size: 100%;
     font-weight: normal;
     vertical-align: baseline;
-    background: transparent;
+    box-sizing: inherit;
 }
 
-main, article, aside, figure, footer, header, nav, section, details, summary {display: block;}
+main, article, aside, figure, footer, header, nav, section, details, summary {
+    display: block;
+}
 
-/* Handle box-sizing while better addressing child elements:
-   http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
 html {
     box-sizing: border-box;
+    width: 100vw;
 }
 
 *,
@@ -23,21 +24,42 @@ html {
     box-sizing: inherit;
 }
 
-h1 {
-	text-align: center;
-	font-size: 1.4em;
-	margin: 2vh;
+a, li {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  text-decoration: none;
+  list-style: none;
+  color: inherit;
 }
 
-h2 {
-	text-align: center;
-	font-size: 1.3em;
-	margin: 2vh;
+input, select, label {
+  vertical-align: middle;
 }
 
-h3 {
-	margin-bottom: 1vh;
-	font-size: 1.1em;
+button, input[type="submit"] {
+	background: none;
+	border: 0;
+	color: inherit;
+  	font-family: inherit;
+  	line-height: normal;
+ 	margin: 0;
+  	text-transform: none;
+  	-webkit-appearance: button;
+  	outline: none;
+  	vertical-align: middle;
+}
+
+/****************** MARGIN/PADDING *******************/
+main {
+	padding: var(--main-pdg);
+	margin-top: var(--header-mgt);
+	width: 100%;
+}
+header {
+	padding: var(--padding-header);
 }
 
 /*************************** HOMEPAGE ***************************/
@@ -45,26 +67,24 @@ h3 {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-evenly;
-	color: #343a40;
 }
 
-a {
-	text-decoration: none;
+#home-main>section>a {
+	margin: 2vh 0 2vh 0;
 }
 
 a>article {
-	width: 50vh;
-	height: 65vh;
-	margin: 4vh;
+	width: 100%;
+	height: auto;
 	padding: 2vh;
+	align-self: center;
 	border-radius: 2px;
 	box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.3);
 }
 
-article>h3 {
+article>h4 {
 	text-align: center;
 	margin-top: 2vh;
-	font-size: 1.2em;
 }
 
 article>.placeholder {
@@ -81,23 +101,14 @@ article>p {
 }
 
 /*************************** FORMS ***************************/
-form {
+main:not(#home-main) form {
 	width: 100%;
 }
-fieldset {
-	margin: auto;
-	margin-top: 3vh;
-	margin-bottom: 3vh;
+
+main:not(#home-main) fieldset {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
-	padding: 2vh;
-	padding-left: 6vh;
-	padding-right: 6vh;
-}
-
-legend {
-	font-size: 1.1em;
 }
 
 .form-field {
@@ -106,22 +117,18 @@ legend {
 	display: flex;
 }
 
-label {
+main:not(#home-main) label {
 	margin-right: 2vh;
 	width: 35%
 }
 
-input {
+main:not(#home-main) input {
 	width: 60%;
 	align-self: center;
 }
 
 .pup {
-	margin: 0;
-	margin-top: 2vh;
-	margin-bottom: 2vh;
-	width: 100%;
-	padding: 0;
+	margin: 2vh 0 2vh 0;
 }
 
 #user-balance {
@@ -177,8 +184,6 @@ input {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	border-radius: 2px;
-	box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.3);
 }
 
 .bidder-lbl {
@@ -186,9 +191,25 @@ input {
 }
 
 .bidder-val {
-	width: 40%;
+	width: 10%;
 }
-
 .bidder-bid {
 	width: 10%;
+}
+.center {
+	display: flex;
+	flex-wrap: no-wrap;
+	justify-content: space-between;
+	flex-direction: row;
+	align-items: center;
+}
+main.center-v {
+	display: flex;
+	flex-wrap: no-wrap;
+	justify-content: space-between;
+	flex-direction: column;
+	align-items: center;
+}
+fieldset {
+	margin: 1vh 0 1vh 0;
 }

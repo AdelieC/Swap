@@ -1,20 +1,23 @@
 package com.swap.ihm.auction;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
+import com.swap.bll.UserManager;
 import com.swap.bo.Auction;
+import com.swap.bo.BOException;
+import com.swap.bo.User;
 import com.swap.ihm.AuctionStatus;
 import com.swap.ihm.MotherServlet;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class UpdateAuctionsStatusServlet
@@ -52,6 +55,7 @@ public class UpdateAuctionsStatusServlet extends MotherServlet {
 					&& (startDate.isBefore(LocalDate.now()) || startDate.isEqual(LocalDate.now()))) {
 				auction.setStatus(AuctionStatus.ONGOING.getStatus());
 				updateAuction(auction);
+				creditSeller(auction);
 			} else if (status.equals(AuctionStatus.ONGOING.getStatus())
 					&& (endDate.isBefore(LocalDate.now()) || endDate.isEqual(LocalDate.now()))) {
 				auction.setStatus(AuctionStatus.OVER.getStatus());
@@ -76,6 +80,17 @@ public class UpdateAuctionsStatusServlet extends MotherServlet {
 		try {
 			aucmng.update(auction);
 		} catch (BLLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void creditSeller(Auction auction) {
+		UserManager usmng = new UserManager();
+		try {
+			User user = usmng.getById(auction.getUserId());
+			user.setBalance(user.getBalance() + auction.getSalePrice());
+			usmng.update(user);
+		} catch (BLLException | BOException e) {
 			e.printStackTrace();
 		}
 	}

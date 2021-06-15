@@ -1,4 +1,3 @@
-SELECT * FROM USERS;
 INSERT INTO USERS values (
 '1',
 'deliec',
@@ -13,6 +12,7 @@ INSERT INTO USERS values (
 '0',
 '0'
 );
+
 INSERT INTO CATEGORIES VALUES 
 (1, "Fashion"),
 (2, "Home & Garden"),
@@ -26,7 +26,6 @@ INSERT INTO CATEGORIES VALUES
 (10, "Business & Office Supplies"),
 (11, "Others")
 ;
-SELECT * FROM CATEGORIES;
 
 INSERT INTO AUCTIONS VALUES 
 (1, "Robe longue", "Jolie robe d'été rouge 1-2-3", '2021-05-20', '2021-05-30', 15, 25, 2, 1, "OVER"),
@@ -36,11 +35,15 @@ INSERT INTO AUCTIONS VALUES
 (5, "Black trousers", "Size S women, never worn, as good as new", '2019-06-20', '2019-07-30', 15, 20, 5, 1, "OVER"),
 (6, "Computer screen", "32' Samsung", '2021-06-03', '2020-06-15', 30, 32, 4, 4, "ONGOING")
 ;
-SELECT * FROM AUCTIONS;
 
 INSERT INTO BIDS VALUES 
 (1, 3, 2, "2021-05-10 10:34:09", 13),
 (2, 3, 1, "2021-05-20 10:53:09", 25),
 (3, 3, 4, "2020-06-23 11:34:09", 1500)
 ;
+
+SELECT * FROM USERS;
+SELECT * FROM CATEGORIES;
+SELECT * FROM AUCTIONS;
 SELECT * FROM BIDS;
+SELECT * FROM IMAGES;

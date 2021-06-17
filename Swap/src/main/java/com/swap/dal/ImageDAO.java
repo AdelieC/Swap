@@ -2,8 +2,8 @@ package com.swap.dal;
 
 import java.util.List;
 
-import com.swap.bo.Image;
+import com.swap.bo.Picture;
 
-public interface ImageDAO extends DAO<Image> {
-	public List<Image> selectByAuctionId(int auctionId) throws DALException;
+public interface ImageDAO extends DAO<Picture> {
+	public List<Picture> selectByAuctionId(int auctionId) throws DALException;
 }

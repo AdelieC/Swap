@@ -53,7 +53,7 @@ public class CancelAuctionServlet extends MotherServlet {
 		try {
 			auction = aucmng.getById(auctionId);
 			String status = auction.getStatus();
-			if (status.equals(AuctionStatus.CREATED.getStatus()) || status.equals(AuctionStatus.ONGOING.getStatus())) {
+			if (status.equals(AuctionStatus.CREATED.name()) || status.equals(AuctionStatus.ONGOING.name())) {
 				return true;
 			}
 		} catch (BLLException e) {

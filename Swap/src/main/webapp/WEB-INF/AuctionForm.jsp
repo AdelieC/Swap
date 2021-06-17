@@ -11,7 +11,7 @@
 	 	<jsp:include page="./includes/header.jsp"/>
 	    <main id="auction-form-main">
 	        <h1>${title}</h1>
-	        <form id="auction-form" method="post" action="auction">
+	        <form id="auction-form" method="post" action="auction" enctype="multipart/form-data">
 	        	<fieldset>
 	        		<legend>Item informations</legend>
 	        		<div class="form-field">
@@ -38,7 +38,7 @@
 			            </select>
 		            </div>
 		            <div class="form-field">
-			            <label for="picture">Item picture:</label>
+			            <label for="picture">Item picture(s):</label>
 			            <input type="file" name="picture">
 		            </div>
 		            <div class="form-field">
@@ -74,7 +74,7 @@
 		            	<input type="hidden" form="auction-form" name="auctionId" value="${auction.getId()}">
 		            	<input type="submit" form="auction-form" class="btn submit1" value="Save">
 		            	<a class="btn submit2" href="/Swap">Cancel</a>
-						<c:if test="${!empty auction}">
+						<c:if test="${!empty auction && auction.status.equals('CREATED')}">
 							<form method="post" action="/Swap/auction/cancel">
 								<input type="hidden" name="auctionId" value="${auction.getId()}">
 		        				<input type="submit" class="btn cta" name="cancel-auction" value="Cancel auction">

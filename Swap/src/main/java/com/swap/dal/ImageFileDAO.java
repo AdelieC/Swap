@@ -1,9 +1,9 @@
 package com.swap.dal;
 
-import com.swap.bo.Image;
+import com.swap.bo.Picture;
 
-public interface ImageFileDAO extends DAO<Image> {
-	public void saveAll(Image... images) throws DALException;
+public interface ImageFileDAO extends DAO<Picture> {
+	public void saveAll(Picture... images) throws DALException;
 
-	public void deleteAll(Image... images) throws DALException;
+	public void deleteAll(Picture... images) throws DALException;
 }

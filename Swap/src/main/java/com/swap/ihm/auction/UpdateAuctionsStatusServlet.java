@@ -49,14 +49,14 @@ public class UpdateAuctionsStatusServlet extends MotherServlet {
 		List<Auction> auctions = getAllAuctions();
 		for (Auction auction : auctions) {
 			if (isAuctionOngoing(auction)) {
-				auction.setStatus(AuctionStatus.ONGOING.getStatus());
+				auction.setStatus(AuctionStatus.ONGOING.name());
 				updateAuction(auction);
 			} else if (isAuctionOver(auction)) {
-				auction.setStatus(AuctionStatus.OVER.getStatus());
+				auction.setStatus(AuctionStatus.OVER.name());
 				updateAuction(auction);
 				creditSeller(auction);
 			} else if (auction.getStartDate().isAfter(LocalDate.now())) {
-				auction.setStatus(AuctionStatus.CREATED.getStatus());
+				auction.setStatus(AuctionStatus.CREATED.name());
 				updateAuction(auction);
 			}
 		}

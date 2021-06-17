@@ -35,7 +35,13 @@ public class UserDAOJdbc implements UserDAO {
 			stmt.setString(9, u.getPassword());
 			stmt.setInt(10, u.getBalance());
 			stmt.setBoolean(11, u.isAdmin());
-			stmt.executeUpdate();
+			int nbRows = stmt.executeUpdate();
+			if (nbRows == 1) {
+				ResultSet result = stmt.getGeneratedKeys();
+				while (result.next()) {
+					u.setUserId(result.getInt(1));
+				}
+			}
 		} catch (SQLException e) {
 			throw new DALException("User named " + u.getUsername() + "couldn't be inserted in dbTable USER", e);
 		} finally {

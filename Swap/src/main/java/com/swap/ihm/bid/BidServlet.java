@@ -63,7 +63,7 @@ public class BidServlet extends MotherServlet {
 
 	private boolean isValid(int offer, int auctionId) {
 		Auction auction = getAuction(auctionId);
-		if (offer > auction.getSalePrice() && auction.getStatus().equals(AuctionStatus.ONGOING.getStatus())) {
+		if (offer > auction.getSalePrice() && auction.getStatus().equals(AuctionStatus.ONGOING.name())) {
 			return true;
 		}
 		return false;

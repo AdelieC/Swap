@@ -59,8 +59,7 @@ public class UserFormServlet extends MotherServlet {
 			} else {
 				UserManager userM = new UserManager();
 				userM.create(user);
-				// Following line = to get new user id!
-				session.setAttribute("user", userM.getByUsername(inputs.get("username")));
+				session.setAttribute("user", user);
 				response.sendRedirect(SUCCESS_PATH);
 			}
 		} catch (BLLException e) {
@@ -86,8 +85,6 @@ public class UserFormServlet extends MotherServlet {
 			} else {
 				UserManager userM = new UserManager();
 				userM.update(user);
-				// No need to reset session user to get id and modifs
-				// -> user set around line 79 is the right one
 				response.sendRedirect(SUCCESS_PATH);
 			}
 		} catch (BLLException e) {

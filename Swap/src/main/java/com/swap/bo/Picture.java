@@ -6,8 +6,8 @@ import org.apache.tomcat.util.http.fileupload.FileItem;
 
 public class Picture implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String imageName, extension;
-	private int imageId, auctionId, width, height;
+	private String name, extension;
+	private int id, auctionId, width, height;
 	private FileItem imageFile;
 
 	enum Orientation {
@@ -22,7 +22,7 @@ public class Picture implements Serializable {
 	public Picture(int auctionId, String auctionName, FileItem imageFile, int index) throws BOException {
 		try {
 			this.setAuctionId(auctionId);
-			this.setImageName(auctionName, index);
+			this.setName(auctionName, index);
 			this.setImageFile(imageFile);
 			this.setExtension(imageFile);
 		} catch (BOException e) {
@@ -30,12 +30,11 @@ public class Picture implements Serializable {
 		}
 	}
 
-	public Picture(int imageId, int auctionId, String imageName, String extension, int width, int height)
-			throws BOException {
+	public Picture(int id, int auctionId, String name, String extension, int width, int height) throws BOException {
 		try {
 			this.setAuctionId(auctionId);
-			this.imageName = imageName;
-			this.setImageId(imageId);
+			this.name = name;
+			this.setId(id);
 			this.imageFile = null;
 			this.extension = extension;
 			this.width = width;
@@ -58,20 +57,18 @@ public class Picture implements Serializable {
 		this.auctionId = auctionId;
 	}
 
-	public void setImageName(String auctionName, int index) throws BOException {
+	public void setName(String auctionName, int index) throws BOException {
 		if (auctionName == null || auctionName.isBlank()) {
 			throw new BOException("Auction name is invalid. Couldn't set image name.");
 		}
-		this.imageName = createImageName(auctionName, index);
+		this.name = createName(auctionName, index);
 	}
 
-	public void setImageId(int imageId) throws BOException {
-		if (imageId <= 0)
-			throw new BOException("Image id is invalid.");
-		this.imageId = imageId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	private String createImageName(String auctionName, int index) {
+	private String createName(String auctionName, int index) {
 		return auctionName.toLowerCase().replaceAll("[-'\\s]", "-") + "-" + index;
 	}
 
@@ -91,12 +88,12 @@ public class Picture implements Serializable {
 		this.height = height;
 	}
 
-	public String getImageName() {
-		return imageName;
+	public String getName() {
+		return name;
 	}
 
-	public int getImageId() {
-		return imageId;
+	public int getId() {
+		return id;
 	}
 
 	public int getAuctionId() {

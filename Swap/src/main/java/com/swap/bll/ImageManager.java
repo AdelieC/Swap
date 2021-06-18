@@ -9,12 +9,12 @@ import com.swap.dal.ImageDAO;
 import com.swap.dal.ImageFileDAO;
 
 public class ImageManager {
-	private ImageDAO imageDAO;
 	private ImageFileDAO imageFile;
+	private ImageDAO imageDAO;
 
 	public ImageManager() {
-		this.imageDAO = DAOFactory.getImageDAO();
 		this.imageFile = DAOFactory.getImageFileDAO();
+		this.imageDAO = DAOFactory.getImageDAO();
 	}
 
 	private boolean isValid(Picture image) {
@@ -26,8 +26,8 @@ public class ImageManager {
 		if (!isValid(image))
 			throw new BLLException("Invalid image");
 		try {
-			this.imageDAO.create(image);
 			this.imageFile.create(image);
+			this.imageDAO.create(image);
 		} catch (DALException e) {
 			throw new BLLException("Couldn't create image", e);
 		}

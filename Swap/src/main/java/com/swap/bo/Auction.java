@@ -2,12 +2,15 @@ package com.swap.bo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Auction implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id, initialPrice, salePrice, userId, categoryId;
 	private String name, description, status;
 	private LocalDate startDate, endDate;
+	private List<Picture> pictures = new ArrayList<>();
 
 	public Auction() {
 	}
@@ -127,5 +130,13 @@ public class Auction implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public void addPicture(Picture picture) {
+		this.pictures.add(picture);
+	}
+
+	public List<Picture> getPictures() {
+		return pictures;
 	}
 }

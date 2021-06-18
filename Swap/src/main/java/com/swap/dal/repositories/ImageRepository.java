@@ -15,10 +15,21 @@ import com.swap.dal.DALException;
 import com.swap.dal.ImageFileDAO;
 
 public class ImageRepository implements ImageFileDAO {
-	private final static File PICTURES_DIR = new File("path/to/auctions-img/");
-	private final static File THUMBNAILS_DIR = new File("path/to/auctions-thumbnails/");
+	private final static File PICTURES_DIR = new File("./resources/auctions-img/");
+	private final static File THUMBNAILS_DIR = new File("./resources/auctions-thumbnails/");
 
-	// TODO : find a way to store the right paths in params
+	/**
+	 * The idea was to create a resources folder with 2 subfolders to store images.
+	 * Should get created at the root of user account on your machine, and hopefully
+	 * at the root of the host machine when the app is deployed...
+	 */
+	public ImageRepository() {
+		if (!PICTURES_DIR.exists())
+			PICTURES_DIR.mkdirs();
+		if (!THUMBNAILS_DIR.exists())
+			THUMBNAILS_DIR.mkdirs();
+	}
+
 	@Override
 	public void create(Picture picture) throws DALException {
 		System.out.println("trying to create image files");
@@ -35,14 +46,14 @@ public class ImageRepository implements ImageFileDAO {
 	}
 
 	private void createImageFile(Picture picture, BufferedImage pictureB) throws IOException {
-		File outputfile = new File(PICTURES_DIR, picture.getImageName() + "." + picture.getExtension());
+		File outputfile = new File(PICTURES_DIR, picture.getName() + "." + picture.getExtension());
 		ImageIO.write(pictureB, picture.getExtension(), outputfile);
 	}
 
 	private void create100pxThumbnail(Picture picture, BufferedImage pictureB) throws IOException {
-		// 1) Scale picture dimensions to a width of 100px
-		int newWidth = 100;
-		int newHeight = picture.getHeight() * 100 / picture.getWidth();
+		// 1) Scale picture to a width of 150px
+		int newWidth = 150;
+		int newHeight = picture.getHeight() * 150 / picture.getWidth();
 
 		// 2) Get new scaled bufferedImage
 		Image tempThumbnail = pictureB.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
@@ -50,7 +61,7 @@ public class ImageRepository implements ImageFileDAO {
 		thumbnail.getGraphics().drawImage(tempThumbnail, 0, 0, null);
 
 		// 3) Write it to a file in the thumbnail folder
-		File outputfile = new File(THUMBNAILS_DIR, picture.getImageName() + "." + picture.getExtension());
+		File outputfile = new File(THUMBNAILS_DIR, picture.getName() + "." + picture.getExtension());
 		ImageIO.write(thumbnail, picture.getExtension(), outputfile);
 	}
 

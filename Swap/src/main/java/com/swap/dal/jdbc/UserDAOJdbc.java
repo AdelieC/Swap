@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,7 +123,7 @@ public class UserDAOJdbc implements UserDAO {
 		String SQLQuery = DBUtils.deleteWhere(TABLENAME, "user_id");
 		try {
 			conn = ConnectionProvider.getConnection();
-			stmt = conn.prepareStatement(SQLQuery);
+			stmt = conn.prepareStatement(SQLQuery, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, userId);
 			stmt.executeUpdate();
 		} catch (SQLException e) {

@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.swap.bo.BOException;
 import com.swap.bo.Picture;
 import com.swap.dal.DALException;
 import com.swap.dal.ImageDAO;
@@ -21,7 +24,7 @@ public class ImageDAOJdbc implements ImageDAO {
 		String SQLQuery = DBUtils.insert(TABLENAME, COLS);
 		try {
 			conn = ConnectionProvider.getConnection();
-			stmt = conn.prepareStatement(SQLQuery);
+			stmt = conn.prepareStatement(SQLQuery, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, p.getAuctionId());
 			stmt.setString(2, p.getName());
 			stmt.setString(3, p.getExtension());
@@ -75,8 +78,50 @@ public class ImageDAOJdbc implements ImageDAO {
 
 	@Override
 	public List<Picture> selectByAuctionId(int auctionId) throws DALException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Picture> pictures = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String query = DBUtils.selectBy(TABLENAME, "auction_id");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, auctionId);
+			result = stmt.executeQuery();
+			while (result.next()) {
+				int id = result.getInt("id");
+				String name = result.getString("name");
+				String extension = result.getString("extension");
+				int width = result.getInt("width");
+				int height = result.getInt("height");
+				pictures.add(new Picture(id, auctionId, name, extension, width, height));
+			}
+		} catch (SQLException | BOException e) {
+			throw new DALException("Failed to fetch pictures for auction with id = " + auctionId, e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+		return pictures;
+	}
+
+	@Override
+	public void deleteAllByAuctionId(int auctionId) throws DALException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String SQLQuery = DBUtils.deleteWhere(TABLENAME, "auction_id");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(SQLQuery);
+			stmt.setInt(1, auctionId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Pictures from auction with id = " + auctionId + " couldn't be deleted", e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+
 	}
 
 }

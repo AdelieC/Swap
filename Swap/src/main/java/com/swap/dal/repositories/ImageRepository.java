@@ -72,27 +72,33 @@ public class ImageRepository implements ImageFileDAO {
 	}
 
 	@Override
-	public void update(Picture s) throws DALException {
+	public void update(Picture p) throws DALException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void delete(Picture s) throws DALException {
-		// TODO Auto-generated method stub
-
+	public void delete(Picture p) throws DALException {
+		File picture = new File(PICTURES_DIR, p.getName());
+		File thumbnail = new File(THUMBNAILS_DIR, p.getName());
+		try {
+			picture.delete();
+			thumbnail.delete();
+		} catch (Exception e) {
+			throw new DALException("Failed to delete picture named " + p.getName(), e);
+		}
 	}
 
 	@Override
-	public void saveAll(Picture... images) throws DALException {
-		for (Picture image : images)
-			create(image);
+	public void saveAll(List<Picture> pictures) throws DALException {
+		for (Picture picture : pictures)
+			create(picture);
 	}
 
 	@Override
-	public void deleteAll(Picture... images) throws DALException {
-		for (Picture image : images)
-			delete(image);
+	public void deleteAll(List<Picture> pictures) throws DALException {
+		for (Picture picture : pictures)
+			delete(picture);
 	}
 
 }

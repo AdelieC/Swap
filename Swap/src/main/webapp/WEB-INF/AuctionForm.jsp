@@ -47,11 +47,11 @@
 		            </div>
 			            <div class="form-field">
 			            <label for="start-date">Start date:</label>
-			            <input type="date" name="start-date" value="${auction.startDate}" required>
+			            <input type="date" name="start-date" value="${auction.startDate}" min="${auction.startDate != null ? auction.startDate : minDate}" max="${maxDate}" required>
 		            </div>
 		            <div class="form-field">
 			            <label for="end-date">End date:</label>
-			            <input type="date" name="end-date" value="${auction.endDate}" required>
+			            <input type="date" name="end-date" value="${auction.endDate}" min="${auction.startDate != null ? auction.startDate : minDate}" max="${maxDate}" required>
 		            </div>
 		            </fieldset>
 	 	            <fieldset class="pup">

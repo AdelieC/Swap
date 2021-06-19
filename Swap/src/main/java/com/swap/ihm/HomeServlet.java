@@ -126,7 +126,7 @@ public class HomeServlet extends MotherServlet {
 			e.printStackTrace();
 		}
 		return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(), auction.getEndDate(),
-				user.getUsername());
+				user.getUsername(), (auction.getPictures().isEmpty() ? null : auction.getPictures().get(0)));
 	}
 
 }

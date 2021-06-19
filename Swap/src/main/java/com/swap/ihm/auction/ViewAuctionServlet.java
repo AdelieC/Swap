@@ -1,5 +1,11 @@
 package com.swap.ihm.auction;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 import com.swap.bll.AuctionManager;
@@ -14,12 +20,6 @@ import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
 import com.swap.bo.User;
 import com.swap.ihm.MotherServlet;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class ViewAuctionServlet
@@ -62,7 +62,6 @@ public class ViewAuctionServlet extends MotherServlet {
 			request.setAttribute("seller", seller);
 			request.setAttribute("category", cat);
 			request.setAttribute("pickUpPoint", pup);
-
 		} catch (BLLException e) {
 			e.printStackTrace();
 		}

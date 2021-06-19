@@ -8,11 +8,11 @@ import com.swap.dal.DAOFactory;
 import com.swap.dal.ImageDAO;
 import com.swap.dal.ImageFileDAO;
 
-public class ImageManager {
+public class PictureManager {
 	private ImageFileDAO imageFile;
 	private ImageDAO imageDAO;
 
-	public ImageManager() {
+	public PictureManager() {
 		this.imageFile = DAOFactory.getImageFileDAO();
 		this.imageDAO = DAOFactory.getImageDAO();
 	}
@@ -46,6 +46,7 @@ public class ImageManager {
 	public void delete(Picture image) throws BLLException {
 		try {
 			this.imageDAO.delete(image);
+			this.imageFile.delete(image);
 		} catch (DALException e) {
 			throw new BLLException("Failed to delete image", e);
 		}
@@ -59,5 +60,15 @@ public class ImageManager {
 			throw new BLLException("Failed to get images for auction with id = " + auctionId, e);
 		}
 		return images;
+	}
+
+	public void deleteAllByAuctionId(int auctionId) throws BLLException {
+		try {
+			this.imageFile.deleteAll(imageDAO.selectByAuctionId(auctionId));
+			this.imageDAO.deleteAllByAuctionId(auctionId);
+		} catch (DALException e) {
+			throw new BLLException("Failed to delete images for auction with id " + auctionId, e);
+		}
+
 	}
 }

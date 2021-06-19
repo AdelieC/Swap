@@ -3,11 +3,14 @@ package com.swap.ihm.auction;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.swap.bo.Picture;
+
 public class AuctionThumbnail implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String item, seller;
 	private int price, id;
 	private LocalDate date;
+	private Picture picture;
 
 	public AuctionThumbnail() {
 	}
@@ -18,6 +21,11 @@ public class AuctionThumbnail implements Serializable {
 		this.price = price;
 		this.date = date;
 		this.seller = seller;
+	}
+
+	public AuctionThumbnail(int id, String item, int price, LocalDate date, String seller, Picture picture) {
+		this(id, item, price, date, seller);
+		this.picture = picture;
 	}
 
 	public String getItem() {
@@ -58,6 +66,10 @@ public class AuctionThumbnail implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Picture getPicture() {
+		return picture;
 	}
 
 }

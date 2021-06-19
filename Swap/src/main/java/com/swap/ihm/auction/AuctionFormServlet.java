@@ -24,13 +24,13 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.CategoryManager;
-import com.swap.bll.ImageManager;
+import com.swap.bll.PictureManager;
 import com.swap.bll.PickUpPointManager;
 import com.swap.bo.Auction;
 import com.swap.bo.BOException;
 import com.swap.bo.Category;
-import com.swap.bo.Picture;
 import com.swap.bo.PickUpPoint;
+import com.swap.bo.Picture;
 import com.swap.bo.User;
 import com.swap.ihm.AuctionStatus;
 import com.swap.ihm.IHMException;
@@ -58,6 +58,7 @@ public class AuctionFormServlet extends MotherServlet {
 			User user = (User) session.getAttribute("user");
 			String title = "Create auction";
 			setCategories(request);
+			setPeriod(request);
 			if (request.getParameter("id") != null) {
 				title = "Update auction";
 				int id = Integer.valueOf(request.getParameter("id"));
@@ -158,7 +159,7 @@ public class AuctionFormServlet extends MotherServlet {
 
 	private void createImage(FileItem item, Auction auction, int index) throws IOException, BOException, BLLException {
 		Picture image = null;
-		ImageManager imageM = new ImageManager();
+		PictureManager imageM = new PictureManager();
 		image = new Picture(auction.getId(), auction.getName(), item, index);
 		if (image != null)
 			imageM.create(image);
@@ -251,5 +252,12 @@ public class AuctionFormServlet extends MotherServlet {
 		CategoryManager catmng = new CategoryManager();
 		categorieslist = catmng.getAll();
 		request.setAttribute("categoriesList", categorieslist);
+	}
+
+	private void setPeriod(HttpServletRequest request) {
+		LocalDate minDate = LocalDate.now();
+		LocalDate maxDate = minDate.plusMonths(2);
+		request.setAttribute("minDate", minDate);
+		request.setAttribute("maxDate", maxDate);
 	}
 }

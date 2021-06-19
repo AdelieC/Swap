@@ -9,9 +9,11 @@ import com.swap.dal.DAOFactory;
 
 public class AuctionManager {
 	private AuctionDAO auctionDAO;
+	private PictureManager pictureManager;
 
 	public AuctionManager() {
 		this.auctionDAO = DAOFactory.getAuctionDAO();
+		this.pictureManager = new PictureManager();
 	}
 
 	private boolean isValid(Auction auction) {
@@ -33,6 +35,9 @@ public class AuctionManager {
 		List<Auction> list = null;
 		try {
 			list = this.auctionDAO.read();
+			for (Auction auction : list) {
+				auction.setPictures(pictureManager.getByAuctionId(auction.getId()));
+			}
 		} catch (DALException e) {
 			throw new BLLException("GET ALL AUCTIONS failure");
 		}
@@ -51,6 +56,7 @@ public class AuctionManager {
 
 	public void delete(Auction auction) throws BLLException {
 		try {
+			pictureManager.deleteAllByAuctionId(auction.getId());
 			this.auctionDAO.delete(auction);
 		} catch (DALException e) {
 			throw new BLLException("DELETE AUCTION failure");
@@ -61,6 +67,7 @@ public class AuctionManager {
 		Auction auction = null;
 		try {
 			auction = this.auctionDAO.selectById(id);
+			auction.setPictures(pictureManager.getByAuctionId(id));
 		} catch (DALException e) {
 			throw new BLLException("GET AUCTION BY ID failure");
 		}
@@ -71,6 +78,9 @@ public class AuctionManager {
 		List<Auction> list = null;
 		try {
 			list = this.auctionDAO.selectByUser(userId);
+			for (Auction auction : list) {
+				auction.setPictures(pictureManager.getByAuctionId(auction.getId()));
+			}
 		} catch (DALException e) {
 			throw new BLLException("GET AUCTION BY USER ID failure");
 		}
@@ -141,6 +151,9 @@ public class AuctionManager {
 		List<Auction> list = null;
 		try {
 			list = this.auctionDAO.selectAllNotOver();
+			for (Auction auction : list) {
+				auction.setPictures(pictureManager.getByAuctionId(auction.getId()));
+			}
 		} catch (DALException e) {
 			throw new BLLException("GET AUCTIONS NOT OVER failure");
 		}
@@ -151,6 +164,9 @@ public class AuctionManager {
 		List<Auction> list = null;
 		try {
 			list = this.auctionDAO.selectAllByStatus("ONGOING");
+			for (Auction auction : list) {
+				auction.setPictures(pictureManager.getByAuctionId(auction.getId()));
+			}
 		} catch (DALException e) {
 			throw new BLLException("GET AUCTIONS ONGOING failure");
 		}

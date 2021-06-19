@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.swap.bo.Picture;
 
-public interface ImageDAO extends DAO<Picture> {
+public interface PictureDAO extends DAO<Picture> {
 	public List<Picture> selectByAuctionId(int auctionId) throws DALException;
 
 	public void deleteAllByAuctionId(int auctionId) throws DALException;

@@ -5,48 +5,55 @@ import java.util.List;
 import com.swap.bo.Picture;
 import com.swap.dal.DALException;
 import com.swap.dal.DAOFactory;
-import com.swap.dal.ImageDAO;
-import com.swap.dal.ImageFileDAO;
+import com.swap.dal.PictureDAO;
+import com.swap.dal.Repository;
 
 public class PictureManager {
-	private ImageFileDAO imageFile;
-	private ImageDAO imageDAO;
+	private Repository pictureRepo;
+	private PictureDAO pictureDAO;
 
 	public PictureManager() {
-		this.imageFile = DAOFactory.getImageFileDAO();
-		this.imageDAO = DAOFactory.getImageDAO();
+		this.pictureRepo = DAOFactory.getImageFileDAO();
+		this.pictureDAO = DAOFactory.getImageDAO();
 	}
 
-	private boolean isValid(Picture image) {
+	private boolean isValid(Picture picture) {
 		// TODO complete
 		return true;
 	}
 
-	public void create(Picture image) throws BLLException {
-		if (!isValid(image))
+	public void create(Picture picture) throws BLLException {
+		if (!isValid(picture))
 			throw new BLLException("Invalid image");
 		try {
-			this.imageFile.create(image);
-			this.imageDAO.create(image);
+			this.pictureRepo.save(picture);
+			this.pictureDAO.create(picture);
 		} catch (DALException e) {
 			throw new BLLException("Couldn't create image", e);
 		}
 	}
 
-	public void update(Picture image) throws BLLException {
-		if (isValid(image)) {
+	public void createAll(List<Picture> pictures, int auctionId) throws BLLException {
+		for (Picture picture : pictures) {
+			picture.setAuctionId(auctionId);
+			create(picture);
+		}
+	}
+
+	public void update(Picture picture) throws BLLException {
+		if (isValid(picture)) {
 			try {
-				this.imageDAO.update(image);
+				this.pictureDAO.update(picture);
 			} catch (DALException e) {
 				throw new BLLException("UPDATE AUCTION failure");
 			}
 		}
 	}
 
-	public void delete(Picture image) throws BLLException {
+	public void delete(Picture picture) throws BLLException {
 		try {
-			this.imageDAO.delete(image);
-			this.imageFile.delete(image);
+			this.pictureDAO.delete(picture);
+			this.pictureRepo.remove(picture);
 		} catch (DALException e) {
 			throw new BLLException("Failed to delete image", e);
 		}
@@ -55,7 +62,7 @@ public class PictureManager {
 	public List<Picture> getByAuctionId(int auctionId) throws BLLException {
 		List<Picture> images = null;
 		try {
-			images = this.imageDAO.selectByAuctionId(auctionId);
+			images = this.pictureDAO.selectByAuctionId(auctionId);
 		} catch (DALException e) {
 			throw new BLLException("Failed to get images for auction with id = " + auctionId, e);
 		}
@@ -64,8 +71,8 @@ public class PictureManager {
 
 	public void deleteAllByAuctionId(int auctionId) throws BLLException {
 		try {
-			this.imageFile.deleteAll(imageDAO.selectByAuctionId(auctionId));
-			this.imageDAO.deleteAllByAuctionId(auctionId);
+			this.pictureRepo.removeAll(pictureDAO.selectByAuctionId(auctionId));
+			this.pictureDAO.deleteAllByAuctionId(auctionId);
 		} catch (DALException e) {
 			throw new BLLException("Failed to delete images for auction with id " + auctionId, e);
 		}

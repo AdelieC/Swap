@@ -11,9 +11,9 @@ import java.util.List;
 import com.swap.bo.BOException;
 import com.swap.bo.Picture;
 import com.swap.dal.DALException;
-import com.swap.dal.ImageDAO;
+import com.swap.dal.PictureDAO;
 
-public class ImageDAOJdbc implements ImageDAO {
+public class ImageDAOJdbc implements PictureDAO {
 	private final static String[] COLS = { "id", "auction_id", "name", "extension", "width", "height" };
 	private final static String TABLENAME = "PICTURES";
 

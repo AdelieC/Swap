@@ -24,7 +24,6 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.CategoryManager;
-import com.swap.bll.PictureManager;
 import com.swap.bll.PickUpPointManager;
 import com.swap.bo.Auction;
 import com.swap.bo.BOException;
@@ -95,31 +94,23 @@ public class AuctionFormServlet extends MotherServlet {
 		User user = (User) session.getAttribute("user");
 		try {
 			setAuction(request, user);
-		} catch (BLLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServletException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (BOException e) {
-			// TODO Auto-generated catch block
+			// TODO 500
 			e.printStackTrace();
 		}
 		response.sendRedirect(request.getServletContext().getContextPath());
 	}
 
-	private void setAuction(HttpServletRequest request, User user)
-			throws IOException, ServletException, BLLException, BOException {
+	private void setAuction(HttpServletRequest request, User user) throws FileUploadException, BOException {
 		List<FileItem> items = getItems(request);
 		Map<String, String> fields = getFields(items);
 		Auction auction = buildAuction(fields, user);
 		PickUpPoint pup = buildPickUpPoint(fields, user);
 		if (fields.get("auctionId").isBlank()) {
+			// 1) add pictures to the list of pictures in Auction
+			setPictures(items, auction);
+			// 2) handle whole auction creation process
 			createAuction(auction, pup);
-			setImages(items, request, auction);
 		} else {
 			auction.setId(Integer.valueOf(fields.get("auctionId")));
 			updateAuction(auction, pup);
@@ -142,27 +133,17 @@ public class AuctionFormServlet extends MotherServlet {
 		return fields;
 	}
 
-	private void setImages(List<FileItem> items, HttpServletRequest request, Auction auction)
-			throws IOException, ServletException, BOException, BLLException {
-		int index = 0;
+	private void setPictures(List<FileItem> items, Auction auction) throws BOException {
+		int index = 1;
 		for (FileItem item : items) {
 			if (isUploadableImage(item)) {
-				index++;
-				createImage(item, auction, index);
+				auction.addPicture(new Picture(auction.getName(), item, index++));
 			}
 		}
 	}
 
 	private boolean isUploadableImage(FileItem item) {
 		return !item.isFormField() && !item.isInMemory() && item.getContentType().contains("image");
-	}
-
-	private void createImage(FileItem item, Auction auction, int index) throws IOException, BOException, BLLException {
-		Picture image = null;
-		PictureManager imageM = new PictureManager();
-		image = new Picture(auction.getId(), auction.getName(), item, index);
-		if (image != null)
-			imageM.create(image);
 	}
 
 	private Auction buildAuction(Map<String, String> fields, User user) {

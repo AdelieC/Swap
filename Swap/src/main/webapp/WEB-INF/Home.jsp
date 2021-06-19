@@ -51,7 +51,7 @@
 					<a href="/Swap/auction/view?id=${auction.id}">
 						<article>
 							<h4>${auction.item}</h3>
-							<div class="placeholder" style="background-image: url('./resources/auctions-thumbnails/${auction.picture}');background-size: cover;"></div>
+							<div class="placeholder" style="background-image: url('/Swap/resources/auctions-thumbnails/${auction.pictureName}');background-size: cover;"></div>
 							<p>Price: ${auction.price}</p>
 							<p>End date: ${auction.date}</p>
 							<p>Seller: <i>${auction.seller}</i></p>

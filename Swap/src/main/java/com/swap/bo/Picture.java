@@ -19,9 +19,8 @@ public class Picture implements Serializable {
 
 	}
 
-	public Picture(int auctionId, String auctionName, FileItem imageFile, int index) throws BOException {
+	public Picture(String auctionName, FileItem imageFile, int index) throws BOException {
 		try {
-			this.setAuctionId(auctionId);
 			this.setName(auctionName, index);
 			this.setImageFile(imageFile);
 			this.setExtension(imageFile);
@@ -31,17 +30,13 @@ public class Picture implements Serializable {
 	}
 
 	public Picture(int id, int auctionId, String name, String extension, int width, int height) throws BOException {
-		try {
-			this.setAuctionId(auctionId);
-			this.name = name;
-			this.setId(id);
-			this.imageFile = null;
-			this.extension = extension;
-			this.width = width;
-			this.height = height;
-		} catch (BOException e) {
-			throw new BOException("Image couldn't be created", e);
-		}
+		this.setAuctionId(auctionId);
+		this.name = name;
+		this.setId(id);
+		this.imageFile = null;
+		this.extension = extension;
+		this.width = width;
+		this.height = height;
 	}
 
 	private void setImageFile(FileItem imageFile) throws BOException {
@@ -50,10 +45,7 @@ public class Picture implements Serializable {
 		this.imageFile = imageFile;
 	}
 
-	public void setAuctionId(int auctionId) throws BOException {
-		if (auctionId <= 0)// || !Auction.exists(auctionId))//TODO : find a way to make this happen
-			throw new BOException(
-					"Auction with id " + auctionId + "doesn't exist. Couldn't set auction id in new image.");
+	public void setAuctionId(int auctionId) {
 		this.auctionId = auctionId;
 	}
 
@@ -64,12 +56,12 @@ public class Picture implements Serializable {
 		this.name = createName(auctionName, index);
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	private String createName(String auctionName, int index) {
 		return auctionName.toLowerCase().replaceAll("[-'\\s]", "-") + "-" + index;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setExtension(FileItem imageFile) {

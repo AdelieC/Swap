@@ -10,7 +10,7 @@ public class AuctionThumbnail implements Serializable {
 	private String item, seller;
 	private int price, id;
 	private LocalDate date;
-	private Picture picture;
+	private String pictureName;
 
 	public AuctionThumbnail() {
 	}
@@ -25,7 +25,7 @@ public class AuctionThumbnail implements Serializable {
 
 	public AuctionThumbnail(int id, String item, int price, LocalDate date, String seller, Picture picture) {
 		this(id, item, price, date, seller);
-		this.picture = picture;
+		this.pictureName = picture.getName() + "." + picture.getExtension();
 	}
 
 	public String getItem() {
@@ -68,8 +68,8 @@ public class AuctionThumbnail implements Serializable {
 		this.id = id;
 	}
 
-	public Picture getPicture() {
-		return picture;
+	public String getPictureName() {
+		return pictureName;
 	}
 
 }

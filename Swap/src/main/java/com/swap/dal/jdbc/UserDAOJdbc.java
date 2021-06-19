@@ -24,7 +24,7 @@ public class UserDAOJdbc implements UserDAO {
 		String SQLQuery = DBUtils.insert(TABLENAME, COLS);
 		try {
 			conn = ConnectionProvider.getConnection();
-			stmt = conn.prepareStatement(SQLQuery);
+			stmt = conn.prepareStatement(SQLQuery, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, u.getUsername());
 			stmt.setString(2, u.getLastName());
 			stmt.setString(3, u.getFirstName());

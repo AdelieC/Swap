@@ -137,6 +137,10 @@ public class Auction implements Serializable {
 	}
 
 	public void setPictures(List<Picture> pictures) {
-		this.pictures.retainAll(pictures);
+		this.pictures = pictures;
+	}
+
+	public void addPicture(Picture picture) {
+		this.pictures.add(picture);
 	}
 }

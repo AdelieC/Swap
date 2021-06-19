@@ -25,6 +25,7 @@ public class AuctionManager {
 		if (isValid(auction)) {
 			try {
 				this.auctionDAO.create(auction);
+				this.pictureManager.createAll(auction.getPictures(), auction.getId());
 			} catch (DALException e) {
 				throw new BLLException("CREATE AUCTION failure");
 			}

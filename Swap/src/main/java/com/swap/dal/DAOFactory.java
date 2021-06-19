@@ -6,7 +6,7 @@ import com.swap.dal.jdbc.CategoryDAOJdbc;
 import com.swap.dal.jdbc.ImageDAOJdbc;
 import com.swap.dal.jdbc.PickUpPointDAOJdbc;
 import com.swap.dal.jdbc.UserDAOJdbc;
-import com.swap.dal.repositories.ImageRepository;
+import com.swap.dal.repositories.PictureRepository;
 
 public class DAOFactory {
 	public static UserDAO getUserDAO() {
@@ -29,11 +29,11 @@ public class DAOFactory {
 		return new CategoryDAOJdbc();
 	}
 
-	public static ImageDAO getImageDAO() {
+	public static PictureDAO getImageDAO() {
 		return new ImageDAOJdbc();
 	}
 
-	public static ImageFileDAO getImageFileDAO() {
-		return new ImageRepository();
+	public static Repository getImageFileDAO() {
+		return new PictureRepository();
 	}
 }

@@ -31,6 +31,7 @@
 					<p class="display-field-label">Description:</p>
 					<p class="display-field-info">${auction.description}</p>
 				</div>
+				<jsp:include page="./includes/imageSlider.jsp"/>
 				<div class="display-field">
 					<p class="display-field-label">Category:</p>
 					<p class="display-field-info">${category.label}</p>

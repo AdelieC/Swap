@@ -125,8 +125,14 @@ public class HomeServlet extends MotherServlet {
 			// TODO : send to error page 500
 			e.printStackTrace();
 		}
-		return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(), auction.getEndDate(),
-				user.getUsername(), (auction.getPictures().isEmpty() ? null : auction.getPictures().get(0)));
+		if (auction.getPictures().isEmpty()) {
+			return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
+					auction.getEndDate(), user.getUsername());
+		} else {
+			return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
+					auction.getEndDate(), user.getUsername(), auction.getPictures().get(0));
+		}
+
 	}
 
 }

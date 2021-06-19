@@ -37,10 +37,18 @@
 							</c:forEach>
 			            </select>
 		            </div>
-		            <div class="form-field">
-			            <label for="picture">Item picture(s):</label>
-			            <input type="file" name="picture">
-		            </div>
+		            <c:choose>
+		            	<c:when test="${auction.id > 0}">
+		            		<jsp:include page="./includes/imageSlider.jsp"/>
+		            	</c:when>
+		            	<c:otherwise>
+		            		<div class="form-field">
+			            		<label for="picture">Picture(s):</label>
+			           	 		<input type="file" name="picture" multiple>
+		            		</div>
+		            	</c:otherwise>		           
+		            </c:choose>
+		            
 		            <div class="form-field">
 			            <label for="initial-price">Initial price:</label>
 			            <input type="text" name="initial-price" value="${auction.initialPrice}" required>

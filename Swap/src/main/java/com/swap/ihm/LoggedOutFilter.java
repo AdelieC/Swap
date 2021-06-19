@@ -17,8 +17,9 @@ import com.swap.bo.User;
  * Servlet Filter implementation class LoggedInFilter Prevents access to
  * specific pages if user is not logged in
  */
-@WebFilter(description = "Filters access to pages depending on session.loggedIn value", urlPatterns = { "/account*",
-		"/logout", "/auction/create", "/auction/edit", "/auction/cancel", "/auction/bid*" })
+@WebFilter(description = "Filters access to pages depending on userIsLoggedIn value", urlPatterns = { "/user",
+		"/account", "/account/delete", "/account/logout", "/auction/create", "/auction/edit", "/auction/cancel",
+		"/auction/bid" })
 public class LoggedOutFilter implements Filter {
 	private final static String LOGIN_PATH = "/Swap/login";
 

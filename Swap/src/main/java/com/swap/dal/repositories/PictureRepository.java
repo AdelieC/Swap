@@ -12,18 +12,20 @@ import javax.imageio.ImageIO;
 import com.swap.bo.BOException;
 import com.swap.bo.Picture;
 import com.swap.dal.DALException;
-import com.swap.dal.ImageFileDAO;
+import com.swap.dal.Repository;
 
-public class ImageRepository implements ImageFileDAO {
-	private final static File PICTURES_DIR = new File("./resources/auctions-img/");
-	private final static File THUMBNAILS_DIR = new File("./resources/auctions-thumbnails/");
+public class PictureRepository implements Repository {
+	private final static File ROOT = new File("./git/Swap/Swap/src/main/webapp");
+	// change ROOT according to the location of your project
+	private final static File PICTURES_DIR = new File(ROOT, "/resources/auctions-img/");
+	private final static File THUMBNAILS_DIR = new File(ROOT, "/resources/auctions-thumbnails/");
 
 	/**
 	 * The idea was to create a resources folder with 2 subfolders to store images.
-	 * Should get created at the root of user account on your machine, and hopefully
-	 * at the root of the host machine when the app is deployed...
+	 * Should get created inside webapp (ROOT must be the path to webapp on your
+	 * machine!)
 	 */
-	public ImageRepository() {
+	public PictureRepository() {
 		if (!PICTURES_DIR.exists())
 			PICTURES_DIR.mkdirs();
 		if (!THUMBNAILS_DIR.exists())
@@ -31,7 +33,7 @@ public class ImageRepository implements ImageFileDAO {
 	}
 
 	@Override
-	public void create(Picture picture) throws DALException {
+	public void save(Picture picture) throws DALException {
 		System.out.println("trying to create image files");
 		try {
 			BufferedInputStream bis = new BufferedInputStream(picture.getImageFile().getInputStream());
@@ -51,9 +53,9 @@ public class ImageRepository implements ImageFileDAO {
 	}
 
 	private void create100pxThumbnail(Picture picture, BufferedImage pictureB) throws IOException {
-		// 1) Scale picture to a width of 150px
-		int newWidth = 150;
-		int newHeight = picture.getHeight() * 150 / picture.getWidth();
+		// 1) Scale picture to a width of 200px
+		int newWidth = 200;
+		int newHeight = picture.getHeight() * 200 / picture.getWidth();
 
 		// 2) Get new scaled bufferedImage
 		Image tempThumbnail = pictureB.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
@@ -66,19 +68,7 @@ public class ImageRepository implements ImageFileDAO {
 	}
 
 	@Override
-	public List<Picture> read() throws DALException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void update(Picture p) throws DALException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(Picture p) throws DALException {
+	public void remove(Picture p) throws DALException {
 		File picture = new File(PICTURES_DIR, p.getName());
 		File thumbnail = new File(THUMBNAILS_DIR, p.getName());
 		try {
@@ -92,13 +82,13 @@ public class ImageRepository implements ImageFileDAO {
 	@Override
 	public void saveAll(List<Picture> pictures) throws DALException {
 		for (Picture picture : pictures)
-			create(picture);
+			save(picture);
 	}
 
 	@Override
-	public void deleteAll(List<Picture> pictures) throws DALException {
+	public void removeAll(List<Picture> pictures) throws DALException {
 		for (Picture picture : pictures)
-			delete(picture);
+			remove(picture);
 	}
 
 }

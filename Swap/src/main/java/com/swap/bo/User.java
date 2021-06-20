@@ -4,11 +4,15 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String username, lastName, firstName, email, telephone, street, postcode, city, password;
+	private String username, lastName, firstName, email, telephone, street, postcode, city, password, salt;
 	private int userId, balance;
 	private boolean isAdmin;
 
 	public User() {
+	}
+
+	public User(String username) throws BOException {
+		this.setUsername(username);
 	}
 
 	public User(String username, String lastName, String firstName, String email, String telephone, String street,
@@ -22,7 +26,8 @@ public class User implements Serializable {
 			this.setStreet(street);
 			this.setPostcode(postcode);
 			this.setCity(city);
-			this.setPassword(password);
+			this.setSalt();
+			this.setPassword(password, this.salt);
 			this.setBalance(balance);
 			this.setIsAdmin(isAdmin);
 		} catch (BOException e) {
@@ -31,9 +36,18 @@ public class User implements Serializable {
 	}
 
 	public User(int userId, String username, String lastName, String firstName, String email, String telephone,
-			String street, String postcode, String city, String password, int balance, boolean isAdmin) {
-		this(username, lastName, firstName, email, telephone, street, postcode, city, password, balance, isAdmin);
-		this.setUserId(userId);
+			String street, String postcode, String city, String password, String salt, int balance, boolean isAdmin) {
+		this.userId = userId;
+		this.username = username;
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.email = email;
+		this.telephone = telephone;
+		this.street = street;
+		this.postcode = postcode;
+		this.city = city;
+		this.balance = balance;
+		this.isAdmin = isAdmin;
 	}
 
 	public int getUserId() {
@@ -70,6 +84,10 @@ public class User implements Serializable {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public String getSalt() {
+		return salt;
 	}
 
 	public String getTelephone() {
@@ -144,9 +162,21 @@ public class User implements Serializable {
 		}
 	}
 
-	public void setPassword(String password) throws BOException {
+	private void setSalt() {
+		this.salt = PasswordUtils.generateSalt();
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setPassword(String password, String salt) throws BOException {
 		try {
-			this.password = BOCleaner.cleanPassword(password);
+			this.password = PasswordUtils.getSecuredPassword(BOCleaner.cleanPassword(password), salt);
 		} catch (BOException e) {
 			throw new BOException("Couldn't set password", e);
 		}
@@ -175,6 +205,10 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User n°" + userId + " : " + username;
+	}
+
+	public boolean login(String passwordToValidate) throws BOException {
+		return PasswordUtils.isPasswordCorrect(passwordToValidate, password, salt);
 	}
 
 }

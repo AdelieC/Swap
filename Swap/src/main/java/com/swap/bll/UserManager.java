@@ -17,11 +17,11 @@ public class UserManager {
 	}
 
 	public void create(User u) throws BLLException {
-		if (exists(u))
-			throw new BLLException("User already exists");
 		if (!isValid(u))
 			throw new BLLException("User is not valid");
 		try {
+			if (UserDAO.exists(u))
+				throw new BLLException("User already exists");
 			UserDAO.create(u);
 		} catch (DALException e) {
 			throw new BLLException("Failed to create user", e);
@@ -126,29 +126,13 @@ public class UserManager {
 				&& BLLValidator.isValidPassword(u.getPassword()) && BLLValidator.isValidAmount(u.getBalance());
 	}
 
-	private boolean exists(User u) throws BLLException {
-		Boolean found = false;
+	public boolean couldFetchPasswordData(User user) throws BLLException {
+		boolean usernameIsValid = false;
 		try {
-			found = UserDAO.exists(u);
-		} catch (DALException e) {
-			throw new BLLException("Failed to check if user exists in db", e);
-		}
-		return found;
-	}
-
-	public User login(String username, String password) throws BLLException {
-		User user = null;
-		try {
-			user = UserDAO.selectByUsername(username);
-			if (user != null)
-				user = confirmedUser(user, password);
+			usernameIsValid = UserDAO.successfullySetPasswordData(user);
 		} catch (DALException e) {
 			throw new BLLException("Log in failed", e);
 		}
-		return user;
-	}
-
-	private User confirmedUser(User user, String password) {
-		return user.getPassword().equals(password) ? user : null;
+		return usernameIsValid;
 	}
 }

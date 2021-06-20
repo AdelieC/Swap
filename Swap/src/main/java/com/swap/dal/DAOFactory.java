@@ -3,7 +3,7 @@ package com.swap.dal;
 import com.swap.dal.jdbc.AuctionDAOJdbc;
 import com.swap.dal.jdbc.BidDAOJdbc;
 import com.swap.dal.jdbc.CategoryDAOJdbc;
-import com.swap.dal.jdbc.ImageDAOJdbc;
+import com.swap.dal.jdbc.PictureDAOJdbc;
 import com.swap.dal.jdbc.PickUpPointDAOJdbc;
 import com.swap.dal.jdbc.UserDAOJdbc;
 import com.swap.dal.repositories.PictureRepository;
@@ -30,7 +30,7 @@ public class DAOFactory {
 	}
 
 	public static PictureDAO getImageDAO() {
-		return new ImageDAOJdbc();
+		return new PictureDAOJdbc();
 	}
 
 	public static Repository getImageFileDAO() {

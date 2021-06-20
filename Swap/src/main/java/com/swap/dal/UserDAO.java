@@ -17,7 +17,9 @@ public interface UserDAO extends DAO<User> {
 
 	public void delete(int userId) throws DALException;
 
-	public boolean exists(User u) throws DALException;
-
 	public void updatePassword(User u) throws DALException;
+
+	public boolean successfullySetPasswordData(User user) throws DALException;
+
+	public boolean exists(User u) throws DALException;
 }

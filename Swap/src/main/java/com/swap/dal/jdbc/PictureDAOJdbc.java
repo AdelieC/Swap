@@ -13,7 +13,7 @@ import com.swap.bo.Picture;
 import com.swap.dal.DALException;
 import com.swap.dal.PictureDAO;
 
-public class ImageDAOJdbc implements PictureDAO {
+public class PictureDAOJdbc implements PictureDAO {
 	private final static String[] COLS = { "id", "auction_id", "name", "extension", "width", "height" };
 	private final static String TABLENAME = "PICTURES";
 

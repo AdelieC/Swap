@@ -14,7 +14,8 @@ CREATE TABLE USERS (
     street          VARCHAR(100) NOT NULL,
     postcode        VARCHAR(10) NOT NULL,
     city            VARCHAR(30) NOT NULL,
-    password        VARCHAR(30) NOT NULL,
+    password        TEXT NOT NULL,
+    salt			TEXT NOT NULL,
     balance         INTEGER NOT NULL,
     is_admin        BOOLEAN DEFAULT 0,
     UNIQUE(username, email)
@@ -24,7 +25,7 @@ DROP TABLE USERS;
 CREATE TABLE AUCTIONS (
     auction_id		INTEGER AUTO_INCREMENT PRIMARY KEY,
     auction_name	VARCHAR(30) NOT NULL,
-    description		TEXT(200),
+    description		TEXT(300),
     start_date		DATE NOT NULL,
     end_date		DATE NOT NULL,
     initial_price	INTEGER,

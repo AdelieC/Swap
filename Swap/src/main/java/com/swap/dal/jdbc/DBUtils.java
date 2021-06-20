@@ -19,6 +19,10 @@ public class DBUtils {
 		return "SELECT * FROM " + tableName + " WHERE " + col + " = ?";
 	}
 
+	public static String getTwoColsBy(String tableName, String col1, String col2, String colId) {
+		return "SELECT " + col1 + ", " + col2 + " FROM " + tableName + " WHERE " + colId + " = ?";
+	}
+
 	public static String innerJoinTwoCols(String tableName, String col1, String col2) {
 		// common column MUST HAVE SAME NAME!
 		return " INNER JOIN " + tableName + " WHERE " + col1 + " = " + col1 + " AND " + col2 + " = ?";

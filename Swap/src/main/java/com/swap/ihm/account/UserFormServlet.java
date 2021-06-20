@@ -75,8 +75,9 @@ public class UserFormServlet extends MotherServlet {
 			HttpSession session = request.getSession();
 			User user = new User(((User) session.getAttribute("user")).getUserId(), inputs.get("username"),
 					inputs.get("lastName"), inputs.get("firstName"), inputs.get("email"), inputs.get("telephone"),
-					inputs.get("street"), inputs.get("postcode"), inputs.get("city"), inputs.get("password"),
-					((User) session.getAttribute("user")).getBalance(),
+					inputs.get("street"), inputs.get("postcode"), inputs.get("city"),
+					((User) session.getAttribute("user")).getPassword(),
+					((User) session.getAttribute("user")).getSalt(), ((User) session.getAttribute("user")).getBalance(),
 					((User) session.getAttribute("user")).isAdmin());
 			session.setAttribute("user", user);
 			if (errors.size() > 0) {

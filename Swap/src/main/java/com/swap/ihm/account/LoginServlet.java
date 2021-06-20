@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import com.swap.bll.BLLException;
 import com.swap.bll.UserManager;
+import com.swap.bo.BOException;
 import com.swap.bo.User;
 import com.swap.ihm.FormCleaner;
 import com.swap.ihm.MotherServlet;
@@ -46,17 +47,22 @@ public class LoginServlet extends MotherServlet {
 			if (username == null || username == null) {
 				doGet(request, response);
 			}
-			User user = new User();
-			user = userM.login(username, FormCleaner.encode(password));
-			if (user == null) {
+			User user = new User(username);
+			if (userM.couldFetchPasswordData(user)) {
 				request.setAttribute("username", username);
-				doGet(request, response);
-			} else {
-				session.setAttribute("user", user);
-				redirectBecauseLoggedIn(request, response);
+				if (user.login(password)) {
+					user = userM.getByUsername(username);
+					session.setAttribute("user", user);
+					redirectBecauseLoggedIn(request, response);
+				} else {
+					doGet(request, response);
+				}
 			}
 		} catch (BLLException e) {
 			// TODO Redirect to error page : 500
+			e.printStackTrace();
+		} catch (BOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

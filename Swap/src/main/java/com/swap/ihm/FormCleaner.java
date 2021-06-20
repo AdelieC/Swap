@@ -16,11 +16,6 @@ public class FormCleaner {
 		return true;
 	}
 
-	public static String encode(String password) {
-		// TODO : logic here
-		return password;
-	}
-
 	public static String cleanEmail(String email) {
 		Pattern p = Pattern.compile(MAILREG);
 		Matcher m = p.matcher(email.trim());

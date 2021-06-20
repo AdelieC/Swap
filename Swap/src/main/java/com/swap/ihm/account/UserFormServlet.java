@@ -104,7 +104,7 @@ public class UserFormServlet extends MotherServlet {
 		}
 
 		inputValues.put("username", FormCleaner.cleanUsername(request.getParameter("username")));
-		inputValues.put("password", FormCleaner.encode(password1));
+		inputValues.put("password", password1);
 		inputValues.put("lastName", FormCleaner.cleanName(request.getParameter("lastName")));
 		inputValues.put("firstName", FormCleaner.cleanName(request.getParameter("firstName")));
 		inputValues.put("email", FormCleaner.cleanEmail(request.getParameter("email")));

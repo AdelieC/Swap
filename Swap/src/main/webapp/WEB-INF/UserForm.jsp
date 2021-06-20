@@ -21,11 +21,11 @@
 					</div>
 					<div class="form-field">
 						<label for="password1">Password:</label>
-						<input type="password" type="text" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$" placeholder="ex : Pa$$w0rd" name="password1" value="${user.password}"/>
+						<input type="password" type="text" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$" placeholder="ex : Pa$$w0rd" name="password1"/>
 					</div>
 					<div class="form-field">
 						<label for="password2">Confirm password:</label>
-						<input type="password" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$" placeholder="ex : Pa$$w0rd" name="password2" value="${user.password}"/>
+						<input type="password" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$" placeholder="ex : Pa$$w0rd" name="password2"/>
 						<c:if test="${errors.containsKey('password')}" >
 			   				<div class="form-error">Invalid field : ${errors.get('password')}</div>
 						</c:if>

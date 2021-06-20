@@ -11,6 +11,9 @@
 		<a href="/Swap/home"><li>Home</li></a>
 		<c:choose>
 			<c:when test="${user != null && user.userId > 0}">
+				<c:if test="${user.isAdmin()}">
+					<a href="/Swap/admin/all-users"><li>Manage users</li></a>
+				</c:if>
 				<a href="/Swap/account"><li>My profile</li></a>
 				<a href="/Swap/auction"><li>Create auction</li></a>
 				<a href="/Swap/about"><li>About us</li></a>

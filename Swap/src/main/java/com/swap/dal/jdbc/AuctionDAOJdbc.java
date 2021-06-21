@@ -474,4 +474,38 @@ public class AuctionDAOJdbc implements AuctionDAO {
 		}
 		return list;
 	}
+
+	@Override
+	public List<Auction> selectOngoingByUserId(int userId) throws DALException {
+		List<Auction> list = new ArrayList<Auction>();
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String query = DBUtils.selectByTwoCols(tableName, "status", "user_id");
+		try {
+			System.out.println(query);
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setString(1, "ONGOING");
+			stmt.setInt(1, userId);
+			result = stmt.executeQuery();
+			while (result.next()) {
+				int id = result.getInt("auction_id");
+				String name = result.getString("auction_name");
+				String description = result.getString("description");
+				LocalDate startDate = result.getDate("start_date").toLocalDate();
+				LocalDate endDate = result.getDate("end_date").toLocalDate();
+				int initialPrice = result.getInt("initial_price");
+				int salePrice = result.getInt("sale_price");
+				int categoryId = result.getInt("category_id");
+				String status = result.getString("status");
+				Auction auction = new Auction(id, name, description, startDate, endDate, categoryId, initialPrice,
+						salePrice, userId, status);
+				list.add(auction);
+			}
+		} catch (SQLException e) {
+			throw new DALException("Failed to fetch ongoing auctions for user with id = " + userId, e);
+		}
+		return list;
+	}
 }

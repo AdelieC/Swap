@@ -174,4 +174,17 @@ public class AuctionManager {
 		return list;
 	}
 
+	public List<Auction> getOngoingByUserId(int userId) throws BLLException {
+		List<Auction> list = null;
+		try {
+			list = this.auctionDAO.selectOngoingByUserId(userId);
+			for (Auction auction : list) {
+				auction.setPictures(pictureManager.getByAuctionId(auction.getId()));
+			}
+		} catch (DALException e) {
+			throw new BLLException("GET AUCTIONS ONGOING BY USERID failure");
+		}
+		return list;
+	}
+
 }

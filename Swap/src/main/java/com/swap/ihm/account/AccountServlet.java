@@ -8,11 +8,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.UserManager;
+import com.swap.bo.Auction;
 import com.swap.bo.User;
 import com.swap.ihm.MotherServlet;
+import com.swap.ihm.auction.AuctionThumbnail;
 
 /**
  * Servlet implementation class Account
@@ -33,8 +38,10 @@ public class AccountServlet extends MotherServlet {
 			HttpSession session = request.getSession();
 			User user = null;
 			if (request.getRequestURI().contains("user") && request.getParameter("id") != null) {
+				int userId = Integer.parseInt(request.getParameter("id"));
 				UserManager userM = new UserManager();
-				user = userM.getById(Integer.parseInt(request.getParameter("id")));
+				user = userM.getById(userId);
+				setThumbnails(request, userId);
 			} else {
 				user = (User) session.getAttribute("user");
 			}
@@ -44,6 +51,40 @@ public class AccountServlet extends MotherServlet {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
+	}
+
+	private void setThumbnails(HttpServletRequest request, int userId) throws BLLException {
+		AuctionManager auctionM = new AuctionManager();
+		List<Auction> auctions = auctionM.getOngoingByUserId(userId);
+		List<AuctionThumbnail> thumbnails = new ArrayList<>();
+		thumbnails = getThumbnailList(auctions);
+		request.setAttribute("thumbnails", thumbnails);
+	}
+
+	private List<AuctionThumbnail> getThumbnailList(List<Auction> auctions) {
+		List<AuctionThumbnail> thumbnails = new ArrayList<>();
+		auctions.forEach(auction -> thumbnails.add(getThumbnail(auction)));
+		return thumbnails;
+	}
+
+	private AuctionThumbnail getThumbnail(Auction auction) {
+		UserManager userM = new UserManager();
+		User user = null;
+		AuctionThumbnail auctionThumbnail = null;
+		try {
+			user = userM.getById(auction.getUserId());
+			if (auction.getPictures().isEmpty()) {
+				auctionThumbnail = new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
+						auction.getEndDate(), user.getUsername());
+			} else {
+				auctionThumbnail = new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
+						auction.getEndDate(), user.getUsername(), auction.getPictures().get(0));
+			}
+		} catch (BLLException e) {
+			// TODO Handle error 500
+			e.printStackTrace();
+		}
+		return auctionThumbnail;
 	}
 
 	/**

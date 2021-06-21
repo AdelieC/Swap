@@ -42,7 +42,7 @@ public class GetOutServlet extends MotherServlet {
 			if (!userIsLoggedIn(request))
 				throw new IHMException("Action not permitted");
 			if ("Delete".equals(request.getParameter("submit"))) {
-				deleteCurrentUser(request, session);
+				deleteUser(request, session);
 			}
 			session.setAttribute("user", null);
 			session.invalidate();
@@ -56,10 +56,11 @@ public class GetOutServlet extends MotherServlet {
 		}
 	}
 
-	private void deleteCurrentUser(HttpServletRequest request, HttpSession session) throws BLLException {
+	private void deleteUser(HttpServletRequest request, HttpSession session) throws BLLException {
 		UserManager userM = new UserManager();
 		int userId = FormCleaner.cleanId(request.getParameter("userId"));
-		if (((User) session.getAttribute("user")).getUserId() == userId) {
+		if (((User) session.getAttribute("user")).getUserId() == userId
+				|| ((User) session.getAttribute("user")).isAdmin()) {
 			userM.delete(userId);
 		}
 	}

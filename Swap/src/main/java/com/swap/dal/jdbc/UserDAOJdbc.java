@@ -126,7 +126,7 @@ public class UserDAOJdbc implements UserDAO {
 		String SQLQuery = DBUtils.deleteWhere(TABLENAME, "user_id");
 		try {
 			conn = ConnectionProvider.getConnection();
-			stmt = conn.prepareStatement(SQLQuery, Statement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(SQLQuery);
 			stmt.setInt(1, userId);
 			stmt.executeUpdate();
 		} catch (SQLException e) {

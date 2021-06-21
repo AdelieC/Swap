@@ -13,7 +13,7 @@ public class PictureManager {
 	private PictureDAO pictureDAO;
 
 	public PictureManager() {
-		this.pictureRepo = DAOFactory.getImageFileDAO();
+		this.pictureRepo = DAOFactory.getPictureRepository();
 		this.pictureDAO = DAOFactory.getImageDAO();
 	}
 

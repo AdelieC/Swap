@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Notification implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int id, recipientId, senderId;
+	private int id, recipientId, senderId, auctionId;
 	private String type;
 	private String content;
 	private boolean isRead;
@@ -13,6 +13,7 @@ public class Notification implements Serializable {
 	enum Type {
 		BID,
 		MESSAGE,
+		AUCTION,
 		NOTIFICATION;
 
 		public static boolean check(String type) {
@@ -37,15 +38,28 @@ public class Notification implements Serializable {
 		this.isRead = false;
 	}
 
-	public Notification(int id, int recipientId, int senderId, String type, String content, boolean read,
+	public Notification(int recipientId, int senderId, String type, String content, int auctionId) throws BOException {
+		setRecipientId(recipientId);
+		setSenderId(senderId);
+		setType(type);
+		setContent(content);
+		setAuctionId(auctionId);
+		this.isRead = false;
+	}
+
+	public Notification(int id, int recipientId, int senderId, String type, String content, boolean isRead,
 			java.sql.Timestamp timestamp) {
 		this.id = id;
 		this.recipientId = recipientId;
 		this.senderId = senderId;
 		this.type = type;
 		this.content = content;
-		this.isRead = read;
+		this.isRead = isRead;
 		this.timestamp = timestamp;
+	}
+
+	private void setAuctionId(int auctionId) {
+		this.auctionId = auctionId;
 	}
 
 	public int getId() {

@@ -70,4 +70,9 @@ public class FormCleaner {
 		return (isSafe(strId) && m.matches()) ? Integer.parseInt(strId.trim()) : null;
 	}
 
+	public static String cleanText(String parameter) {
+		// TODO : complete
+		return parameter;
+	}
+
 }

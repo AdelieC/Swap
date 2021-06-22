@@ -92,4 +92,14 @@ public class NotificationManager {
 		return true;
 		// TODO : complete with BLLValidator
 	}
+
+	public List<Notification> getBySender(int senderId) throws BLLException {
+		List<Notification> notifications = new ArrayList<>();
+		try {
+			notifications = NotificationDAO.selectBySender(senderId);
+		} catch (DALException e) {
+			throw new BLLException("Failed to fetch notifications sent by user number " + senderId, e);
+		}
+		return notifications;
+	}
 }

@@ -3,6 +3,7 @@ package com.swap.bo;
 import java.io.Serializable;
 
 public class Notification implements Serializable {
+	// TODO : handle verifications in setters
 	private static final long serialVersionUID = 1L;
 	private int id, recipientId, senderId, auctionId;
 	private String type;
@@ -36,6 +37,7 @@ public class Notification implements Serializable {
 		setSenderId(senderId);
 		setType(type);
 		this.isRead = false;
+		this.auctionId = 0;
 	}
 
 	public Notification(int recipientId, int senderId, String type, String content, int auctionId) throws BOException {
@@ -48,18 +50,15 @@ public class Notification implements Serializable {
 	}
 
 	public Notification(int id, int recipientId, int senderId, String type, String content, boolean isRead,
-			java.sql.Timestamp timestamp) {
+			int auctionId, java.sql.Timestamp timestamp) {
 		this.id = id;
 		this.recipientId = recipientId;
 		this.senderId = senderId;
 		this.type = type;
 		this.content = content;
 		this.isRead = isRead;
-		this.timestamp = timestamp;
-	}
-
-	private void setAuctionId(int auctionId) {
 		this.auctionId = auctionId;
+		this.timestamp = timestamp;
 	}
 
 	public int getId() {
@@ -84,6 +83,10 @@ public class Notification implements Serializable {
 
 	public boolean isRead() {
 		return isRead;
+	}
+
+	public int getAuctionId() {
+		return auctionId;
 	}
 
 	public java.sql.Timestamp getTimestamp() {
@@ -118,6 +121,10 @@ public class Notification implements Serializable {
 
 	public void setRead(boolean read) {
 		this.isRead = read;
+	}
+
+	private void setAuctionId(int auctionId) {
+		this.auctionId = auctionId;
 	}
 
 }

@@ -36,9 +36,9 @@ public class MessageFormServlet extends MotherServlet {
 			if (request.getParameter("id") == null || request.getParameter("id").isBlank())
 				throw new IHMException("Action not permitted");
 			if (request.getParameter("auction") == null || request.getParameter("auction").isBlank()) {
-				createAuctionMessage(request);
-			} else {
 				createUserMessage(request);
+			} else {
+				createAuctionMessage(request);
 			}
 			response.sendRedirect(SUCCESS_PATH);
 		} catch (IHMException e) {

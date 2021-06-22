@@ -13,7 +13,8 @@ import com.swap.dal.DALException;
 import com.swap.dal.NotificationDAO;
 
 public class NotificationDAOJdbc implements NotificationDAO {
-	private final static String[] COLS = { "id", "recipient_id", "sender_id", "type", "content", "is_read" };
+	private final static String[] COLS = { "id", "recipient_id", "sender_id", "type", "content", "is_read",
+			"auction_id" };
 	// timestamp only needs to be fetched so I don't need it in COLS
 	private final static String TABLENAME = "NOTIFICATIONS";
 
@@ -30,6 +31,7 @@ public class NotificationDAOJdbc implements NotificationDAO {
 			stmt.setString(3, n.getType());
 			stmt.setString(4, n.getContent());
 			stmt.setBoolean(5, n.isRead());
+			stmt.setInt(6, n.getAuctionId());
 			int nbRows = stmt.executeUpdate();
 			if (nbRows == 1) {
 				ResultSet result = stmt.getGeneratedKeys();
@@ -64,8 +66,10 @@ public class NotificationDAOJdbc implements NotificationDAO {
 				String type = result.getString("type");
 				String content = result.getString("content");
 				boolean isRead = result.getBoolean("is_read");
+				int auctionId = result.getInt("auction_id");
 				java.sql.Timestamp timestamp = result.getTimestamp("timestamp");
-				notifications.add(new Notification(id, recipientId, senderId, type, content, isRead, timestamp));
+				notifications
+						.add(new Notification(id, recipientId, senderId, type, content, isRead, auctionId, timestamp));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Read failed - couldn't retrieve list of all notifications", e);
@@ -89,6 +93,7 @@ public class NotificationDAOJdbc implements NotificationDAO {
 			stmt.setString(3, n.getType());
 			stmt.setString(4, n.getContent());
 			stmt.setBoolean(5, n.isRead());
+			stmt.setInt(1, n.getAuctionId());
 			stmt.setInt(6, n.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -118,8 +123,9 @@ public class NotificationDAOJdbc implements NotificationDAO {
 				String type = result.getString("type");
 				String content = result.getString("content");
 				Boolean isRead = result.getBoolean("is_read");
+				int auctionId = result.getInt("auction_id");
 				java.sql.Timestamp timestamp = result.getTimestamp("timestamp");
-				notification = new Notification(id, recipientId, senderId, type, content, isRead, timestamp);
+				notification = new Notification(id, recipientId, senderId, type, content, isRead, auctionId, timestamp);
 			}
 		} catch (SQLException e) {
 			throw new DALException("Notification with id " + id + " couldn't be fetched", e);
@@ -148,11 +154,45 @@ public class NotificationDAOJdbc implements NotificationDAO {
 				String type = result.getString("type");
 				String content = result.getString("content");
 				Boolean isRead = result.getBoolean("is_read");
+				int auctionId = result.getInt("auction_id");
 				java.sql.Timestamp timestamp = result.getTimestamp("timestamp");
-				notifications.add(new Notification(id, recipientId, senderId, type, content, isRead, timestamp));
+				notifications
+						.add(new Notification(id, recipientId, senderId, type, content, isRead, auctionId, timestamp));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Notifications for user with id " + recipientId + " couldn't be fetched", e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+		return notifications;
+	}
+
+	@Override
+	public List<Notification> selectBySender(int senderId) throws DALException {
+		List<Notification> notifications = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String SQLQuery = DBUtils.selectBy(TABLENAME, "sender_id");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(SQLQuery);
+			stmt.setInt(1, senderId);
+			result = stmt.executeQuery();
+			while (result.next()) {
+				int id = result.getInt("id");
+				int recipientId = result.getInt("recipient_id");
+				String type = result.getString("type");
+				String content = result.getString("content");
+				Boolean isRead = result.getBoolean("is_read");
+				int auctionId = result.getInt("auction_id");
+				java.sql.Timestamp timestamp = result.getTimestamp("timestamp");
+				notifications
+						.add(new Notification(id, recipientId, senderId, type, content, isRead, auctionId, timestamp));
+			}
+		} catch (SQLException e) {
+			throw new DALException("Notifications sent by user with id " + senderId + " couldn't be fetched", e);
 		} finally {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);
@@ -178,8 +218,10 @@ public class NotificationDAOJdbc implements NotificationDAO {
 				int senderId = result.getInt("sender_id");
 				String content = result.getString("content");
 				Boolean isRead = result.getBoolean("is_read");
+				int auctionId = result.getInt("auction_id");
 				java.sql.Timestamp timestamp = result.getTimestamp("timestamp");
-				notifications.add(new Notification(id, recipientId, senderId, type, content, isRead, timestamp));
+				notifications
+						.add(new Notification(id, recipientId, senderId, type, content, isRead, auctionId, timestamp));
 			}
 		} catch (SQLException e) {
 			throw new DALException(
@@ -230,7 +272,6 @@ public class NotificationDAOJdbc implements NotificationDAO {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);
 		}
-
 	}
 
 }

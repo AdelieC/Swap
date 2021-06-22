@@ -9,9 +9,12 @@ public interface NotificationDAO extends DAO<Notification> {
 
 	public List<Notification> selectByRecipient(int recipientId) throws DALException;
 
+	public List<Notification> selectBySender(int senderId) throws DALException;
+
 	public List<Notification> selectByTypeAndRecipient(String type, int recipientId) throws DALException;
 
 	public void delete(int id) throws DALException;
 
 	public void deleteAllByRecipient(int recipientId) throws DALException;
+
 }

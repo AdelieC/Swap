@@ -91,6 +91,10 @@
 					</c:choose>
 				</c:if>
 			</section>
+			<jsp:include page="./includes/messageForm.jsp">
+				<jsp:param value="auction/message" name="formAction"/>
+				<jsp:param value="${seller.userId}" name="recipientId"/>
+			</jsp:include>
 			<a class="btn submit2" href="/Swap">Back to Homepage</a>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>

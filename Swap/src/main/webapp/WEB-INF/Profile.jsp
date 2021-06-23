@@ -82,12 +82,15 @@
 						<div class="center">
 							<jsp:include page="./includes/deleteAccount.jsp"/>
 							<a class="btn submit2" href="/Swap/admin/disable-account?id=${targetUser.userId}">Disable account</a>
-							<a class="btn submit2" href="/Swap/admin/notify?id=${targetUser.userId}">Notify user</a>
 						</div>
 					</c:if>
 					<a class="btn submit2" href="/Swap">Back to homepage</a>
 				</c:otherwise>
 			</c:choose>
+			<jsp:include page="./includes/messageForm.jsp">
+				<jsp:param value="user/message" name="formAction"/>
+				<jsp:param value="${targetUser.userId}" name="recipientId"/>
+			</jsp:include>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>
 	</body>

@@ -3,7 +3,7 @@ package com.swap.bo;
 import java.io.Serializable;
 
 public class Notification implements Serializable {
-	// TODO : handle verifications in setters
+	// TODO : handle verifications in setters to prevent botnets and DoS attacks
 	private static final long serialVersionUID = 1L;
 	private int id, recipientId, senderId, auctionId;
 	private String type;
@@ -12,10 +12,13 @@ public class Notification implements Serializable {
 	private java.sql.Timestamp timestamp;
 
 	enum Type {
-		BID,
 		MESSAGE,
+		NOTIFICATION,
 		AUCTION,
-		NOTIFICATION;
+		BID,
+		SALE,
+		WIN,
+		GLOBAL;
 
 		public static boolean check(String type) {
 			boolean isType = false;

@@ -56,7 +56,7 @@ public class MessageFormServlet extends MotherServlet {
 	private void createUserMessage(HttpServletRequest request) throws BLLException, BOException {
 		HttpSession session = request.getSession();
 		NotificationManager notificationM = new NotificationManager();
-		int recipientId = FormCleaner.cleanId(request.getParameter("id"));
+		int recipientId = FormCleaner.cleanId(request.getParameter("recipientId"));
 		int senderId = ((User) session.getAttribute("user")).getUserId();
 		String content = FormCleaner.cleanText(request.getParameter("content"));
 		notificationM.create(new Notification(recipientId, senderId, "MESSAGE", content));
@@ -65,7 +65,7 @@ public class MessageFormServlet extends MotherServlet {
 	private void createAuctionMessage(HttpServletRequest request) throws BLLException, BOException {
 		HttpSession session = request.getSession();
 		NotificationManager notificationM = new NotificationManager();
-		int recipientId = FormCleaner.cleanId(request.getParameter("id"));
+		int recipientId = FormCleaner.cleanId(request.getParameter("recipientId"));
 		int senderId = ((User) session.getAttribute("user")).getUserId();
 		String content = FormCleaner.cleanText(request.getParameter("content"));
 		int auctionId = FormCleaner.cleanId(request.getParameter("auction"));

@@ -234,6 +234,39 @@ public class NotificationDAOJdbc implements NotificationDAO {
 	}
 
 	@Override
+	public List<Notification> selectByTypeAndSender(String type, int senderId) throws DALException {
+		List<Notification> notifications = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String SQLQuery = DBUtils.selectByTwoCols(TABLENAME, "type", "sender_id");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(SQLQuery);
+			stmt.setString(1, type);
+			stmt.setInt(2, senderId);
+			result = stmt.executeQuery();
+			while (result.next()) {
+				int id = result.getInt("id");
+				int recipientId = result.getInt("recipient_id");
+				String content = result.getString("content");
+				Boolean isRead = result.getBoolean("is_read");
+				int auctionId = result.getInt("auction_id");
+				java.sql.Timestamp timestamp = result.getTimestamp("timestamp");
+				notifications
+						.add(new Notification(id, recipientId, senderId, type, content, isRead, auctionId, timestamp));
+			}
+		} catch (SQLException e) {
+			throw new DALException(
+					"Notifications of type " + type + " from user with id " + senderId + " couldn't be fetched", e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+		return notifications;
+	}
+
+	@Override
 	public void delete(int id) throws DALException {
 		Connection conn = null;
 		PreparedStatement stmt = null;

@@ -10,6 +10,7 @@ import java.util.Locale;
 import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.UserManager;
+import com.swap.bo.Notification;
 
 public class NotificationThumbnail {
 	AuctionManager auctionM = new AuctionManager();
@@ -28,7 +29,19 @@ public class NotificationThumbnail {
 		this.content = content;
 		this.isRead = isRead;
 		setAuctionName(auctionId);
+		this.auctionId = auctionId;
 		setDateAndTime(timestamp);
+	}
+
+	public NotificationThumbnail(Notification notification) throws BLLException {
+		setRecipientName(notification.getRecipientId());
+		setSenderName(notification.getSenderId());
+		this.type = notification.getType();
+		this.content = notification.getContent();
+		this.isRead = notification.isRead();
+		setAuctionName(notification.getAuctionId());
+		this.auctionId = notification.getAuctionId();
+		setDateAndTime(notification.getTimestamp());
 	}
 
 	public int getAuctionId() {

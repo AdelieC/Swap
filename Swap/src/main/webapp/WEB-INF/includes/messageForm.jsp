@@ -10,7 +10,8 @@
 		<textarea rows="5" name="content"></textarea>
 		<input type="hidden" name="recipientId" value="${recipientId}" />
 		<c:if test="${auction != null}">
-			<input type="hidden" name="auction" value="${auction.id}" />
+			<input type="hidden" name="auctionId" value="${auction.id}" />
+			<input type="hidden" name="auctionName" value="${auction.name}" />
 		</c:if>
 		<input type="submit" class="btn submit1" value="Send" />
 	</fieldset>

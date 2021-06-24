@@ -21,7 +21,6 @@ import com.swap.ihm.MotherServlet;
 public class MessageFormServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String SUCCESS_PATH = "/Swap/account/messages";
-	// TODO : create jsp + servlet for account/messages !!!
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,11 +34,7 @@ public class MessageFormServlet extends MotherServlet {
 		try {
 			if (request.getParameter("id") == null || request.getParameter("id").isBlank())
 				throw new IHMException("Action not permitted");
-			if (request.getParameter("auction") == null || request.getParameter("auction").isBlank()) {
-				createUserMessage(request);
-			} else {
-				createAuctionMessage(request);
-			}
+			createMessage(request);
 			response.sendRedirect(SUCCESS_PATH);
 		} catch (IHMException e) {
 			// TODO : handle "action not permitted" error
@@ -53,23 +48,16 @@ public class MessageFormServlet extends MotherServlet {
 		}
 	}
 
-	private void createUserMessage(HttpServletRequest request) throws BLLException, BOException {
+	private void createMessage(HttpServletRequest request) throws BLLException, BOException {
 		HttpSession session = request.getSession();
 		NotificationManager notificationM = new NotificationManager();
 		int recipientId = FormCleaner.cleanId(request.getParameter("recipientId"));
 		int senderId = ((User) session.getAttribute("user")).getUserId();
 		String content = FormCleaner.cleanText(request.getParameter("content"));
-		notificationM.create(new Notification(recipientId, senderId, "MESSAGE", content));
+		int auctionId = 0;
+		if (request.getParameter("auctionId") != null) {
+			auctionId = FormCleaner.cleanId(request.getParameter("auctionId"));
+		}
+		notificationM.create(new Notification(recipientId, senderId, NotificationType.MESSAGE, content, auctionId));
 	}
-
-	private void createAuctionMessage(HttpServletRequest request) throws BLLException, BOException {
-		HttpSession session = request.getSession();
-		NotificationManager notificationM = new NotificationManager();
-		int recipientId = FormCleaner.cleanId(request.getParameter("recipientId"));
-		int senderId = ((User) session.getAttribute("user")).getUserId();
-		String content = FormCleaner.cleanText(request.getParameter("content"));
-		int auctionId = FormCleaner.cleanId(request.getParameter("auction"));
-		notificationM.create(new Notification(recipientId, senderId, "AUCTION", content, auctionId));
-	}
-
 }

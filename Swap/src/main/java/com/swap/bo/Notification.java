@@ -2,7 +2,9 @@ package com.swap.bo;
 
 import java.io.Serializable;
 
-public class Notification implements Serializable {
+import com.swap.ihm.notification.NotificationType;
+
+public class Notification implements Serializable, Comparable<Notification> {
 	// TODO : handle verifications in setters to prevent botnets and DoS attacks
 	private static final long serialVersionUID = 1L;
 	private int id, recipientId, senderId, auctionId;
@@ -11,39 +13,21 @@ public class Notification implements Serializable {
 	private boolean isRead;
 	private java.sql.Timestamp timestamp;
 
-	enum Type {
-		MESSAGE,
-		NOTIFICATION,
-		AUCTION,
-		BID,
-		SALE,
-		WIN,
-		GLOBAL;
-
-		public static boolean check(String type) {
-			boolean isType = false;
-			int i = 0;
-			do {
-				isType = Type.values()[i].name().equals(type);
-				i++;
-			} while (!isType && i < Type.values().length);
-			return isType;
-		}
-	}
-
 	public Notification() {
 
 	}
 
-	public Notification(int recipientId, int senderId, String type, String content) throws BOException {
+	public Notification(int recipientId, int senderId, NotificationType type, String content) throws BOException {
 		setRecipientId(recipientId);
 		setSenderId(senderId);
 		setType(type);
-		this.isRead = false;
+		setContent(content);
 		this.auctionId = 0;
+		this.isRead = false;
 	}
 
-	public Notification(int recipientId, int senderId, String type, String content, int auctionId) throws BOException {
+	public Notification(int recipientId, int senderId, NotificationType type, String content, int auctionId)
+			throws BOException {
 		setRecipientId(recipientId);
 		setSenderId(senderId);
 		setType(type);
@@ -112,10 +96,8 @@ public class Notification implements Serializable {
 		this.senderId = senderId;
 	}
 
-	public void setType(String type) throws BOException {
-		if (!Type.check(type))
-			throw new BOException("Invalid notification type");
-		this.type = type;
+	public void setType(NotificationType type) throws BOException {
+		this.type = type.name();
 	}
 
 	public void setContent(String content) {
@@ -128,6 +110,11 @@ public class Notification implements Serializable {
 
 	private void setAuctionId(int auctionId) {
 		this.auctionId = auctionId;
+	}
+
+	@Override
+	public int compareTo(Notification o) {
+		return this.timestamp.compareTo(o.getTimestamp());
 	}
 
 }

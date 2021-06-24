@@ -88,6 +88,17 @@ public class NotificationManager {
 		return notifications;
 	}
 
+	public List<Notification> getByTypeAndSender(String type, int senderId) throws BLLException {
+		List<Notification> notifications = new ArrayList<>();
+		try {
+			notifications = NotificationDAO.selectByTypeAndRecipient(type, senderId);
+		} catch (DALException e) {
+			throw new BLLException("Failed to fetch notifications of type " + type + " from user number " + senderId,
+					e);
+		}
+		return notifications;
+	}
+
 	public boolean isValid(Notification n) {
 		return true;
 		// TODO : complete with BLLValidator
@@ -99,6 +110,17 @@ public class NotificationManager {
 			notifications = NotificationDAO.selectBySender(senderId);
 		} catch (DALException e) {
 			throw new BLLException("Failed to fetch notifications sent by user number " + senderId, e);
+		}
+		return notifications;
+	}
+
+	public List<Notification> getMessages(int userId) throws BLLException {
+		List<Notification> notifications = new ArrayList<>();
+		try {
+			notifications = NotificationDAO.selectByTypeAndRecipient("MESSAGE", userId);
+			notifications.addAll(NotificationDAO.selectByTypeAndSender("MESSAGE", userId));
+		} catch (DALException e) {
+			throw new BLLException("Failed to fetch messages for and from user number " + userId, e);
 		}
 		return notifications;
 	}

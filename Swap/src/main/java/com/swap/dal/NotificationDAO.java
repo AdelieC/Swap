@@ -17,4 +17,6 @@ public interface NotificationDAO extends DAO<Notification> {
 
 	public void deleteAllByRecipient(int recipientId) throws DALException;
 
+	public List<Notification> selectByTypeAndSender(String type, int senderId) throws DALException;
+
 }

@@ -53,6 +53,6 @@ public class GlobalNotificationServlet extends MotherServlet {
 		String content = FormCleaner.cleanText(request.getParameter("content"));
 		List<User> users = userM.getAll();
 		for (User user : users)
-			notificationM.create(new Notification(user.getUserId(), senderId, "GLOBAL", content));
+			notificationM.create(new Notification(user.getUserId(), senderId, NotificationType.ADMIN, content));
 	}
 }

@@ -16,7 +16,7 @@
 					<a href="/Swap/admin/notify"><li>Notify all</li></a>
 				</c:if>
 				<a href="/Swap/account"><li>My profile</li></a>
-				<a href="/Swap/account/messages"><li>Messages</li></a>
+				<a href="/Swap/account/notifications"><li>Notifications</li></a>
 				<a href="/Swap/auction"><li>Create auction</li></a>
 				<a href="/Swap/about"><li>About us</li></a>
 				<jsp:include page="logoutForm.jsp"/>

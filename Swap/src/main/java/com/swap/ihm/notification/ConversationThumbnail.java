@@ -6,16 +6,14 @@ import java.util.List;
 
 import com.swap.bll.BLLException;
 import com.swap.bll.UserManager;
-import com.swap.bo.Notification;
 
 public class ConversationThumbnail implements Serializable {
-	UserManager userM = new UserManager();
-	int correspondantId;
-	String correspondantName;
-	List<Notification> messages = new ArrayList<>();
+	private UserManager userM = new UserManager();
+	private int correspondantId, numberOfUnreadMessages = 0;
+	private String correspondantName, lastMessageDate;
+	private List<NotificationThumbnail> messages = new ArrayList<>();
 
 	public ConversationThumbnail() {
-
 	}
 
 	public ConversationThumbnail(int correspondantId) throws BLLException {
@@ -31,11 +29,26 @@ public class ConversationThumbnail implements Serializable {
 		return correspondantId;
 	}
 
-	public void add(Notification message) {
+	public void add(NotificationThumbnail message) {
 		this.messages.add(message);
 	}
 
 	public void sortByDateDesc() {
 		messages.sort((x, y) -> x.compareTo(y));
+	}
+
+	public void setLastMessageDate() {
+		sortByDateDesc();
+		this.lastMessageDate = messages.get(0).getDateAndTime();
+	}
+
+	public void setNumberOfUnread() {
+		for (NotificationThumbnail message : messages)
+			if (!message.isRead())
+				this.numberOfUnreadMessages++;
+	}
+
+	public boolean hasUnread() {
+		return numberOfUnreadMessages > 0;
 	}
 }

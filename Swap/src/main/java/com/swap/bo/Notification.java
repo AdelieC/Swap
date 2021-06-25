@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.swap.ihm.notification.NotificationType;
 
-public class Notification implements Serializable, Comparable<Notification> {
+public class Notification implements Serializable {
 	// TODO : handle verifications in setters to prevent botnets and DoS attacks
 	private static final long serialVersionUID = 1L;
 	private int id, recipientId, senderId, auctionId;
@@ -111,10 +111,4 @@ public class Notification implements Serializable, Comparable<Notification> {
 	private void setAuctionId(int auctionId) {
 		this.auctionId = auctionId;
 	}
-
-	@Override
-	public int compareTo(Notification o) {
-		return this.timestamp.compareTo(o.getTimestamp());
-	}
-
 }

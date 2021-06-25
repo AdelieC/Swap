@@ -1,5 +1,6 @@
 package com.swap.ihm.notification;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -12,7 +13,7 @@ import com.swap.bll.BLLException;
 import com.swap.bll.UserManager;
 import com.swap.bo.Notification;
 
-public class NotificationThumbnail {
+public class NotificationThumbnail implements Serializable, Comparable<NotificationThumbnail> {
 	AuctionManager auctionM = new AuctionManager();
 	UserManager userM = new UserManager();
 	private int auctionId;
@@ -20,6 +21,7 @@ public class NotificationThumbnail {
 	private String content;
 	private boolean isRead;
 	private String dateAndTime;
+	private Timestamp timestamp;
 
 	public NotificationThumbnail(int recipientId, int senderId, String type, String content, boolean isRead,
 			int auctionId, java.sql.Timestamp timestamp) throws BLLException {
@@ -31,6 +33,7 @@ public class NotificationThumbnail {
 		setAuctionName(auctionId);
 		this.auctionId = auctionId;
 		setDateAndTime(timestamp);
+		this.timestamp = timestamp;
 	}
 
 	public NotificationThumbnail(Notification notification) throws BLLException {
@@ -39,9 +42,10 @@ public class NotificationThumbnail {
 		this.type = notification.getType();
 		this.content = notification.getContent();
 		this.isRead = notification.isRead();
-		setAuctionName(notification.getAuctionId());
 		this.auctionId = notification.getAuctionId();
+		setAuctionName(notification.getAuctionId());
 		setDateAndTime(notification.getTimestamp());
+		this.timestamp = notification.getTimestamp();
 	}
 
 	public int getAuctionId() {
@@ -76,6 +80,10 @@ public class NotificationThumbnail {
 		return dateAndTime;
 	}
 
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
 	private void setDateAndTime(Timestamp timestamp) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
 				.withLocale(Locale.FRENCH);
@@ -84,7 +92,8 @@ public class NotificationThumbnail {
 	}
 
 	private void setAuctionName(int auctionId) throws BLLException {
-		auctionName = auctionM.getById(auctionId).getName();
+		if (auctionId > 0)
+			auctionName = auctionM.getById(auctionId).getName();
 	}
 
 	private void setSenderName(int senderId) throws BLLException {
@@ -94,6 +103,11 @@ public class NotificationThumbnail {
 
 	private void setRecipientName(int recipientId) throws BLLException {
 		recipientName = userM.getById(recipientId).getUsername();
+	}
+
+	@Override
+	public int compareTo(NotificationThumbnail o) {
+		return this.timestamp.compareTo(o.getTimestamp());
 	}
 
 }

@@ -17,10 +17,10 @@ import com.swap.bo.Notification;
 import com.swap.bo.User;
 import com.swap.ihm.MotherServlet;
 
-@WebServlet(urlPatterns = { "/account/messages" })
+@WebServlet(urlPatterns = { "/account/notifications" })
 public class ViewNotificationsServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String VIEW_MSG_JSP = "/WEB-INF/ViewMessages.jsp";
+	private static final String VIEW_MSG_JSP = "/WEB-INF/ViewNotifications.jsp";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -50,11 +50,12 @@ public class ViewNotificationsServlet extends MotherServlet {
 		List<Notification> messagesSent = notificationM.getByTypeAndSender(NotificationType.MESSAGE.name(), userId);
 		List<Notification> messagesReceived = notificationM.getByTypeAndRecipient(NotificationType.MESSAGE.name(),
 				userId);
-		List<ConversationThumbnail> conversations = createConversations(messagesReceived, messagesSent);
-		request.setAttribute("conversations", conversations);
+		List<ConversationThumbnail> conversationsThumbnails = createConversationsThumbnails(messagesReceived,
+				messagesSent);
+		request.setAttribute("conversations", conversationsThumbnails);
 	}
 
-	private List<ConversationThumbnail> createConversations(List<Notification> messagesReceived,
+	private List<ConversationThumbnail> createConversationsThumbnails(List<Notification> messagesReceived,
 			List<Notification> messagesSent) throws BLLException {
 		List<ConversationThumbnail> conversations = new ArrayList<>();
 		List<Integer> allCorrespondants = new ArrayList<>();
@@ -66,15 +67,16 @@ public class ViewNotificationsServlet extends MotherServlet {
 			conversations.add(new ConversationThumbnail(correspondant));
 		}
 		for (ConversationThumbnail conversation : conversations) {
-			messagesReceived.forEach(message -> {
+			for (Notification message : messagesReceived) {
 				if (message.getSenderId() == conversation.getCorrespondant())
-					conversation.add(message);
-			});
-			messagesSent.forEach(message -> {
+					conversation.add(new NotificationThumbnail(message));
+			}
+			for (Notification message : messagesSent) {
 				if (message.getRecipientId() == conversation.getCorrespondant())
-					conversation.add(message);
-			});
-			conversation.sortByDateDesc();
+					conversation.add(new NotificationThumbnail(message));
+			}
+			conversation.setLastMessageDate();
+			conversation.setNumberOfUnread();
 		}
 		return conversations;
 	}

@@ -21,7 +21,7 @@ import com.swap.ihm.MotherServlet;
 @WebServlet(urlPatterns = { "/admin/notify" })
 public class GlobalNotificationServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String SUCCESS_PATH = "/Swap/account/messages";
+	private static final String SUCCESS_PATH = "/Swap/account/notifications";
 	private static final String GLOBAL_NOTIF_JSP = "/WEB-INF/GlobalNotificationForm.jsp";
 
 	@Override

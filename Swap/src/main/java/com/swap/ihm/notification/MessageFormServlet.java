@@ -20,7 +20,7 @@ import com.swap.ihm.MotherServlet;
 @WebServlet(urlPatterns = { "/user/message", "/auction/message" })
 public class MessageFormServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String SUCCESS_PATH = "/Swap/account/messages";
+	private static final String SUCCESS_PATH = "/Swap/account/notifications";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,7 +32,7 @@ public class MessageFormServlet extends MotherServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			if (request.getParameter("id") == null || request.getParameter("id").isBlank())
+			if (request.getParameter("recipientId") == null || request.getParameter("recipientId").isBlank())
 				throw new IHMException("Action not permitted");
 			createMessage(request);
 			response.sendRedirect(SUCCESS_PATH);

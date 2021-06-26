@@ -487,7 +487,7 @@ public class AuctionDAOJdbc implements AuctionDAO {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setString(1, "ONGOING");
-			stmt.setInt(1, userId);
+			stmt.setInt(2, userId);
 			result = stmt.executeQuery();
 			while (result.next()) {
 				int id = result.getInt("auction_id");

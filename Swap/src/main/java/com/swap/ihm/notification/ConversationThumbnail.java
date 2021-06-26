@@ -25,8 +25,24 @@ public class ConversationThumbnail implements Serializable {
 		correspondantName = userM.getById(id).getUsername();
 	}
 
-	public int getCorrespondant() {
+	public int getCorrespondantId() {
 		return correspondantId;
+	}
+
+	public String getCorrespondantName() {
+		return correspondantName;
+	}
+
+	public int getNumberOfUnreadMessages() {
+		return numberOfUnreadMessages;
+	}
+
+	public String getLastMessageDate() {
+		return lastMessageDate;
+	}
+
+	public List<NotificationThumbnail> getMessages() {
+		return messages;
 	}
 
 	public void add(NotificationThumbnail message) {

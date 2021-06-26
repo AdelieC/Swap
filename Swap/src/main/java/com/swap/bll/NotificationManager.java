@@ -91,7 +91,7 @@ public class NotificationManager {
 	public List<Notification> getByTypeAndSender(String type, int senderId) throws BLLException {
 		List<Notification> notifications = new ArrayList<>();
 		try {
-			notifications = NotificationDAO.selectByTypeAndRecipient(type, senderId);
+			notifications = NotificationDAO.selectByTypeAndSender(type, senderId);
 		} catch (DALException e) {
 			throw new BLLException("Failed to fetch notifications of type " + type + " from user number " + senderId,
 					e);

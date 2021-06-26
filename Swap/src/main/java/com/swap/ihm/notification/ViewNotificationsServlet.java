@@ -68,11 +68,11 @@ public class ViewNotificationsServlet extends MotherServlet {
 		}
 		for (ConversationThumbnail conversation : conversations) {
 			for (Notification message : messagesReceived) {
-				if (message.getSenderId() == conversation.getCorrespondant())
+				if (message.getSenderId() == conversation.getCorrespondantId())
 					conversation.add(new NotificationThumbnail(message));
 			}
 			for (Notification message : messagesSent) {
-				if (message.getRecipientId() == conversation.getCorrespondant())
+				if (message.getRecipientId() == conversation.getCorrespondantId())
 					conversation.add(new NotificationThumbnail(message));
 			}
 			conversation.setLastMessageDate();
@@ -88,7 +88,17 @@ public class ViewNotificationsServlet extends MotherServlet {
 		for (Notification notification : notifications) {
 			notificationsThumbnails.add(new NotificationThumbnail(notification));
 		}
+		setNumberOfUnread(type, notificationsThumbnails, request);
 		request.setAttribute(type.name() + "List", notificationsThumbnails);
+	}
+
+	private void setNumberOfUnread(NotificationType type, List<NotificationThumbnail> notificationsThumbnails,
+			HttpServletRequest request) {
+		int nb = 0;
+		for (NotificationThumbnail n : notificationsThumbnails)
+			if (!n.isRead())
+				nb++;
+		request.setAttribute(type.name() + "Unread", nb);
 	}
 
 	@Override

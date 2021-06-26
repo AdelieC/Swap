@@ -1,5 +1,6 @@
 <%@ include file="./includes/base.jsp" %>
 <c:set var="isMyProfile" scope="request" value="${sessionScope.user != null && sessionScope.user == targetUser}"/>
+<c:set var="recipientId" scope="request" value="${targetUser.userId}"/>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -73,7 +74,6 @@
 									<div class="placeholder" style="background-image: url('/Swap/resources/auctions-thumbnails/${auction.pictureName}');background-size: cover;"></div>
 									<p>Price: ${auction.price}</p>
 									<p>End date: ${auction.date}</p>
-									<p>Seller: <i>${auction.seller}</i></p>
 								</article>
 							</a>
 						</c:forEach>
@@ -87,10 +87,9 @@
 					<a class="btn submit2" href="/Swap">Back to homepage</a>
 				</c:otherwise>
 			</c:choose>
-			<jsp:include page="./includes/messageForm.jsp">
-				<jsp:param value="user/message" name="formAction"/>
-				<jsp:param value="${targetUser.userId}" name="recipientId"/>
-			</jsp:include>
+			<c:if test="${!isMyProfile}">
+				<jsp:include page="./includes/messageForm.jsp"/>
+			</c:if>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>
 	</body>

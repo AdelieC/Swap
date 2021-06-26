@@ -19,10 +19,10 @@
 			<nav>
 				<ul>
 					<h4>Notifications</h4>
-					<li onclick="resetUnread()"><a href="#container-notifs-admin">Notifications : <i>${ADMINUnread > 0 ? ADMINUnread : '0'} unread</i></a></li>
-					<li onclick="resetUnread()"><a href="#container-notifs-wins">Auctions won : <i>${WINUnread > 0 ? WINUnread : '0'} unread</i></a></li>
-					<li onclick="resetUnread()"><a href="#container-notifs-sales">Items sold : <i>${SALEUnread > 0 ? SALEUnread : '0'} unread</i></a></li>
-					<li onclick="resetUnread()"><a href="#container-notifs-bids">Bids on your auctions : <i>${BIDUnread > 0 ? BIDUnread : '0'} unread</i></a></li>
+					<li><a href="#container-notifs-admin">Notifications : <i>${ADMINUnread > 0 ? ADMINUnread : '0'} unread</i></a></li>
+					<li><a href="#container-notifs-wins">Auctions won : <i>${WINUnread > 0 ? WINUnread : '0'} unread</i></a></li>
+					<li><a href="#container-notifs-sales">Items sold : <i>${SALEUnread > 0 ? SALEUnread : '0'} unread</i></a></li>
+					<li><a href="#container-notifs-bids">Bids on your auctions : <i>${BIDUnread > 0 ? BIDUnread : '0'} unread</i></a></li>
 				</ul>
 				<c:if test="${conversations != null && !conversations.isEmpty()}">
 					<ul>

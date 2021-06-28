@@ -52,7 +52,7 @@ public class BidServlet extends MotherServlet {
 		int offer = Integer.valueOf(request.getParameter("offer"));
 		int auctionId = Integer.valueOf(request.getParameter("id"));
 		user = ((User) session.getAttribute("user"));
-		if (isValid(offer, auctionId) && user.getBalance() > offer) {
+		if (isValid(offer, auctionId) && user.getBalance() >= offer) {
 			bid = createBid(auctionId, offer, user);
 			request.setAttribute("bid", bid);
 		} else {
@@ -85,7 +85,6 @@ public class BidServlet extends MotherServlet {
 		UserManager usmng = new UserManager();
 		Bid bid = null, previousBid;
 		try {
-
 			previousBid = bidmng.getMaxBid(auctionId);
 			bid = new Bid(user.getUserId(), auctionId, offer, LocalDate.now());
 			bidmng.create(bid);

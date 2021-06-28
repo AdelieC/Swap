@@ -14,4 +14,6 @@ public interface PickUpPointDAO extends DAO<PickUpPoint> {
 	public List<PickUpPoint> selectByPostcode(String postcode) throws DALException;
 
 	public List<PickUpPoint> selectByCity(String city) throws DALException;
+
+	public void deleteByAuctionId(int auctionId) throws DALException;
 }

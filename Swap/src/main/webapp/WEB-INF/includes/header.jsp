@@ -17,6 +17,9 @@
 				<c:if test="${user.isAdmin()}">
 					<a href="/Swap/admin/all-users"><li>Manage users</li></a>
 					<a href="/Swap/admin/notify"><li>Notify all</li></a>
+					<form action="/Swap/admin/update" method="post">
+						<input class="btn submit2" type="submit" value="Launch global update">
+					</form>
 				</c:if>
 				<a href="/Swap/about"><li>About us</li></a>
 				<jsp:include page="logoutForm.jsp"/>

@@ -10,10 +10,12 @@ import com.swap.dal.DAOFactory;
 public class AuctionManager {
 	private AuctionDAO auctionDAO;
 	private PictureManager pictureManager;
+	private NotificationManager notificationManager;
 
 	public AuctionManager() {
 		this.auctionDAO = DAOFactory.getAuctionDAO();
 		this.pictureManager = new PictureManager();
+		this.notificationManager = new NotificationManager();
 	}
 
 	private boolean isValid(Auction auction) {
@@ -185,6 +187,14 @@ public class AuctionManager {
 			throw new BLLException("GET AUCTIONS ONGOING BY USERID failure");
 		}
 		return list;
+	}
+
+	public void updateStatus(int auctionId, String newStatus) throws BLLException {
+		try {
+			this.auctionDAO.updateStatus(auctionId, newStatus);
+		} catch (DALException e) {
+			throw new BLLException("UPDATE STATUS failure");
+		}
 	}
 
 }

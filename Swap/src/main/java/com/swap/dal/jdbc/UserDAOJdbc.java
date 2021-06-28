@@ -398,4 +398,24 @@ public class UserDAOJdbc implements UserDAO {
 		return found;
 	}
 
+	@Override
+	public void credit(int userId, int amount) throws DALException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String query = DBUtils.addToColWhere(TABLENAME, "balance", "user_id");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, amount);
+			stmt.setInt(2, userId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Failed to credit user number " + userId + "'s account with " + amount + " points",
+					e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+	}
+
 }

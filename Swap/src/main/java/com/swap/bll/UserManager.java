@@ -135,4 +135,13 @@ public class UserManager {
 		}
 		return usernameIsValid;
 	}
+
+	public void credit(int userId, int amount) throws BLLException {
+		try {
+			this.UserDAO.credit(userId, amount);
+		} catch (DALException e) {
+			throw new BLLException("Failed to credit user " + userId, e);
+		}
+
+	}
 }

@@ -53,6 +53,14 @@ public class PickUpPointManager {
 		}
 	}
 
+	public void deleteByAuctionId(int auctionId) throws BLLException {
+		try {
+			this.pupDAO.deleteByAuctionId(auctionId);
+		} catch (DALException e) {
+			throw new BLLException("BLL - DELETE PICK UP POINT failure");
+		}
+	}
+
 	public PickUpPoint getById(int id) throws BLLException {
 		PickUpPoint pup = null;
 		try {

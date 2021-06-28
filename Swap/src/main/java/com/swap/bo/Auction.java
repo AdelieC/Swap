@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.swap.ihm.AuctionStatus;
+
 public class Auction implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id, initialPrice, salePrice, userId, categoryId;
@@ -126,6 +128,10 @@ public class Auction implements Serializable {
 
 	public String getStatus() {
 		return status;
+	}
+
+	public boolean isOver() {
+		return status.equals(AuctionStatus.OVER.name());
 	}
 
 	public void setStatus(String status) {

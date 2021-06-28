@@ -22,4 +22,6 @@ public interface UserDAO extends DAO<User> {
 	public boolean successfullySetPasswordData(User user) throws DALException;
 
 	public boolean exists(User u) throws DALException;
+
+	public void credit(int userId, int amount) throws DALException;
 }

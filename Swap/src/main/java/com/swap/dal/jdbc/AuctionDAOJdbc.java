@@ -508,4 +508,30 @@ public class AuctionDAOJdbc implements AuctionDAO {
 		}
 		return list;
 	}
+
+	@Override
+	public void updateStatus(int auctionId, String newStatus) throws DALException {
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		String query = DBUtils.updateWhere(tableName, "auction_id", "status");
+		try {
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setString(1, newStatus);
+			stmt.setInt(2, auctionId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("auction --" + auctionId + "-- update status failed", e);
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				cn.close();
+			} catch (SQLException e) {
+				e.getStackTrace();
+			}
+		}
+
+	}
 }

@@ -15,6 +15,7 @@ import com.swap.bll.BLLException;
 import com.swap.bll.BidManager;
 import com.swap.bll.NotificationManager;
 import com.swap.bll.PickUpPointManager;
+import com.swap.bll.UserManager;
 import com.swap.bo.Auction;
 import com.swap.bo.BOException;
 import com.swap.bo.Bid;
@@ -48,12 +49,17 @@ public class CancelAuctionServlet extends MotherServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			HttpSession session = request.getSession();
+			User user = (User) session.getAttribute("user");
 			AuctionManager aucmng = new AuctionManager();
 			Auction auction = aucmng.getById(Integer.valueOf(request.getParameter("auctionId")));
-			if (!auction.isOver() && userCanDeleteAuction(auction, request)) {
+			if (!auction.isOver() && userCanDeleteAuction(auction, user)) {
 				deleteAuction(auction.getId());
 				deletePickUpPoint(auction.getId());
-				manageAllRelatedBids(auction);
+				if (auction.hasReceivedBids())
+					manageAllRelatedBids(auction);
+				if (user.isAdmin())
+					notifySeller(auction, user);
 			}
 			response.sendRedirect(request.getServletContext().getContextPath());
 		} catch (BLLException e) {
@@ -65,9 +71,14 @@ public class CancelAuctionServlet extends MotherServlet {
 		}
 	}
 
-	private boolean userCanDeleteAuction(Auction auction, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
+	private void notifySeller(Auction auction, User user) throws BLLException, BOException {
+		NotificationManager notificationM = new NotificationManager();
+		String content = "We are very sorry to inform you that your auction " + auction.getName()
+				+ " was cancelled by an administrator because it did not respect our terms of use.";
+		notificationM.create(new Notification(auction.getUserId(), user.getUserId(), NotificationType.ADMIN, content));
+	}
+
+	private boolean userCanDeleteAuction(Auction auction, User user) {
 		return auction.getUserId() == user.getUserId() || user.isAdmin();
 	}
 
@@ -87,9 +98,16 @@ public class CancelAuctionServlet extends MotherServlet {
 		BidManager bidM = new BidManager();
 		List<Bid> bids = bidM.getByAuctionId(auction.getId());
 		for (Bid bid : bids) {
+			if (bid.getBidPrice() == auction.getSalePrice())
+				refundLastBidder(bid);
 			notifyBidder(bid, auction);
 			bidM.delete(bid);
 		}
+	}
+
+	private void refundLastBidder(Bid bid) throws BLLException {
+		UserManager userM = new UserManager();
+		userM.credit(bid.getUserId(), bid.getBidPrice());
 	}
 
 	private void notifyBidder(Bid bid, Auction auction) throws BLLException, BOException {
@@ -97,7 +115,6 @@ public class CancelAuctionServlet extends MotherServlet {
 		String content = "We are very sorry to inform you that the bid you made on " + auction.getName() + " on "
 				+ bid.getDate() + " was annuled due to the cancellation of the auction. The sum of " + bid.getBidPrice()
 				+ " points will be credited back to you immediately.";
-		notificationM.create(new Notification(bid.getUserId(), auction.getUserId(), NotificationType.ADMIN, content,
-				auction.getId()));
+		notificationM.create(new Notification(bid.getUserId(), auction.getUserId(), NotificationType.ADMIN, content));
 	}
 }

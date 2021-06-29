@@ -76,7 +76,7 @@
 								<div class="display-field">
 									<label class="display-field-label" for="offer">My offer:</label>
 									<input class="display-field-input" type="number" name="offer" min="${auction.salePrice + 1}" placeholder="${auction.salePrice + 1}" required>
-									<input class="display-field-input" type="submit" class="btn cta" value="Bid">
+									<input type="submit" class="btn cta" value="Bid">
 								</div>
 							</form>
 						</c:when>
@@ -89,6 +89,9 @@
 							</c:if>
 						</c:otherwise>
 					</c:choose>
+					<c:if test="${sessionScope.user.getUserId() != seller.userId && sessionScope.user.isAdmin()}">
+							<jsp:include page="./includes/deleteAuctionBtn.jsp"/>
+					</c:if>
 				</c:if>
 			</section>
 			<jsp:include page="./includes/messageForm.jsp">

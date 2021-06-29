@@ -138,10 +138,19 @@ public class UserManager {
 
 	public void credit(int userId, int amount) throws BLLException {
 		try {
-			this.UserDAO.credit(userId, amount);
+			int balance = this.getById(userId).getBalance();
+			this.UserDAO.updateBalance(userId, balance + amount);
 		} catch (DALException e) {
 			throw new BLLException("Failed to credit user " + userId, e);
 		}
+	}
 
+	public void debit(int userId, int amount) throws BLLException {
+		try {
+			int balance = this.getById(userId).getBalance();
+			this.UserDAO.updateBalance(userId, balance - amount);
+		} catch (DALException e) {
+			throw new BLLException("Failed to debit user " + userId, e);
+		}
 	}
 }

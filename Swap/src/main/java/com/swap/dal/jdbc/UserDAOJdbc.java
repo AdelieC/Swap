@@ -333,7 +333,7 @@ public class UserDAOJdbc implements UserDAO {
 	public void updatePassword(User u) throws DALException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		String SQLQuery = DBUtils.updateWhere(TABLENAME, "user_id", "password");
+		String SQLQuery = DBUtils.updateWhere(TABLENAME, "password", "user_id");
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);
@@ -399,23 +399,21 @@ public class UserDAOJdbc implements UserDAO {
 	}
 
 	@Override
-	public void credit(int userId, int amount) throws DALException {
+	public void updateBalance(int userId, int newBalance) throws DALException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		String query = DBUtils.addToColWhere(TABLENAME, "balance", "user_id");
+		String query = DBUtils.updateWhere(TABLENAME, "balance", "user_id");
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(query);
-			stmt.setInt(1, amount);
+			stmt.setInt(1, newBalance);
 			stmt.setInt(2, userId);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("Failed to credit user number " + userId + "'s account with " + amount + " points",
-					e);
+			throw new DALException("Failed to update user with id " + userId + "'s balance.", e);
 		} finally {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);
 		}
 	}
-
 }

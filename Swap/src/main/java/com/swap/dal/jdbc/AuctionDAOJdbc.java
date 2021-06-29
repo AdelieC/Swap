@@ -513,7 +513,7 @@ public class AuctionDAOJdbc implements AuctionDAO {
 	public void updateStatus(int auctionId, String newStatus) throws DALException {
 		Connection cn = null;
 		PreparedStatement stmt = null;
-		String query = DBUtils.updateWhere(tableName, "auction_id", "status");
+		String query = DBUtils.updateWhere(tableName, "status", "auction_id");
 		try {
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);

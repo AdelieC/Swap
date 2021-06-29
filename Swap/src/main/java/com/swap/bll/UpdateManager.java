@@ -42,7 +42,7 @@ public class UpdateManager {
 
 	private void notifySellers() throws BLLException, BOException {
 		for (Auction auction : closableAuctionsData.keySet()) {
-			if (hasReceivedBids(auction)) {
+			if (auction.hasReceivedBids()) {
 				String content = "Congratulations! You just sold " + auction.getName() + " for "
 						+ auction.getSalePrice() + " points! The buyer will contact you shortly to retrive the item.";
 				int sellerId = closableAuctionsData.get(auction)[0];
@@ -55,7 +55,7 @@ public class UpdateManager {
 
 	private void notifyWinners() throws BLLException, BOException {
 		for (Auction auction : closableAuctionsData.keySet()) {
-			if (hasReceivedBids(auction)) {
+			if (auction.hasReceivedBids()) {
 				String content = "Congratulations!! You won " + auction.getName() + " for " + auction.getSalePrice()
 						+ " points! Please contact the vendor to set a date and time to pick-up your item.";
 				int sellerId = closableAuctionsData.get(auction)[0];
@@ -68,12 +68,8 @@ public class UpdateManager {
 
 	private void creditSellers() throws BLLException {
 		for (Auction auction : closableAuctionsData.keySet())
-			if (hasReceivedBids(auction))
+			if (auction.hasReceivedBids())
 				userM.credit(closableAuctionsData.get(auction)[0], auction.getSalePrice());
-	}
-
-	private boolean hasReceivedBids(Auction auction) {
-		return auction.getSalePrice() > auction.getInitialPrice();
 	}
 
 	private void closeClosableAuctions() throws BLLException {

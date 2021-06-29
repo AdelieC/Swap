@@ -83,13 +83,9 @@
 		            	<input type="submit" form="auction-form" class="btn submit1" value="Save">
 		            	<a class="btn submit2" href="/Swap">Cancel</a>
 						<c:if test="${!empty auction && auction.status.equals('CREATED')}">
-							<form method="post" action="/Swap/auction/cancel">
-								<input type="hidden" name="auctionId" value="${auction.getId()}">
-		        				<input type="submit" class="btn cta" name="cancel-auction" value="Cancel auction">
-		        			</form>
+							<jsp:include page="./includes/deleteAuctionBtn.jsp"/>
 	       	 			</c:if> 
 	       	 		</div>
-			
 	    </main>
 		<jsp:include page="./includes/footer.jsp"/>
 	</body>

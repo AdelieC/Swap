@@ -81,12 +81,8 @@ public class DBUtils {
 		return "UPDATE " + tableName + " SET " + cols + " WHERE " + colId + " = ?";
 	}
 
-	public static String updateWhere(String tableName, String colId, String colToUpdate) {
-		return "UPDATE " + tableName + " SET " + colToUpdate + "= ? WHERE " + colId + " = ?";
-	}
-
-	public static String addToColWhere(String tableName, String colToUpdate, String colId) {
-		return "UPDATE " + tableName + " SET " + colToUpdate + " = " + colToUpdate + " + ? WHERE " + colId + " = ?";
+	public static String updateWhere(String tableName, String colToUpdate, String colId) {
+		return "UPDATE " + tableName + " SET " + colToUpdate + " = ? WHERE " + colId + " = ?";
 	}
 
 	public static String deleteWhere(String tableName, String col) {

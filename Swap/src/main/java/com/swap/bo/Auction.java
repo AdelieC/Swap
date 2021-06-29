@@ -134,6 +134,10 @@ public class Auction implements Serializable {
 		return status.equals(AuctionStatus.OVER.name());
 	}
 
+	public boolean hasReceivedBids() {
+		return salePrice > initialPrice;
+	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}

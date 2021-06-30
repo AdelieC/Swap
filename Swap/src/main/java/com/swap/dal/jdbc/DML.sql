@@ -58,4 +58,5 @@ DELETE FROM CATEGORIES;
 DELETE FROM USERS;
 
 UPDATE USERS set balance = balance + 200 WHERE user_id = 4;
+UPDATE USERS set is_admin = 1 WHERE user_id = 1;
 

@@ -24,4 +24,6 @@ public interface UserDAO extends DAO<User> {
 	public boolean exists(User u) throws DALException;
 
 	public void updateBalance(int userId, int i) throws DALException;
+
+	public void updateWasDisabled(User user, boolean disable) throws DALException;
 }

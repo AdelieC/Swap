@@ -78,7 +78,7 @@
 							</a>
 						</c:forEach>
 					</section>
-					<c:if test="${user.isAdmin()}">
+					<c:if test="${user.isAdmin() && !user.wasDisabled()}">
 						<div class="center">
 							<jsp:include page="./includes/deleteAccount.jsp"/>
 							<a class="btn submit2" href="/Swap/admin/disable-account?id=${targetUser.userId}">Disable account</a>
@@ -87,7 +87,7 @@
 					<a class="btn submit2" href="/Swap">Back to homepage</a>
 				</c:otherwise>
 			</c:choose>
-			<c:if test="${!isMyProfile}">
+			<c:if test="${!isMyProfile && !user.wasDisabled()}">
 				<jsp:include page="./includes/messageForm.jsp"/>
 			</c:if>
 		</main>

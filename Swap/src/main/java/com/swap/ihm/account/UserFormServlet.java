@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.swap.bll.BLLException;
 import com.swap.bll.UserManager;
+import com.swap.bo.BOException;
 import com.swap.bo.User;
 import com.swap.ihm.FormCleaner;
 import com.swap.ihm.FormError;
@@ -36,22 +37,34 @@ public class UserFormServlet extends MotherServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (userIsLoggedIn(request)) {
-			editProfile(request, response);
-		} else {
-			createProfile(request, response);
+
+		try {
+			if (userIsLoggedIn(request)) {
+				editProfile(request, response);
+			} else {
+				createProfile(request, response);
+			}
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
 	private void createProfile(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, BOException {
 		try {
 			Map<String, String> inputs = getInputValues(request);
 			Map<String, String> errors = getErrors(inputs);
 			HttpSession session = request.getSession();
 			User user = new User(inputs.get("username"), inputs.get("lastName"), inputs.get("firstName"),
 					inputs.get("email"), inputs.get("telephone"), inputs.get("street"), inputs.get("postcode"),
-					inputs.get("city"), inputs.get("password"), 0, false);
+					inputs.get("city"), inputs.get("password"));
 			session.setAttribute("user", user);
 			if (errors.size() > 0) {
 				request.setAttribute("errors", errors);
@@ -68,17 +81,15 @@ public class UserFormServlet extends MotherServlet {
 	}
 
 	private void editProfile(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, BOException {
 		try {
 			Map<String, String> inputs = getInputValues(request);
 			Map<String, String> errors = getErrors(inputs);
 			HttpSession session = request.getSession();
-			User user = new User(((User) session.getAttribute("user")).getUserId(), inputs.get("username"),
-					inputs.get("lastName"), inputs.get("firstName"), inputs.get("email"), inputs.get("telephone"),
-					inputs.get("street"), inputs.get("postcode"), inputs.get("city"),
-					((User) session.getAttribute("user")).getPassword(),
-					((User) session.getAttribute("user")).getSalt(), ((User) session.getAttribute("user")).getBalance(),
-					((User) session.getAttribute("user")).isAdmin());
+			User currentUser = ((User) session.getAttribute("user"));
+			User user = new User(currentUser.getUserId(), inputs.get("username"), inputs.get("lastName"),
+					inputs.get("firstName"), inputs.get("email"), inputs.get("telephone"), inputs.get("street"),
+					inputs.get("postcode"), inputs.get("city"));
 			session.setAttribute("user", user);
 			if (errors.size() > 0) {
 				request.setAttribute("errors", errors);

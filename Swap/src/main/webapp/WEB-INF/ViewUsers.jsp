@@ -9,11 +9,11 @@
 		<jsp:include page="./includes/header.jsp"/>
 		<main id="viewUsers-main">
 			<section>
-				<c:forEach var="user" items="${thumbnails}">	
-					<a href="/Swap/user?id=${user.userId}">
-						<article class="${user.isAdmin() ? 'admin' : '' }">
-							<h4>${user.username}</h3>
-							<p>Email : ${user.email}</p>
+				<c:forEach var="targetUser" items="${thumbnails}">	
+					<a href="/Swap/user?id=${targetUser.userId}">
+						<article class="${targetUser.isAdmin() ? 'admin' : '' }">
+							<h4>${targetUser.username}</h3>
+							<p>Email : ${targetUser.email}</p>
 						</article>
 					</a>
 				</c:forEach>

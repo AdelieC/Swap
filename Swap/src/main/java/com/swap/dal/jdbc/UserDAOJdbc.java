@@ -14,7 +14,9 @@ import com.swap.dal.UserDAO;
 
 public class UserDAOJdbc implements UserDAO {
 	private final static String[] COLS = { "user_id", "username", "last_name", "first_name", "email", "telephone",
-			"street", "postcode", "city", "password", "salt", "balance", "is_admin" };
+			"street", "postcode", "city", "password", "salt", "balance", "is_admin", "was_disabled" };
+	private final static String[] UPDATABLE_COLS = { "user_id", "username", "last_name", "first_name", "email",
+			"telephone", "street", "postcode", "city" };
 	private final static String TABLENAME = "USERS";
 
 	@Override
@@ -37,6 +39,7 @@ public class UserDAOJdbc implements UserDAO {
 			stmt.setString(10, u.getSalt());
 			stmt.setInt(11, u.getBalance());
 			stmt.setBoolean(12, u.isAdmin());
+			stmt.setBoolean(13, u.wasDisabled());
 			int nbRows = stmt.executeUpdate();
 			if (nbRows == 1) {
 				ResultSet result = stmt.getGeneratedKeys();
@@ -77,8 +80,9 @@ public class UserDAOJdbc implements UserDAO {
 				String salt = result.getString("salt");
 				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
+				boolean wasDisabled = result.getBoolean("was_disabled");
 				allUsers.add(new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, salt, balance, isAdmin));
+						password, salt, balance, isAdmin, wasDisabled));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Read failed - couldn't retrieve list of all users from db", e);
@@ -93,7 +97,7 @@ public class UserDAOJdbc implements UserDAO {
 	public void update(User u) throws DALException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		String SQLQuery = DBUtils.updateWhere(TABLENAME, "user_id", COLS);
+		String SQLQuery = DBUtils.updateWhere(TABLENAME, "user_id", UPDATABLE_COLS);
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);
@@ -105,11 +109,7 @@ public class UserDAOJdbc implements UserDAO {
 			stmt.setString(6, u.getStreet());
 			stmt.setString(7, u.getPostcode());
 			stmt.setString(8, u.getCity());
-			stmt.setString(9, u.getPassword());
-			stmt.setString(10, u.getSalt());
-			stmt.setInt(11, u.getBalance());
-			stmt.setBoolean(12, u.isAdmin());
-			stmt.setInt(13, u.getUserId());
+			stmt.setInt(9, u.getUserId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("User named " + u.getUsername() + " couldn't be updated", e);
@@ -168,8 +168,9 @@ public class UserDAOJdbc implements UserDAO {
 				String salt = result.getString("salt");
 				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
+				boolean wasDisabled = result.getBoolean("was_disabled");
 				user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, salt, balance, isAdmin);
+						password, salt, balance, isAdmin, wasDisabled);
 			}
 		} catch (SQLException e) {
 			throw new DALException("User with id " + id + " couldn't be fetched from dbTable USERS", e);
@@ -205,8 +206,9 @@ public class UserDAOJdbc implements UserDAO {
 				String salt = result.getString("salt");
 				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
+				boolean wasDisabled = result.getBoolean("was_disabled");
 				user = new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, salt, balance, isAdmin);
+						password, salt, balance, isAdmin, wasDisabled);
 			}
 		} catch (SQLException e) {
 			throw new DALException("User with name " + username + " couldn't be fetched from dbTable USERS", e);
@@ -242,8 +244,9 @@ public class UserDAOJdbc implements UserDAO {
 				String salt = result.getString("salt");
 				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
+				boolean wasDisabled = result.getBoolean("was_disabled");
 				users.add(new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, salt, balance, isAdmin));
+						password, salt, balance, isAdmin, wasDisabled));
 			}
 		} catch (SQLException e) {
 			throw new DALException("User with name " + username + " couldn't be fetched from dbTable USERS", e);
@@ -279,8 +282,9 @@ public class UserDAOJdbc implements UserDAO {
 				String salt = result.getString("salt");
 				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
+				boolean wasDisabled = result.getBoolean("was_disabled");
 				users.add(new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, salt, balance, isAdmin));
+						password, salt, balance, isAdmin, wasDisabled));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Read failed - couldn't retrieve list of users from city " + city, e);
@@ -317,8 +321,9 @@ public class UserDAOJdbc implements UserDAO {
 				String salt = result.getString("salt");
 				int balance = result.getInt("balance");
 				boolean isAdmin = result.getBoolean("is_admin");
+				boolean wasDisabled = result.getBoolean("was_disabled");
 				users.add(new User(userId, username, lastName, firstName, email, telephone, street, postcode, city,
-						password, salt, balance, isAdmin));
+						password, salt, balance, isAdmin, wasDisabled));
 			}
 		} catch (SQLException e) {
 			throw new DALException("Read failed - couldn't retrieve list of all admin users ", e);
@@ -411,6 +416,26 @@ public class UserDAOJdbc implements UserDAO {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Failed to update user with id " + userId + "'s balance.", e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+	}
+
+	@Override
+	public void updateWasDisabled(User user, boolean disable) throws DALException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String query = DBUtils.updateWhere(TABLENAME, "was_disabled", "user_id");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(query);
+			stmt.setBoolean(1, disable);
+			stmt.setInt(2, user.getUserId());
+			stmt.executeUpdate();
+			user.setWasDisabled(disable);
+		} catch (SQLException e) {
+			throw new DALException("Failed to disable/enable user with id " + user.getUserId(), e);
 		} finally {
 			DBUtils.closePrepStmt(stmt);
 			DBUtils.closeConnection(conn);

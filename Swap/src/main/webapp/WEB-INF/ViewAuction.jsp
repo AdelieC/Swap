@@ -16,7 +16,7 @@
 				<c:otherwise>
 					<c:if test="${auction.status.equals('OVER') || auction.status.equals('PICKED_UP')}">
 						<c:choose>
-							<c:when test="${sessionScope.user.getUserId() != bid.userId}">
+							<c:when test="${user.getUserId() != bid.userId}">
 								<h1>${bidder} won this auction</h1>
 							</c:when>
 							<c:otherwise>
@@ -70,9 +70,9 @@
 					<p class="display-field-label">Seller:</p>
 					<p class="display-field-info"><a href="/Swap/user?id=${seller.userId}">${seller.username}</a></p>
 				</div>
-				<c:if test="${!empty sessionScope.user}">
+				<c:if test="${!empty user && !user.wasDisabled()}">
 					<c:choose>
-						<c:when test="${sessionScope.user.getUserId() != seller.userId && auction.status.equals('ONGOING')}">
+						<c:when test="${user.getUserId() != seller.userId && auction.status.equals('ONGOING')}">
 							<form method="post" action="/Swap/auction/bid?id=${auction.id}">
 								<div class="display-field">
 									<label class="display-field-label" for="offer">My offer:</label>
@@ -82,7 +82,7 @@
 							</form>
 						</c:when>
 						<c:otherwise>
-							<c:if test="${sessionScope.user.getUserId() == seller.userId}">
+							<c:if test="${user.getUserId() == seller.userId}">
 								<c:if test="${auction.status.equals('CREATED')}">
 									<a class="btn submit1" href="/Swap/auction?id=${auction.id}">Update auction</a>
 								</c:if>
@@ -90,7 +90,7 @@
 							</c:if>
 						</c:otherwise>
 					</c:choose>
-					<c:if test="${sessionScope.user.getUserId() != seller.userId && sessionScope.user.isAdmin()}">
+					<c:if test="${user.getUserId() != seller.userId && user.isAdmin()}">
 							<jsp:include page="./includes/deleteAuctionBtn.jsp"/>
 					</c:if>
 				</c:if>

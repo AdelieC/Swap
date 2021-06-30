@@ -53,6 +53,15 @@ public class NotificationManager {
 		}
 	}
 
+	public void deleteByUserId(int userId) throws BLLException {
+		try {
+			this.NotificationDAO.deleteByRecipientId(userId);
+			this.NotificationDAO.deleteBySenderId(userId);
+		} catch (DALException e) {
+			throw new BLLException("Failed to delete notification of user with id = " + userId, e);
+		}
+	}
+
 	public void delete(Notification n) throws BLLException {
 		this.delete(n.getId());
 	}

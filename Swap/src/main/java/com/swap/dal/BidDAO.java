@@ -19,4 +19,6 @@ public interface BidDAO extends DAO<Bid> {
 	public Bid selectMax(int auction_id) throws DALException;
 
 	public void deleteByAuctionId(int auctionId) throws DALException;
+
+	public void deleteByBidderId(int userId) throws DALException;
 }

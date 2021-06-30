@@ -307,4 +307,39 @@ public class NotificationDAOJdbc implements NotificationDAO {
 		}
 	}
 
+	@Override
+	public void deleteBySenderId(int userId) throws DALException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String SQLQuery = DBUtils.deleteWhere(TABLENAME, "sender_id");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(SQLQuery);
+			stmt.setInt(1, userId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Notification from user with id " + userId + " couldn't be deleted", e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+	}
+
+	@Override
+	public void deleteByRecipientId(int userId) throws DALException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String SQLQuery = DBUtils.deleteWhere(TABLENAME, "recipient_id");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(SQLQuery);
+			stmt.setInt(1, userId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Notification for user with id " + userId + " couldn't be deleted", e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+	}
 }

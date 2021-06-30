@@ -70,11 +70,11 @@
 				<div class="btn-panel">
 					<input type="submit" class="btn submit1" value="${targetUser.userId > 0 ? 'Update' : 'Register'}" />
 					<a class="btn submit2" href="/Swap">Cancel</a>
-					<c:if test="${targetUser.userId > 0}" >
-						<jsp:include page="./includes/deleteAccount.jsp"/>
-			    	</c:if>
 		    	</div>
 			</form>
+			<c:if test="${targetUser.userId > 0}" >
+				<jsp:include page="./includes/deleteAccount.jsp"/>
+			</c:if>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>
 	</body>

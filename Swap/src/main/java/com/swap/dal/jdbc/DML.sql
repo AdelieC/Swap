@@ -57,6 +57,5 @@ DELETE FROM AUCTIONS;
 DELETE FROM CATEGORIES;
 DELETE FROM USERS;
 
-UPDATE USERS set balance = balance + 200 WHERE user_id = 2;
-
+UPDATE USERS set balance = balance + 200 WHERE user_id = 4;
 

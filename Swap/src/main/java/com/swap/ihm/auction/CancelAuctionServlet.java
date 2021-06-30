@@ -30,6 +30,7 @@ import com.swap.ihm.notification.NotificationType;
 @WebServlet("/auction/cancel")
 public class CancelAuctionServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String OUTCOME_JSP = "/WEB-INF/Outcome.jsp";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -60,8 +61,11 @@ public class CancelAuctionServlet extends MotherServlet {
 					manageAllRelatedBids(auction);
 				if (user.isAdmin())
 					notifySeller(auction, user);
+				setSuccess(request, auction);
+			} else {
+				setFailure(request);
 			}
-			response.sendRedirect(request.getServletContext().getContextPath());
+			sendToJSP(OUTCOME_JSP, request, response);
 		} catch (BLLException e) {
 			// TODO :send to error page 500
 			e.printStackTrace();
@@ -69,6 +73,19 @@ public class CancelAuctionServlet extends MotherServlet {
 			// TODO : error 40X
 			e.printStackTrace();
 		}
+	}
+
+	private void setFailure(HttpServletRequest request) {
+		String message = "Auction couldn't be cancelled. Either it's already closed or you don't have permission to cancel it.";
+		request.setAttribute("title", "Auction couldn't be canceled");
+		request.setAttribute("message", message);
+	}
+
+	private void setSuccess(HttpServletRequest request, Auction auction) {
+		String message = "Auction named " + auction.getName()
+				+ " was successfully cancelled. Bidders were notified and got a refund.";
+		request.setAttribute("title", "Auction was successfully canceled");
+		request.setAttribute("message", message);
 	}
 
 	private void notifySeller(Auction auction, User user) throws BLLException, BOException {

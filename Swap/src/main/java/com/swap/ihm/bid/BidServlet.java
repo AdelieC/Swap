@@ -30,7 +30,7 @@ import com.swap.ihm.notification.NotificationType;
 @WebServlet("/auction/bid")
 public class BidServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String SUCCESS_JSP = "/WEB-INF/Success.jsp";
+	private static final String OUTCOME_JSP = "/WEB-INF/Outcome.jsp";
 	private static final Object SUCCESS_TITLE = "Successful bid!";
 	private static final Object FAILURE_TITLE = "Bid couldn't be placed...";
 
@@ -72,7 +72,7 @@ public class BidServlet extends MotherServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sendToJSP(SUCCESS_JSP, request, response);
+		sendToJSP(OUTCOME_JSP, request, response);
 	}
 
 	private void notifySeller(Bid bid, Auction auction) throws BLLException, BOException {

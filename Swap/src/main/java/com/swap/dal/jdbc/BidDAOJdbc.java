@@ -147,6 +147,30 @@ public class BidDAOJdbc implements BidDAO {
 	}
 
 	@Override
+	public void deleteByBidderId(int userId) throws DALException {
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		String query = DBUtils.deleteWhere(tableName, "user_id");
+		try {
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setInt(1, userId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Bids from user with id " + userId + "-- deletion failed", e);
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				cn.close();
+			} catch (SQLException e) {
+				e.getStackTrace();
+			}
+		}
+	}
+
+	@Override
 	public Bid selectById(int id) throws DALException {
 		Bid bid = null;
 		Connection cn = null;

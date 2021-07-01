@@ -80,8 +80,8 @@
 					</section>
 					<c:if test="${user.isAdmin() && !user.wasDisabled()}">
 						<div class="center">
-							<jsp:include page="./includes/deleteAccount.jsp"/>
-							<a class="btn submit2" href="/Swap/admin/disable-account?id=${targetUser.userId}">Disable account</a>
+							<jsp:include page="./includes/deleteAccountBtn.jsp"/>
+							<jsp:include page="./includes/disableUserBtn.jsp"/>
 						</div>
 					</c:if>
 					<a class="btn submit2" href="/Swap">Back to homepage</a>

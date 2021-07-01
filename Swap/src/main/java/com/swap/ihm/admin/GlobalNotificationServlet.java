@@ -1,4 +1,4 @@
-package com.swap.ihm.notification;
+package com.swap.ihm.admin;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +17,7 @@ import com.swap.bo.Notification;
 import com.swap.bo.User;
 import com.swap.ihm.FormCleaner;
 import com.swap.ihm.MotherServlet;
+import com.swap.ihm.notification.NotificationType;
 
 @WebServlet(urlPatterns = { "/admin/notify" })
 public class GlobalNotificationServlet extends MotherServlet {

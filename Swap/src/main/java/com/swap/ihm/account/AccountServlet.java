@@ -25,7 +25,7 @@ import com.swap.ihm.auction.AuctionThumbnail;
 @WebServlet(urlPatterns = { "/account", "/user" })
 public class AccountServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String PROFILE_JSP = "/WEB-INF/Profile.jsp";
+	private static final String PROFILE_JSP = "/WEB-INF/ViewUser.jsp";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse

@@ -1,10 +1,9 @@
-package com.swap.ihm;
+package com.swap.ihm.auction;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -15,59 +14,31 @@ import java.util.Map;
 import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.CategoryManager;
-import com.swap.bll.NotificationManager;
-import com.swap.bll.UserManager;
 import com.swap.bo.Auction;
 import com.swap.bo.Category;
-import com.swap.bo.Notification;
-import com.swap.bo.User;
-import com.swap.ihm.auction.AuctionThumbnail;
-import com.swap.ihm.notification.NotificationThumbnail;
+import com.swap.ihm.MotherServlet;
 
-/**
- * Servlet handling index page or homepage (when logged in) display user
- */
-@WebServlet(urlPatterns = { "/home" })
-public class HomeServlet extends MotherServlet {
+@WebServlet(urlPatterns = { "/all-auctions" })
+public class ViewOngoingAuctionsServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String USER_HOME_JSP = "/WEB-INF/UserHome.jsp";
-	private static final String VISITOR_HOME_JSP = "/WEB-INF/VisitorHome.jsp";
+	private static final String VIEW_ONGOING_AUCTIONS_JSP = "/WEB-INF/ViewOngoingAuctions.jsp";
 	private static AuctionManager auctionM = new AuctionManager();
-	private static NotificationManager notificationM = new NotificationManager();
-	private static UserManager userM = new UserManager();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			setCategories(request);
+			setCatListAttribute(request);
 			if (request.getQueryString() == null) {
 				setThumbnails(request);
 			} else {
 				setThumbnailsWithFilters(request);
 			}
-			if (userIsLoggedIn(request)) {
-				setUnreadNotifications(request);
-				sendToJSP(USER_HOME_JSP, request, response);
-			} else {
-				sendToJSP(VISITOR_HOME_JSP, request, response);
-			}
+			sendToJSP(VIEW_ONGOING_AUCTIONS_JSP, request, response);
 		} catch (BLLException e) {
 			// TODO send to error page 500
 			e.printStackTrace();
 		}
-	}
-
-	private void setUnreadNotifications(HttpServletRequest request) throws BLLException {
-		HttpSession session = request.getSession();
-		int userId = ((User) session.getAttribute("user")).getUserId();
-		List<Notification> notificationsList = notificationM.getByRecipient(userId);
-		List<NotificationThumbnail> notificationsThumbnails = new ArrayList<>();
-		notificationsList.removeIf(n -> n.isRead());
-		for (Notification notification : notificationsList) {
-			notificationsThumbnails.add(new NotificationThumbnail(notification));
-		}
-		request.setAttribute("notifications", notificationsThumbnails);
 	}
 
 	private void setThumbnails(HttpServletRequest request) throws BLLException {
@@ -145,7 +116,7 @@ public class HomeServlet extends MotherServlet {
 		});
 	}
 
-	private void setCategories(HttpServletRequest request) throws BLLException {
+	private void setCatListAttribute(HttpServletRequest request) throws BLLException {
 		CategoryManager catmng = new CategoryManager();
 		List<Category> categorieslist = catmng.getAll();
 		request.setAttribute("categoriesList", categorieslist);
@@ -168,4 +139,5 @@ public class HomeServlet extends MotherServlet {
 					auction.getEndDate(), auction.getPictures().get(0));
 		}
 	}
+
 }

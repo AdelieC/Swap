@@ -15,6 +15,18 @@ public class AuctionThumbnail implements Serializable {
 	public AuctionThumbnail() {
 	}
 
+	public AuctionThumbnail(int id, String item, int price, LocalDate date) {
+		this.id = id;
+		this.item = item;
+		this.price = price;
+		this.date = date;
+	}
+
+	public AuctionThumbnail(int id, String item, int price, LocalDate date, Picture picture) {
+		this(id, item, price, date);
+		this.pictureName = picture.getName() + "." + picture.getExtension();
+	}
+
 	public AuctionThumbnail(int id, String item, int price, LocalDate date, String seller) {
 		this.id = id;
 		this.item = item;

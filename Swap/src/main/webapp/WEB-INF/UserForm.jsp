@@ -73,7 +73,7 @@
 		    	</div>
 			</form>
 			<c:if test="${targetUser.userId > 0}" >
-				<jsp:include page="./includes/deleteAccount.jsp"/>
+				<jsp:include page="./includes/deleteAccountBtn.jsp"/>
 			</c:if>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>

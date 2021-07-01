@@ -18,9 +18,9 @@ import com.swap.ihm.MotherServlet;
  * Servlet handling index of all users, only accessible by admin
  */
 @WebServlet(description = "Handles index page or homepage (when logged in)", urlPatterns = { "/admin/all-users" })
-public class ViewUsersServlet extends MotherServlet {
+public class ViewAllUsersServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String VIEW_USERS_JSP = "/WEB-INF/ViewUsers.jsp";
+	private static final String VIEW_USERS_JSP = "/WEB-INF/ViewAllUsers.jsp";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

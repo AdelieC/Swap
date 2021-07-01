@@ -91,7 +91,7 @@
 						</c:otherwise>
 					</c:choose>
 					<c:if test="${user.getUserId() != seller.userId && user.isAdmin()}">
-							<jsp:include page="./includes/deleteAuctionBtn.jsp"/>
+							<jsp:include page="./includes/cancelAuctionBtn.jsp"/>
 					</c:if>
 				</c:if>
 			</section>

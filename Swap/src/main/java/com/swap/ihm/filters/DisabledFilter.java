@@ -17,8 +17,8 @@ import com.swap.bo.User;
 /**
  * Servlet Filter implementation class DisabledFilter
  */
-@WebFilter(description = "Forbids access to admin pages to non admin users", urlPatterns = { "/admin/notify",
-		"/admin/all-users" }) // TODO : complete urls
+@WebFilter(urlPatterns = { "/admin/notify", "/admin/all-users", "/auction", "/auction/cancel", "/user/message",
+		"/auction/message", "/auction/bid" })
 public class DisabledFilter implements Filter {
 	private final static String HOME_PATH = "/Swap/";
 

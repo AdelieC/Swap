@@ -82,7 +82,7 @@
             	<input type="submit" form="auction-form" class="btn submit1" value="Save">
             	<a class="btn submit2" href="/Swap">Cancel</a>
 				<c:if test="${!empty auction && auction.status.equals('CREATED')}">
-					<jsp:include page="./includes/deleteAuctionBtn.jsp"/>
+					<jsp:include page="./includes/cancelAuctionBtn.jsp"/>
       	 		</c:if> 
       	 	</div>
 	    </main>

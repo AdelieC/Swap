@@ -21,6 +21,7 @@ import com.swap.ihm.MotherServlet;
 public class ViewNotificationsServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW_MSG_JSP = "/WEB-INF/ViewNotifications.jsp";
+	private static final NotificationManager notificationM = new NotificationManager();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,7 +37,6 @@ public class ViewNotificationsServlet extends MotherServlet {
 
 	private void setAllNotificationsThumbnails(HttpServletRequest request) throws BLLException {
 		HttpSession session = request.getSession();
-		NotificationManager notificationM = new NotificationManager();
 		int userId = ((User) session.getAttribute("user")).getUserId();
 		setConversations(notificationM, userId, request);
 		for (NotificationType type : NotificationType.values()) {

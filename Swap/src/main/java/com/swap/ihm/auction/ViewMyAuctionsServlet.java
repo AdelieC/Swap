@@ -23,13 +23,14 @@ import com.swap.ihm.MotherServlet;
 public class ViewMyAuctionsServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String MY_AUCTIONS_JSP = "/WEB-INF/ViewMyAuctions.jsp";
-	private static AuctionManager auctionM = new AuctionManager();
+	private static final AuctionManager auctionM = new AuctionManager();
+	private static final CategoryManager catmng = new CategoryManager();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			setCatListAttribute(request);
+			setCategories(request);
 			List<Auction> auctionsList = getMyAuctionsList(request);
 			setFutureAuctionsThumbnails(request, auctionsList);
 			setOngoingAuctionsThumbnails(request, auctionsList);
@@ -88,8 +89,7 @@ public class ViewMyAuctionsServlet extends MotherServlet {
 		return auctionM.getByUserId(userId);
 	}
 
-	private void setCatListAttribute(HttpServletRequest request) throws BLLException {
-		CategoryManager catmng = new CategoryManager();
+	private void setCategories(HttpServletRequest request) throws BLLException {
 		List<Category> categorieslist = catmng.getAll();
 		request.setAttribute("categoriesList", categorieslist);
 	}
@@ -105,10 +105,10 @@ public class ViewMyAuctionsServlet extends MotherServlet {
 	private AuctionThumbnail getThumbnail(Auction auction) throws BLLException {
 		if (auction.getPictures().isEmpty()) {
 			return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
-					auction.getEndDate());
+					auction.getStartDate(), auction.getEndDate());
 		} else {
 			return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
-					auction.getEndDate(), auction.getPictures().get(0));
+					auction.getStartDate(), auction.getEndDate(), auction.getPictures().get(0));
 		}
 	}
 }

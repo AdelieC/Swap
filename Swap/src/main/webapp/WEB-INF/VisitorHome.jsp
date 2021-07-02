@@ -8,6 +8,11 @@
 	<body>
 		<jsp:include page="./includes/header.jsp"/>
 		<main id="visitor-home-main">
+			<section id="hero">
+				<h4>Tired of your old things?</h4>
+				<h5>Sign up to swap them for points and get new ones!</h5>
+				<a href="/Swap/register" class="btn cta">Register</a>
+			</section>
 			<form id="filters" method="GET" action="/Swap/home">
 				<fieldset id="basic-filters">
 					<input type="text" name="keyword" placeholder="Item name contains..." value="${search}">

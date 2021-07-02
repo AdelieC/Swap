@@ -16,7 +16,6 @@ import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.CategoryManager;
 import com.swap.bll.NotificationManager;
-import com.swap.bll.UserManager;
 import com.swap.bo.Auction;
 import com.swap.bo.Category;
 import com.swap.bo.Notification;
@@ -34,7 +33,6 @@ public class HomeServlet extends MotherServlet {
 	private static final String VISITOR_HOME_JSP = "/WEB-INF/VisitorHome.jsp";
 	private static AuctionManager auctionM = new AuctionManager();
 	private static NotificationManager notificationM = new NotificationManager();
-	private static UserManager userM = new UserManager();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -162,10 +160,10 @@ public class HomeServlet extends MotherServlet {
 	private AuctionThumbnail getThumbnail(Auction auction) throws BLLException {
 		if (auction.getPictures().isEmpty()) {
 			return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
-					auction.getEndDate());
+					auction.getStartDate(), auction.getEndDate());
 		} else {
 			return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
-					auction.getEndDate(), auction.getPictures().get(0));
+					auction.getStartDate(), auction.getEndDate(), auction.getPictures().get(0));
 		}
 	}
 }

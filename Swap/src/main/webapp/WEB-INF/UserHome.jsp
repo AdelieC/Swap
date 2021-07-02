@@ -9,6 +9,11 @@
 		<jsp:include page="./includes/header.jsp"/>
 		<main id="visitor-home-main">
 			<h1>Welcome back ${user.username}!</h1>
+			<c:if test="${user.isAdmin()}">
+				<form action="/Swap/admin/update" method="post">
+					<input class="btn submit2" type="submit" value="Launch global update">
+				</form>
+			</c:if>
 			<section>
 				<c:choose>
 					<c:when test="${notifications.size() > 0}">
@@ -18,7 +23,7 @@
 								<c:when test="notification.type.equals('ADMIN')"><li>New admin notification - ${notification.dateAndTime}</li></c:when>
 								<c:when test="notification.type.equals('SALE')"><li>Good news! ${notification.name} was just sold!</li></c:when>
 								<c:when test="notification.type.equals('MESSAGE')"><li>New message from ${notification.senderName} - ${notification.dateAndTime}</li></c:when>
-								<c:otherWise><li>Congrats!! You won ${notification.auctionName}!</li></c:otherWise>
+								<c:otherWise><li>Congrats!! You won the item ${notification.auctionName}!</li></c:otherWise>
 							</c:choose>
 						</c:forEach>
 						<a href="/Swap/account/notifications" class="btn submit2">View more</a>

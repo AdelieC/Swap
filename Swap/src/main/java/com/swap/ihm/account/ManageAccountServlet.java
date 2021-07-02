@@ -21,17 +21,17 @@ import com.swap.ihm.MotherServlet;
 /**
  * Servlet handling creation and edition of user profile
  */
-@WebServlet(description = "Handles creation and edition of user profile", urlPatterns = { "/register",
-		"/account/edit" })
-public class UserFormServlet extends MotherServlet {
+@WebServlet(urlPatterns = { "/register", "/account/edit" })
+public class ManageAccountServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String USERFORM_JSP = "/WEB-INF/UserForm.jsp";
+	private static final String MANAGE_ACCOUNT_JSP = "/WEB-INF/ManageAccount.jsp";
 	private static final String SUCCESS_PATH = "/Swap/account";
+	private static final UserManager userM = new UserManager();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		sendToJSP(USERFORM_JSP, request, response);
+		sendToJSP(MANAGE_ACCOUNT_JSP, request, response);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class UserFormServlet extends MotherServlet {
 				request.setAttribute("errors", errors);
 				doGet(request, response);
 			} else {
-				UserManager userM = new UserManager();
+
 				userM.create(user);
 				session.setAttribute("user", user);
 				response.sendRedirect(SUCCESS_PATH);
@@ -95,7 +95,6 @@ public class UserFormServlet extends MotherServlet {
 				request.setAttribute("errors", errors);
 				doGet(request, response);
 			} else {
-				UserManager userM = new UserManager();
 				userM.update(user);
 				response.sendRedirect(SUCCESS_PATH);
 			}

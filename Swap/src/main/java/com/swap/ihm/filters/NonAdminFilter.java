@@ -15,11 +15,11 @@ import java.io.IOException;
 import com.swap.bo.User;
 
 /**
- * Servlet Filter implementation class DisabledFilter
+ * Servlet Filter implementation class AdminFilter
  */
-@WebFilter(urlPatterns = { "/admin/notify", "/admin/all-users", "/auction", "/auction/cancel", "/user/message",
-		"/auction/message", "/auction/bid" })
-public class DisabledFilter implements Filter {
+@WebFilter(description = "Forbids access to admin pages to non admin users", urlPatterns = { "/admin", "/admin/notify",
+		"/admin/all-users" })
+public class NonAdminFilter implements Filter {
 	private final static String HOME_PATH = "/Swap/";
 
 	@Override
@@ -28,7 +28,7 @@ public class DisabledFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		HttpSession session = request.getSession();
-		if (session.getAttribute("user") != null && !((User) session.getAttribute("user")).wasDisabled()) {
+		if (session.getAttribute("user") != null && ((User) session.getAttribute("user")).isAdmin()) {
 			chain.doFilter(req, res);
 		} else {
 			response.sendRedirect(HOME_PATH);

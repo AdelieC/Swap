@@ -532,6 +532,30 @@ public class AuctionDAOJdbc implements AuctionDAO {
 				e.getStackTrace();
 			}
 		}
+	}
 
+	@Override
+	public void updateCategory(Auction auction, int substituteId) throws DALException {
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		String query = DBUtils.updateWhere(tableName, "category_id", "auction_id");
+		try {
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setInt(1, substituteId);
+			stmt.setInt(2, auction.getId());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("auction --" + auction.getName() + "-- update category failed", e);
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				cn.close();
+			} catch (SQLException e) {
+				e.getStackTrace();
+			}
+		}
 	}
 }

@@ -10,12 +10,10 @@ import com.swap.dal.DAOFactory;
 public class AuctionManager {
 	private AuctionDAO auctionDAO;
 	private PictureManager pictureManager;
-	private NotificationManager notificationManager;
 
 	public AuctionManager() {
 		this.auctionDAO = DAOFactory.getAuctionDAO();
 		this.pictureManager = new PictureManager();
-		this.notificationManager = new NotificationManager();
 	}
 
 	private boolean isValid(Auction auction) {
@@ -194,6 +192,15 @@ public class AuctionManager {
 			this.auctionDAO.updateStatus(auctionId, newStatus);
 		} catch (DALException e) {
 			throw new BLLException("UPDATE STATUS failure");
+		}
+	}
+
+	public void updateCategoryForAll(int oldCategoryId, int substituteId) throws BLLException {
+		try {
+			for (Auction auction : getByCategory(oldCategoryId))
+				auctionDAO.updateCategory(auction, substituteId);
+		} catch (DALException e) {
+			throw new BLLException("UPDATE CATEGORY failure");
 		}
 	}
 

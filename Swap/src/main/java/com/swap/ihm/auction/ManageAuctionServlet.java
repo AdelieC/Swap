@@ -32,6 +32,7 @@ import com.swap.bo.PickUpPoint;
 import com.swap.bo.Picture;
 import com.swap.bo.User;
 import com.swap.ihm.AuctionStatus;
+import com.swap.ihm.FormCleaner;
 import com.swap.ihm.IHMException;
 import com.swap.ihm.MotherServlet;
 
@@ -40,9 +41,12 @@ import com.swap.ihm.MotherServlet;
  */
 @WebServlet(description = "Handles creation of a single auction", urlPatterns = { "/auction" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 10)
-public class AuctionFormServlet extends MotherServlet {
+public class ManageAuctionServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String AUCT_CONF_JSP = "/WEB-INF/AuctionForm.jsp";
+	private static final String MANAGE_AUCTION_JSP = "/WEB-INF/ManageAuction.jsp";
+	private static final AuctionManager aucmng = new AuctionManager();
+	private static final PickUpPointManager pupmng = new PickUpPointManager();
+	private static final CategoryManager catmng = new CategoryManager();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -73,7 +77,7 @@ public class AuctionFormServlet extends MotherServlet {
 			}
 			request.setAttribute("pickUpPoint", pup);
 			request.setAttribute("title", title);
-			sendToJSP(AUCT_CONF_JSP, request, response);
+			sendToJSP(MANAGE_AUCTION_JSP, request, response);
 		} catch (BLLException e) {
 			// TODO Error 500
 			e.printStackTrace();
@@ -147,10 +151,10 @@ public class AuctionFormServlet extends MotherServlet {
 	}
 
 	private Auction buildAuction(Map<String, String> fields, User user) {
-		// TODO Use FormCleaner
-		String name = fields.get("name");
-		String description = fields.get("description");
-		int categoryId = Integer.valueOf(fields.get("category"));
+		// TODO Use FormCleaner - complete
+		String name = FormCleaner.cleanText(fields.get("name"));
+		String description = FormCleaner.cleanText(fields.get("description"));
+		int categoryId = FormCleaner.cleanId(fields.get("category"));
 		LocalDate startDate = LocalDate.parse(fields.get("start-date"));
 		LocalDate endDate = LocalDate.parse(fields.get("end-date"));
 		int initialPrice = Integer.valueOf(fields.get("initial-price"));
@@ -158,15 +162,15 @@ public class AuctionFormServlet extends MotherServlet {
 	}
 
 	private PickUpPoint buildPickUpPoint(Map<String, String> fields, User user) {
-		String street = fields.get("street").isBlank() ? user.getStreet() : fields.get("street");
-		String postcode = fields.get("postcode").isBlank() ? user.getPostcode() : fields.get("postcode");
-		String city = fields.get("city").isBlank() ? user.getCity() : fields.get("city");
+		String street = FormCleaner
+				.cleanStreet(fields.get("street").isBlank() ? user.getStreet() : fields.get("street"));
+		String postcode = FormCleaner
+				.cleanPostcode(fields.get("postcode").isBlank() ? user.getPostcode() : fields.get("postcode"));
+		String city = FormCleaner.cleanName(fields.get("city").isBlank() ? user.getCity() : fields.get("city"));
 		return new PickUpPoint(0, street, postcode, city);
 	}
 
 	private void createAuction(Auction auction, PickUpPoint pup) {
-		AuctionManager aucmng = new AuctionManager();
-		PickUpPointManager pupmng = new PickUpPointManager();
 		try {
 			aucmng.create(auction);
 			pup.setAuctionId(auction.getId());
@@ -178,7 +182,6 @@ public class AuctionFormServlet extends MotherServlet {
 	}
 
 	private void updateAuction(Auction auction, PickUpPoint pup) {
-		AuctionManager aucmng = new AuctionManager();
 		try {
 			aucmng.update(auction);
 			updatePickUpPoint(pup, auction.getId());
@@ -188,7 +191,6 @@ public class AuctionFormServlet extends MotherServlet {
 	}
 
 	private void updatePickUpPoint(PickUpPoint pup, int auctionId) {
-		PickUpPointManager pupmng = new PickUpPointManager();
 		pup.setAuctionId(auctionId);
 		pup.setId(getPupIdWithAuctionId(auctionId));
 		try {
@@ -199,7 +201,6 @@ public class AuctionFormServlet extends MotherServlet {
 	}
 
 	private Auction getAuctionById(int auctionId) {
-		AuctionManager aucmng = new AuctionManager();
 		Auction auction = null;
 		try {
 			auction = aucmng.getById(auctionId);
@@ -210,7 +211,6 @@ public class AuctionFormServlet extends MotherServlet {
 	}
 
 	private PickUpPoint getPUPByAuctionId(int id) {
-		PickUpPointManager pupmng = new PickUpPointManager();
 		PickUpPoint pup = null;
 		try {
 			pup = pupmng.getById(id);
@@ -230,7 +230,6 @@ public class AuctionFormServlet extends MotherServlet {
 
 	private void setCategories(HttpServletRequest request) throws BLLException {
 		List<Category> categorieslist = new ArrayList<Category>();
-		CategoryManager catmng = new CategoryManager();
 		categorieslist = catmng.getAll();
 		request.setAttribute("categoriesList", categorieslist);
 	}

@@ -11,18 +11,17 @@
 		<a href="/Swap/home"><li>Home</li></a>
 		<c:choose>
 			<c:when test="${user != null && user.userId > 0}">
-				<a href="/Swap/account"><li>My profile</li></a>
+				<a href="/Swap/my-auctions"><li>My auctions</li></a>
+				<a href="/Swap/auction"><li>Create an auction</li></a>
 				<a href="/Swap/account/notifications"><li>Notifications</li></a>
-				<a href="/Swap/auction"><li>Create auction</li></a>
+				<a href="/Swap/account"><li>My profile</li></a>
 				<c:if test="${user.isAdmin()}">
-					<a href="/Swap/admin/all-users"><li>Manage users</li></a>
-					<a href="/Swap/admin/notify"><li>Notify all</li></a>
-					<form action="/Swap/admin/update" method="post">
-						<input class="btn submit2" type="submit" value="Launch global update">
-					</form>
+					<a href="/Swap/admin/all-users"><li>Manage all users</li></a>
+					<a href="/Swap/admin/notify"><li>Notify all users</li></a>
+					<a href="/Swap/admin/categories"><li>Manage categories</li></a>
 				</c:if>
 				<a href="/Swap/about"><li>About us</li></a>
-				<jsp:include page="logoutForm.jsp"/>
+				<jsp:include page="logoutBtn.jsp"/>
 			</c:when>
 			<c:otherwise>
 				<a href="/Swap/about"><li>About us</li></a>

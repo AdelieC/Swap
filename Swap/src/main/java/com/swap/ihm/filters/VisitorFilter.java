@@ -20,7 +20,7 @@ import com.swap.bo.User;
 @WebFilter(description = "Filters access to pages depending on userIsLoggedIn value", urlPatterns = { "/user",
 		"/account", "/account/edit", "/account/delete", "/account/logout", "/auction/create", "/auction/edit",
 		"/auction/cancel", "/auction/bid" })
-public class UserFilter implements Filter {
+public class VisitorFilter implements Filter {
 	private final static String LOGIN_PATH = "/Swap/login";
 
 	/**

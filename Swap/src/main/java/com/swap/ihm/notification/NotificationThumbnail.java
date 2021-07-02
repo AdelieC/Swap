@@ -14,6 +14,7 @@ import com.swap.bll.UserManager;
 import com.swap.bo.Notification;
 
 public class NotificationThumbnail implements Serializable, Comparable<NotificationThumbnail> {
+	private static final long serialVersionUID = 1L;
 	AuctionManager auctionM = new AuctionManager();
 	UserManager userM = new UserManager();
 	private int auctionId;

@@ -29,7 +29,7 @@ import com.swap.ihm.notification.NotificationType;
  * Servlet handling logout and delete user
  */
 @WebServlet(urlPatterns = { "/account/logout", "/account/delete" })
-public class GetOutServlet extends MotherServlet {
+public class ManageExitServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String OUTCOME_JSP = "/WEB-INF/Outcome.jsp";
 	private static BidManager bidM = new BidManager();

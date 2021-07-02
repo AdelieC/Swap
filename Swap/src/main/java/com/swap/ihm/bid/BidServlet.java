@@ -33,15 +33,10 @@ public class BidServlet extends MotherServlet {
 	private static final String OUTCOME_JSP = "/WEB-INF/Outcome.jsp";
 	private static final Object SUCCESS_TITLE = "Successful bid!";
 	private static final Object FAILURE_TITLE = "Bid couldn't be placed...";
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-	}
+	private static final AuctionManager aucmng = new AuctionManager();
+	private static final NotificationManager notificationM = new NotificationManager();
+	private static final BidManager bidmng = new BidManager();
+	private static final UserManager usmng = new UserManager();
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -54,12 +49,11 @@ public class BidServlet extends MotherServlet {
 			HttpSession session = request.getSession();
 			int offer = Integer.valueOf(request.getParameter("offer"));
 			int auctionId = Integer.valueOf(request.getParameter("id"));
-			AuctionManager aucmng = new AuctionManager();
 			Auction auction = aucmng.getById(auctionId);
 			User user = ((User) session.getAttribute("user"));
 			if (bidIsAuthorized(user, offer, auction)) {
 				Bid bid = createBid(auction, offer, user);
-				updateAuction(auction, aucmng, offer);
+				updateAuction(auction, offer);
 				notifySeller(bid, auction);
 				setSuccess(bid, auction, request);
 			} else {
@@ -76,7 +70,6 @@ public class BidServlet extends MotherServlet {
 	}
 
 	private void notifySeller(Bid bid, Auction auction) throws BLLException, BOException {
-		NotificationManager notificationM = new NotificationManager();
 		String content = "A new bid of " + bid.getBidPrice() + " points was placed on " + auction.getName();
 		notificationM.create(
 				new Notification(auction.getUserId(), bid.getUserId(), NotificationType.BID, content, auction.getId()));
@@ -105,8 +98,6 @@ public class BidServlet extends MotherServlet {
 	}
 
 	private Bid createBid(Auction auction, int offer, User user) throws BLLException, BOException {
-		BidManager bidmng = new BidManager();
-		UserManager usmng = new UserManager();
 		Bid bid = null, previousBid;
 		previousBid = bidmng.getMaxBid(auction.getId());
 		bid = new Bid(user.getUserId(), auction.getId(), offer, LocalDate.now());
@@ -121,7 +112,6 @@ public class BidServlet extends MotherServlet {
 	}
 
 	private void notifyPreviousBuyer(Bid previousBid, Auction auction) throws BLLException, BOException {
-		NotificationManager notificationM = new NotificationManager();
 		String content = "Your bid of " + previousBid.getBidPrice() + " points placed on " + auction.getName()
 				+ " was outbid. Want to place another one? It's not too late! <a href='/Swap/auction/view?id="
 				+ auction.getId() + "'>Click here!</a>";
@@ -129,7 +119,7 @@ public class BidServlet extends MotherServlet {
 				content, auction.getId()));
 	}
 
-	private void updateAuction(Auction auction, AuctionManager aucmng, int offer) throws BLLException {
+	private void updateAuction(Auction auction, int offer) throws BLLException {
 		auction.setSalePrice(offer);
 		aucmng.update(auction);
 	}

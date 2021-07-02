@@ -31,6 +31,11 @@ import com.swap.ihm.notification.NotificationType;
 public class CancelAuctionServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String OUTCOME_JSP = "/WEB-INF/Outcome.jsp";
+	private static final NotificationManager notificationM = new NotificationManager();
+	private static final AuctionManager auctionM = new AuctionManager();
+	private static final UserManager userM = new UserManager();
+	private static final PickUpPointManager pupM = new PickUpPointManager();
+	private static final BidManager bidM = new BidManager();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -52,11 +57,10 @@ public class CancelAuctionServlet extends MotherServlet {
 		try {
 			HttpSession session = request.getSession();
 			User user = (User) session.getAttribute("user");
-			AuctionManager aucmng = new AuctionManager();
-			Auction auction = aucmng.getById(Integer.valueOf(request.getParameter("auctionId")));
+			Auction auction = auctionM.getById(Integer.valueOf(request.getParameter("auctionId")));
 			if (!auction.isOver() && userCanDeleteAuction(auction, user)) {
 				deleteAuction(auction.getId());
-				deletePickUpPoint(auction.getId());
+				pupM.deleteByAuctionId(auction.getId());
 				if (auction.hasReceivedBids())
 					manageAllRelatedBids(auction);
 				if (user.isAdmin())
@@ -89,7 +93,6 @@ public class CancelAuctionServlet extends MotherServlet {
 	}
 
 	private void notifySeller(Auction auction, User user) throws BLLException, BOException {
-		NotificationManager notificationM = new NotificationManager();
 		String content = "We are very sorry to inform you that your auction " + auction.getName()
 				+ " was cancelled by an administrator because it did not respect our terms of use.";
 		notificationM.create(new Notification(auction.getUserId(), user.getUserId(), NotificationType.ADMIN, content));
@@ -100,19 +103,11 @@ public class CancelAuctionServlet extends MotherServlet {
 	}
 
 	private void deleteAuction(int auctionId) throws BLLException {
-		AuctionManager aucmng = new AuctionManager();
-		Auction auction = null;
-		auction = aucmng.getById(auctionId);
-		aucmng.delete(auction);
-	}
-
-	private void deletePickUpPoint(int auctionId) throws BLLException {
-		PickUpPointManager pupmng = new PickUpPointManager();
-		pupmng.deleteByAuctionId(auctionId);
+		Auction auction = auctionM.getById(auctionId);
+		auctionM.delete(auction);
 	}
 
 	private void manageAllRelatedBids(Auction auction) throws BLLException, BOException {
-		BidManager bidM = new BidManager();
 		List<Bid> bids = bidM.getByAuctionId(auction.getId());
 		for (Bid bid : bids) {
 			if (bid.getBidPrice() == auction.getSalePrice())
@@ -123,12 +118,10 @@ public class CancelAuctionServlet extends MotherServlet {
 	}
 
 	private void refundLastBidder(Bid bid) throws BLLException {
-		UserManager userM = new UserManager();
 		userM.credit(bid.getUserId(), bid.getBidPrice());
 	}
 
 	private void notifyBidder(Bid bid, Auction auction) throws BLLException, BOException {
-		NotificationManager notificationM = new NotificationManager();
 		String content = "We are very sorry to inform you that the bid you made on " + auction.getName() + " on "
 				+ bid.getDate() + " was annuled due to the cancellation of the auction. The sum of " + bid.getBidPrice()
 				+ " points will be credited back to you immediately.";

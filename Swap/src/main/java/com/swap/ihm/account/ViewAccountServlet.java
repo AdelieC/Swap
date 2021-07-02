@@ -23,9 +23,11 @@ import com.swap.ihm.auction.AuctionThumbnail;
  * Servlet implementation class Account
  */
 @WebServlet(urlPatterns = { "/account", "/user" })
-public class AccountServlet extends MotherServlet {
+public class ViewAccountServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String PROFILE_JSP = "/WEB-INF/ViewUser.jsp";
+	private static final String VIEW_ACCOUNT_JSP = "/WEB-INF/ViewAccount.jsp";
+	private static final UserManager userM = new UserManager();
+	private static final AuctionManager auctionM = new AuctionManager();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -39,14 +41,13 @@ public class AccountServlet extends MotherServlet {
 			User user = null;
 			if (request.getRequestURI().contains("user") && request.getParameter("id") != null) {
 				int userId = Integer.parseInt(request.getParameter("id"));
-				UserManager userM = new UserManager();
 				user = userM.getById(userId);
 				setThumbnails(request, userId);
 			} else {
 				user = (User) session.getAttribute("user");
 			}
 			request.setAttribute("targetUser", user);
-			sendToJSP(PROFILE_JSP, request, response);
+			sendToJSP(VIEW_ACCOUNT_JSP, request, response);
 		} catch (NumberFormatException | BLLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -54,7 +55,6 @@ public class AccountServlet extends MotherServlet {
 	}
 
 	private void setThumbnails(HttpServletRequest request, int userId) throws BLLException {
-		AuctionManager auctionM = new AuctionManager();
 		List<Auction> auctions = auctionM.getOngoingByUserId(userId);
 		List<AuctionThumbnail> thumbnails = new ArrayList<>();
 		thumbnails = getThumbnailList(auctions);
@@ -68,17 +68,16 @@ public class AccountServlet extends MotherServlet {
 	}
 
 	private AuctionThumbnail getThumbnail(Auction auction) {
-		UserManager userM = new UserManager();
 		User user = null;
 		AuctionThumbnail auctionThumbnail = null;
 		try {
 			user = userM.getById(auction.getUserId());
 			if (auction.getPictures().isEmpty()) {
 				auctionThumbnail = new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
-						auction.getEndDate(), user.getUsername());
+						auction.getStartDate(), auction.getEndDate(), user.getUsername());
 			} else {
 				auctionThumbnail = new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
-						auction.getEndDate(), user.getUsername(), auction.getPictures().get(0));
+						auction.getStartDate(), auction.getEndDate(), user.getUsername(), auction.getPictures().get(0));
 			}
 		} catch (BLLException e) {
 			// TODO Handle error 500

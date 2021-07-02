@@ -23,6 +23,8 @@ import com.swap.ihm.notification.NotificationType;
 public class DisableUserServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String OUTCOME_JSP = "/WEB-INF/Outcome.jsp";
+	private static final UserManager userM = new UserManager();
+	private static final NotificationManager notificationM = new NotificationManager();
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -32,7 +34,6 @@ public class DisableUserServlet extends MotherServlet {
 			User admin = (User) session.getAttribute("user");
 			if (userIsLoggedIn(request) && admin.isAdmin() && request.getParameter("id") != null
 					&& !admin.wasDisabled()) {
-				UserManager userM = new UserManager();
 				int userId = FormCleaner.cleanId(request.getParameter("id"));
 				User userToDisable = userM.getById(userId);
 				userM.disable(userToDisable);
@@ -61,7 +62,6 @@ public class DisableUserServlet extends MotherServlet {
 	}
 
 	private void notifyUser(int userId, User admin) throws BLLException, BOException {
-		NotificationManager notificationM = new NotificationManager();
 		String content = "Uhoh... Your account has been temporarily disabled by an administrator because you didn't respect our terms of use. Don't worry, you can still access your data and manage your ongoing auctions. You will be contacted shortly to find a solution.";
 		notificationM.create(new Notification(userId, admin.getUserId(), NotificationType.ADMIN, content));
 	}

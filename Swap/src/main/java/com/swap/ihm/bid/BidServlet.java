@@ -20,8 +20,8 @@ import com.swap.bo.BOException;
 import com.swap.bo.Bid;
 import com.swap.bo.Notification;
 import com.swap.bo.User;
-import com.swap.ihm.AuctionStatus;
 import com.swap.ihm.MotherServlet;
+import com.swap.ihm.auction.AuctionStatus;
 import com.swap.ihm.notification.NotificationType;
 
 /**

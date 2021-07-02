@@ -31,8 +31,9 @@ public class HomeServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String USER_HOME_JSP = "/WEB-INF/UserHome.jsp";
 	private static final String VISITOR_HOME_JSP = "/WEB-INF/VisitorHome.jsp";
-	private static AuctionManager auctionM = new AuctionManager();
-	private static NotificationManager notificationM = new NotificationManager();
+	private static final AuctionManager auctionM = new AuctionManager();
+	private static final NotificationManager notificationM = new NotificationManager();
+	private static final CategoryManager catmng = new CategoryManager();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -82,18 +83,18 @@ public class HomeServlet extends MotherServlet {
 		if (filters != null) {
 			thumbnails = getThumbnailsList(filter(auctionsList, filters));
 			setFilterAttributes(request, filters);
-			request.setAttribute("thumbnails", thumbnails);
+			request.setAttribute("auctionsList", thumbnails);
 		}
 	}
 
 	private List<Auction> filter(List<Auction> auctionsList, Map<String, String[]> filters) {
-		if (filters.containsKey("category") && filters.get("category") != null)
-			filterByCategory(auctionsList, Integer.parseInt(filters.get("category")[0]));
-		if (filters.containsKey("keyWord") && filters.get("keyWord") != null)
+		if (filters.containsKey("categoryId") && !filters.get("categoryId")[0].isBlank())
+			filterByCategory(auctionsList, Integer.parseInt(filters.get("categoryId")[0]));
+		if (filters.containsKey("keyword") && !filters.get("keyword")[0].isBlank())
 			filterByKeyword(auctionsList, filters.get("keyword")[0].toLowerCase());
-		if (filters.containsKey("startDate") && filters.get("startDate") != null)
+		if (filters.containsKey("startDate") && !filters.get("startDate")[0].isBlank())
 			filterByStartDate(auctionsList, filters.get("startDate")[0]);
-		if (filters.containsKey("endDate") && filters.get("endDate") != null)
+		if (filters.containsKey("endDate") && !filters.get("endDate")[0].isBlank())
 			filterByEndDate(auctionsList, filters.get("endDate")[0]);
 		return auctionsList;
 	}
@@ -129,12 +130,14 @@ public class HomeServlet extends MotherServlet {
 	}
 
 	private void filterByCategory(List<Auction> auctionsList, int categoryId) {
-		List<Auction> tempList = new ArrayList<>();
-		for (Auction auction : auctionsList) {
-			if (auction.getCategoryId() == categoryId)
-				tempList.add(auction);
+		if (categoryId > 0) {
+			List<Auction> tempList = new ArrayList<>();
+			for (Auction auction : auctionsList) {
+				if (auction.getCategoryId() == categoryId)
+					tempList.add(auction);
+			}
+			auctionsList.retainAll(tempList);
 		}
-		auctionsList.retainAll(tempList);
 	}
 
 	private void setFilterAttributes(HttpServletRequest request, Map<String, String[]> filters) {
@@ -144,7 +147,6 @@ public class HomeServlet extends MotherServlet {
 	}
 
 	private void setCategories(HttpServletRequest request) throws BLLException {
-		CategoryManager catmng = new CategoryManager();
 		List<Category> categorieslist = catmng.getAll();
 		request.setAttribute("categoriesList", categorieslist);
 	}

@@ -9,7 +9,7 @@ import java.util.Map;
 import com.swap.bo.Auction;
 import com.swap.bo.BOException;
 import com.swap.bo.Notification;
-import com.swap.ihm.AuctionStatus;
+import com.swap.ihm.auction.AuctionStatus;
 import com.swap.ihm.notification.NotificationType;
 
 public class UpdateManager {
@@ -95,7 +95,7 @@ public class UpdateManager {
 	}
 
 	private Integer getLastBidderId(Auction auction) throws BLLException {
-		return bidM.getMaxBid(auction.getId()).getUserId();
+		return auction.hasReceivedBids() ? bidM.getMaxBid(auction.getId()).getUserId() : 0;
 	}
 
 	private Integer getSellerId(Auction auction) {

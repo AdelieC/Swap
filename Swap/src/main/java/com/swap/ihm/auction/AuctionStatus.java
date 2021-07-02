@@ -1,4 +1,4 @@
-package com.swap.ihm;
+package com.swap.ihm.auction;
 
 public enum AuctionStatus {
 	CREATED,

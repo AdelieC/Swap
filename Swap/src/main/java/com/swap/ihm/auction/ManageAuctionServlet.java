@@ -31,7 +31,6 @@ import com.swap.bo.Category;
 import com.swap.bo.PickUpPoint;
 import com.swap.bo.Picture;
 import com.swap.bo.User;
-import com.swap.ihm.AuctionStatus;
 import com.swap.ihm.FormCleaner;
 import com.swap.ihm.IHMException;
 import com.swap.ihm.MotherServlet;

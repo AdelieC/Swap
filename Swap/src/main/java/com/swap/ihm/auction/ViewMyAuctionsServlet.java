@@ -16,7 +16,6 @@ import com.swap.bll.CategoryManager;
 import com.swap.bo.Auction;
 import com.swap.bo.Category;
 import com.swap.bo.User;
-import com.swap.ihm.AuctionStatus;
 import com.swap.ihm.MotherServlet;
 
 @WebServlet(urlPatterns = { "/my-auctions" })

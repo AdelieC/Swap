@@ -23,7 +23,7 @@
 								<c:when test="notification.type.equals('ADMIN')"><li>New admin notification - ${notification.dateAndTime}</li></c:when>
 								<c:when test="notification.type.equals('SALE')"><li>Good news! ${notification.name} was just sold!</li></c:when>
 								<c:when test="notification.type.equals('MESSAGE')"><li>New message from ${notification.senderName} - ${notification.dateAndTime}</li></c:when>
-								<c:otherWise><li>Congrats!! You won the item ${notification.auctionName}!</li></c:otherWise>
+								<c:otherwise><li>Congrats!! You won the item ${notification.auctionName}!</li></c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<a href="/Swap/account/notifications" class="btn submit2">View more</a>
@@ -36,10 +36,10 @@
 			</section>
 			<form id="filters" method="GET" action="/Swap/home">
 				<fieldset id="basic-filters">
-					<input type="text" name="keyword" placeholder="Item name contains..." value="${search}">
+					<input type="text" name="keyword" placeholder="Item name contains..." value="${keyword}">
 					<div id="category">
 						<label>Category: </label>
-			            <select name="category" required>
+			            <select name="categoryId" required>
 			            	<c:choose>
 			            		<c:when test="${categoryId == 0}">
 			            			<option value="0" selected>All</option>
@@ -60,8 +60,10 @@
 							</c:forEach>
 			            </select>
 		            </div>
-		            <input type="date" name="startDate">
-		            <input type="date" name="endDate">
+		            <label for="startDate">Starts after :</label>
+		            <input type="date" name="startDate" value="${startDate}">
+		            <label for="startDate">Ends before :</label>
+		            <input type="date" name="endDate" value="${endDate}">
 		            <input type="submit" class="btn submit1" value="Filter">
 	        	</fieldset>
 			</form>
@@ -72,8 +74,8 @@
 							<h4>${auction.item}</h3>
 							<div class="placeholder" style="background-image: url('/Swap/resources/auctions-thumbnails/${auction.pictureName}');background-size: cover;"></div>
 							<p>Price: ${auction.price}</p>
-							<p>Started : ${auction.date}</p>
-							<p>Ends : ${auction.date}</p>
+							<p>Started : ${auction.startDate}</p>
+							<p>Ends : ${auction.endDate}</p>
 							<p>Seller: <i>${auction.seller}</i></p>
 						</article>
 					</a>

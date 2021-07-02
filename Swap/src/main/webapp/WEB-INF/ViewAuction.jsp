@@ -91,11 +91,18 @@
 						</c:otherwise>
 					</c:choose>
 					<c:if test="${user.getUserId() != seller.userId && user.isAdmin()}">
-							<jsp:include page="./includes/cancelAuctionBtn.jsp"/>
+						<jsp:include page="./includes/cancelAuctionBtn.jsp"/>
 					</c:if>
 				</c:if>
 			</section>
-			<jsp:include page="./includes/messageForm.jsp"/>
+			<c:choose>
+			<c:when test="${user.getUserId() != seller.userId && user.isAdmin()}">
+				<jsp:include page="./includes/messageForm.jsp"/>
+			</c:when>
+			<c:otherwise>
+				<a href="/Swap/register" class="btn cta">Register to bid</a>
+			</c:otherwise>
+			</c:choose>
 			<a class="btn submit2" href="/Swap">Back to Homepage</a>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>

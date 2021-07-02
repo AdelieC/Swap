@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.swap.ihm.AuctionStatus;
+import com.swap.ihm.auction.AuctionStatus;
 
 public class Auction implements Serializable {
 	private static final long serialVersionUID = 1L;

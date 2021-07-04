@@ -18,13 +18,11 @@
 				<c:choose>
 					<c:when test="${notifications.size() > 0}">
 						<c:forEach var="notification" items="${notifications}">
-							<c:choose>
-								<c:when test="notification.type.equals('BID')"><li>New bid on ${notification.auctionName} - ${notification.dateAndTime}</li></c:when>
-								<c:when test="notification.type.equals('ADMIN')"><li>New admin notification - ${notification.dateAndTime}</li></c:when>
-								<c:when test="notification.type.equals('SALE')"><li>Good news! ${notification.name} was just sold!</li></c:when>
-								<c:when test="notification.type.equals('MESSAGE')"><li>New message from ${notification.senderName} - ${notification.dateAndTime}</li></c:when>
-								<c:otherwise><li>Congrats!! You won the item ${notification.auctionName}!</li></c:otherwise>
-							</c:choose>
+								<c:if test="${notification.type.equals('BID')}"><li>New bid on ${notification.auctionName} - ${notification.dateAndTime}</li></c:if>
+								<c:if test="${notification.type.equals('ADMIN')}"><li>New admin notification - ${notification.dateAndTime}</li></c:if>
+								<c:if test="${notification.type.equals('SALE')}"><li>Good news! ${notification.name} was just sold!</li></c:if>
+								<c:if test="${notification.type.equals('MESSAGE')}"><li>New message from ${notification.senderName} - ${notification.dateAndTime}</li></c:if>
+								<c:if test="${notification.type.equals('WIN')}"><li>Congrats!! You won the item ${notification.auctionName}!</li></c:if>
 						</c:forEach>
 						<a href="/Swap/account/notifications" class="btn submit2">View more</a>
 					</c:when>

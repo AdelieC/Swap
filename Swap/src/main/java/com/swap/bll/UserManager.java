@@ -58,7 +58,7 @@ public class UserManager {
 
 	public void enable(User user) throws BLLException {
 		try {
-			this.UserDAO.updateWasDisabled(user, true);
+			this.UserDAO.updateWasDisabled(user, false);
 		} catch (DALException e) {
 			throw new BLLException("Failed to enable user", e);
 		}
@@ -66,7 +66,7 @@ public class UserManager {
 
 	public void disable(User user) throws BLLException {
 		try {
-			this.UserDAO.updateWasDisabled(user, false);
+			this.UserDAO.updateWasDisabled(user, true);
 		} catch (DALException e) {
 			throw new BLLException("Failed to disable user", e);
 		}

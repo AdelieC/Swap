@@ -18,7 +18,7 @@
 							<option value="${category.id}">${category.label}</option>
 						</c:forEach>
 		            </select>
-		            <label for="substitute">Category to replace it with in existing auctions : </label>
+		            <label for="substitute">Substitute category for existing auctions : </label>
 		            <select name="substitute" required>
 		                <c:forEach var="category" items="${categoriesList}">
 							<option value="${category.id}">${category.label}</option>

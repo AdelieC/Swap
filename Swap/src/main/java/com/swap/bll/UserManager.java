@@ -50,7 +50,7 @@ public class UserManager {
 
 	public void updatePassword(User user) throws BLLException {
 		try {
-			this.UserDAO.updatePassword(user);
+			this.UserDAO.updatePasswordAndSalt(user);
 		} catch (DALException e) {
 			throw new BLLException("Failed to update password", e);
 		}

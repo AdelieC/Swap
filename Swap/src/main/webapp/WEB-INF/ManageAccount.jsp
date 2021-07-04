@@ -20,17 +20,24 @@
 			   				<div class="form-error">Invalid field : ${errors.get('username')}</div>
 						</c:if>
 					</div>
-					<div class="form-field">
-						<label for="password1">Password:</label>
-						<input type="password" type="text" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$" placeholder="ex : Pa$$w0rd" name="password1"/>
-					</div>
-					<div class="form-field">
-						<label for="password2">Confirm password:</label>
-						<input type="password" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$" placeholder="ex : Pa$$w0rd" name="password2"/>
-						<c:if test="${errors.containsKey('password')}" >
-			   				<div class="form-error">Invalid field : ${errors.get('password')}</div>
-						</c:if>
-					</div>
+					<c:choose>
+						<c:when test="${targetUser.userId > 0}">
+							<a href="/Swap/account/change-password" class="btn submit1">Change password</a>
+						</c:when>
+						<c:otherwise>
+							<div class="form-field">
+								<label for="password1">Password:</label>
+								<input type="password" type="text" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$" placeholder="ex : Pa$$w0rd" name="password1"/>
+							</div>
+							<div class="form-field">
+								<label for="password2">Confirm password:</label>
+								<input type="password" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$" placeholder="ex : Pa$$w0rd" name="password2"/>
+								<c:if test="${errors.containsKey('password')}" >
+					   				<div class="form-error">Invalid field : ${errors.get('password')}</div>
+								</c:if>
+							</div>
+						</c:otherwise>
+					</c:choose>
 				</fieldset>
 				<fieldset>
 					<legend>Informations</legend>

@@ -335,15 +335,16 @@ public class UserDAOJdbc implements UserDAO {
 	}
 
 	@Override
-	public void updatePassword(User u) throws DALException {
+	public void updatePasswordAndSalt(User u) throws DALException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		String SQLQuery = DBUtils.updateWhere(TABLENAME, "password", "user_id");
+		String SQLQuery = DBUtils.updateTwoColsWhere(TABLENAME, "password", "salt", "user_id");
 		try {
 			conn = ConnectionProvider.getConnection();
 			stmt = conn.prepareStatement(SQLQuery);
-			stmt.setInt(1, u.getUserId());
-			stmt.setString(2, u.getPassword());
+			stmt.setString(1, u.getPassword());
+			stmt.setString(2, u.getSalt());
+			stmt.setInt(3, u.getUserId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DALException("Couldn't update password for User named " + u.getUsername(), e);

@@ -232,4 +232,8 @@ public class User implements Serializable {
 		wasDisabled = disable;
 	}
 
+	public void changePassword(String newPassword) throws BOException {
+		setSalt();
+		setPassword(newPassword, salt);
+	}
 }

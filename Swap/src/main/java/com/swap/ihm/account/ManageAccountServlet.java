@@ -37,7 +37,6 @@ public class ManageAccountServlet extends MotherServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		try {
 			if (userIsLoggedIn(request)) {
 				editProfile(request, response);
@@ -70,7 +69,6 @@ public class ManageAccountServlet extends MotherServlet {
 				request.setAttribute("errors", errors);
 				doGet(request, response);
 			} else {
-
 				userM.create(user);
 				session.setAttribute("user", user);
 				response.sendRedirect(SUCCESS_PATH);
@@ -83,10 +81,10 @@ public class ManageAccountServlet extends MotherServlet {
 	private void editProfile(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, BOException {
 		try {
-			Map<String, String> inputs = getInputValues(request);
-			Map<String, String> errors = getErrors(inputs);
 			HttpSession session = request.getSession();
 			User currentUser = ((User) session.getAttribute("user"));
+			Map<String, String> inputs = getInputValues(request);
+			Map<String, String> errors = getErrors(inputs);
 			User user = new User(currentUser.getUserId(), inputs.get("username"), inputs.get("lastName"),
 					inputs.get("firstName"), inputs.get("email"), inputs.get("telephone"), inputs.get("street"),
 					inputs.get("postcode"), inputs.get("city"));
@@ -106,15 +104,15 @@ public class ManageAccountServlet extends MotherServlet {
 
 	private Map<String, String> getInputValues(HttpServletRequest request) {
 		Map<String, String> inputValues = new HashMap<>();
-
-		String password1 = FormCleaner.cleanPassword(request.getParameter("password1"));
-		String password2 = FormCleaner.cleanPassword(request.getParameter("password2"));
-		if (password1 != null && !password1.equals(password2)) {
-			password1 = null;
+		if (!userIsLoggedIn(request)) {
+			String password1 = FormCleaner.cleanPassword(request.getParameter("password1"));
+			String password2 = FormCleaner.cleanPassword(request.getParameter("password2"));
+			if (password1 != null && !password1.equals(password2)) {
+				password1 = null;
+			}
+			inputValues.put("password", password1);
 		}
-
 		inputValues.put("username", FormCleaner.cleanUsername(request.getParameter("username")));
-		inputValues.put("password", password1);
 		inputValues.put("lastName", FormCleaner.cleanName(request.getParameter("lastName")));
 		inputValues.put("firstName", FormCleaner.cleanName(request.getParameter("firstName")));
 		inputValues.put("email", FormCleaner.cleanEmail(request.getParameter("email")));
@@ -122,7 +120,6 @@ public class ManageAccountServlet extends MotherServlet {
 		inputValues.put("street", FormCleaner.cleanStreet(request.getParameter("street")));
 		inputValues.put("postcode", FormCleaner.cleanPostcode(request.getParameter("postcode")));
 		inputValues.put("city", FormCleaner.cleanName(request.getParameter("city")));
-
 		return inputValues;
 	}
 

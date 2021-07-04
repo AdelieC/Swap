@@ -41,9 +41,9 @@ public class ManageCategoriesServlet extends MotherServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			if (request.getParameter("submit") != null && request.getParameter("submit").contains("Add")) {
+			if (request.getParameter("submit") != null && request.getParameter("submit").contains("Create")) {
 				createCategory(request);
-			} else if (request.getParameter("submit") != null && request.getParameter("submit").contains("Remove")) {
+			} else if (request.getParameter("submit") != null && request.getParameter("submit").contains("Delete")) {
 				removeCategory(request);
 			}
 			doGet(request, response);

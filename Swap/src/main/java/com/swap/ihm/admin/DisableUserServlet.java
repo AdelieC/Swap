@@ -32,22 +32,13 @@ public class DisableUserServlet extends MotherServlet {
 		try {
 			HttpSession session = request.getSession();
 			User admin = (User) session.getAttribute("user");
-			if (requestIsAuthorized(request, admin)) {
+			if (userIsLoggedIn(request) && admin.isAdmin() && request.getParameter("id") != null
+					&& !admin.wasDisabled()) {
 				int userId = FormCleaner.cleanId(request.getParameter("id"));
-				User targetUser = userM.getById(userId);
-				String messageContent = "";
-				String actionPerformed = "";
-				if (requestIsToDisable(request)) {
-					userM.disable(targetUser);
-					actionPerformed = "disabled";
-					messageContent = "Uhoh... Your account was temporarily disabled by an administrator because you didn't respect our terms of use. Don't worry, you can still access your data and manage your ongoing auctions.";
-				} else if (requestIsToEnable(request)) {
-					userM.enable(targetUser);
-					actionPerformed = "enabled";
-					messageContent = "Your account has been reactivated! You can now create new auctions and bid on ongoing auctions!";
-				}
-				notifyUser(userId, admin, messageContent);
-				setSuccess(request, targetUser, actionPerformed);
+				User userToDisable = userM.getById(userId);
+				userM.disable(userToDisable);
+				notifyUser(userId, admin);
+				setSuccess(request, userToDisable);
 				sendToJSP(OUTCOME_JSP, request, response);
 			} else {
 				throw new IHMException("Forbidden.");
@@ -64,25 +55,14 @@ public class DisableUserServlet extends MotherServlet {
 		}
 	}
 
-	private boolean requestIsAuthorized(HttpServletRequest request, User admin) {
-		return userIsLoggedIn(request) && admin.isAdmin() && request.getParameter("id") != null && !admin.wasDisabled();
-	}
-
-	private boolean requestIsToDisable(HttpServletRequest request) {
-		return request.getParameter("submit") != null && request.getParameter("submit").contains("Disable");
-	}
-
-	private boolean requestIsToEnable(HttpServletRequest request) {
-		return request.getParameter("submit") != null && request.getParameter("submit").contains("Enable");
-	}
-
-	private void setSuccess(HttpServletRequest request, User user, String action) {
-		String message = "User named " + user.getUsername() + "was successfully " + action + " !";
+	private void setSuccess(HttpServletRequest request, User user) {
+		String message = "User named " + user.getUsername() + " was successfully disabled.";
 		request.setAttribute("message", message);
 		request.setAttribute("title", "Action completed!");
 	}
 
-	private void notifyUser(int userId, User admin, String content) throws BLLException, BOException {
+	private void notifyUser(int userId, User admin) throws BLLException, BOException {
+		String content = "Uhoh... Your account has been temporarily disabled by an administrator because you didn't respect our terms of use. Don't worry, you can still access your data and manage your ongoing auctions. You will be contacted shortly to find a solution.";
 		notificationM.create(new Notification(userId, admin.getUserId(), NotificationType.ADMIN, content));
 	}
 }

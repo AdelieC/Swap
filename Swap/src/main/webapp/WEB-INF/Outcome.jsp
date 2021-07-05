@@ -3,14 +3,13 @@
 <html>
 	<head>
 		<jsp:include page="./includes/basicLinks.html"/>
-		<title>Swap</title>
+		<title>${title}</title>
 	</head>
 	<body>
 	<jsp:include page="./includes/header.jsp"/>
 		<main>
-			<form action="update-auctions" method="post">
-				<input type="submit" value="Update auctions status">
-			</form>
+			<h1>${title}</h1>
+			<p>${message}</p>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>
 	</body>

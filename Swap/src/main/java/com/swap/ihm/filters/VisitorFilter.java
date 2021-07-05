@@ -1,4 +1,4 @@
-package com.swap.ihm;
+package com.swap.ihm.filters;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -18,9 +18,9 @@ import com.swap.bo.User;
  * specific pages if user is not logged in
  */
 @WebFilter(description = "Filters access to pages depending on userIsLoggedIn value", urlPatterns = { "/user",
-		"/account", "/account/delete", "/account/logout", "/auction/create", "/auction/edit", "/auction/cancel",
-		"/auction/bid" })
-public class LoggedOutFilter implements Filter {
+		"/account", "/account/edit", "/account/delete", "/account/logout", "/auction/create", "/auction/edit",
+		"/auction/cancel", "/auction/bid" })
+public class VisitorFilter implements Filter {
 	private final static String LOGIN_PATH = "/Swap/login";
 
 	/**

@@ -54,6 +54,23 @@ public class BidManager {
 		}
 	}
 
+	public void deleteByAuctionId(int auctionId) throws BLLException {
+		try {
+			this.bidDAO.deleteByAuctionId(auctionId);
+		} catch (DALException e) {
+			throw new BLLException("BLL - DELETE BID BY AUCTION ID failure");
+		}
+	}
+
+	public void deleteByBidderId(int userId) throws BLLException {
+		try {
+			this.bidDAO.deleteByBidderId(userId);
+		} catch (DALException e) {
+			throw new BLLException("BLL - DELETE BIDS BY BIDDER ID failure");
+		}
+
+	}
+
 	public Bid getById(int id) throws BLLException {
 		Bid bid = null;
 		try {

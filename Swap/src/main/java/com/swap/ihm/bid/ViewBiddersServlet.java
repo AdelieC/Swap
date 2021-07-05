@@ -1,5 +1,11 @@
 package com.swap.ihm.bid;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,37 +17,33 @@ import com.swap.bo.Bid;
 import com.swap.bo.User;
 import com.swap.ihm.MotherServlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 /**
  * Servlet implementation class ViewBiddersServlet
  */
 @WebServlet("/auction/view/bidders")
 public class ViewBiddersServlet extends MotherServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String VIEW_BID_JSP = "/WEB-INF/ViewBidders.jsp";
+	private static final String VIEW_BIDDERS_JSP = "/WEB-INF/ViewBidders.jsp";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO
 		int auctionId = Integer.valueOf(request.getParameter("id"));
 		List<BidderThumbnail> bidders = getBiddersForAuction(auctionId);
 		request.setAttribute("biddersList", bidders);
-		sendToJSP(VIEW_BID_JSP, request, response);
+		sendToJSP(VIEW_BIDDERS_JSP, request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub

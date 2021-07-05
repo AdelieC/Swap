@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private static final int DEFAULT_BALANCE = 50;
 	private String username, lastName, firstName, email, telephone, street, postcode, city, password, salt;
 	private int userId, balance;
-	private boolean isAdmin;
+	private boolean isAdmin, wasDisabled;
 
 	public User() {
 	}
@@ -16,27 +17,38 @@ public class User implements Serializable {
 	}
 
 	public User(String username, String lastName, String firstName, String email, String telephone, String street,
-			String postcode, String city, String password, int balance, boolean isAdmin) {
-		try {
-			this.setUsername(username);
-			this.setLastName(lastName);
-			this.setFirstName(firstName);
-			this.setEmail(email);
-			this.setTelephone(telephone);
-			this.setStreet(street);
-			this.setPostcode(postcode);
-			this.setCity(city);
-			this.setSalt();
-			this.setPassword(password, this.salt);
-			this.setBalance(balance);
-			this.setIsAdmin(isAdmin);
-		} catch (BOException e) {
-			e.printStackTrace();
-		}
+			String postcode, String city, String password) throws BOException {
+		this.setUsername(username);
+		this.setLastName(lastName);
+		this.setFirstName(firstName);
+		this.setEmail(email);
+		this.setTelephone(telephone);
+		this.setStreet(street);
+		this.setPostcode(postcode);
+		this.setCity(city);
+		this.setSalt();
+		this.setPassword(password, this.salt);
+		this.balance = DEFAULT_BALANCE;
+		this.isAdmin = false;
+		this.wasDisabled = false;
 	}
 
 	public User(int userId, String username, String lastName, String firstName, String email, String telephone,
-			String street, String postcode, String city, String password, String salt, int balance, boolean isAdmin) {
+			String street, String postcode, String city) throws BOException {
+		this.setUserId(userId);
+		this.setUsername(username);
+		this.setLastName(lastName);
+		this.setFirstName(firstName);
+		this.setEmail(email);
+		this.setTelephone(telephone);
+		this.setStreet(street);
+		this.setPostcode(postcode);
+		this.setCity(city);
+	}
+
+	public User(int userId, String username, String lastName, String firstName, String email, String telephone,
+			String street, String postcode, String city, String password, String salt, int balance, boolean isAdmin,
+			boolean wasDisabled) {
 		this.userId = userId;
 		this.username = username;
 		this.lastName = lastName;
@@ -48,6 +60,7 @@ public class User implements Serializable {
 		this.city = city;
 		this.balance = balance;
 		this.isAdmin = isAdmin;
+		this.wasDisabled = wasDisabled;
 	}
 
 	public int getUserId() {
@@ -211,4 +224,16 @@ public class User implements Serializable {
 		return PasswordUtils.isPasswordCorrect(passwordToValidate, password, salt);
 	}
 
+	public boolean wasDisabled() {
+		return wasDisabled;
+	}
+
+	public void setWasDisabled(boolean disable) {
+		wasDisabled = disable;
+	}
+
+	public void changePassword(String newPassword) throws BOException {
+		setSalt();
+		setPassword(newPassword, salt);
+	}
 }

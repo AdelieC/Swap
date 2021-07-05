@@ -26,4 +26,10 @@ public interface AuctionDAO extends DAO<Auction> {
 	public List<Auction> selectAllByStatus(String status) throws DALException;
 
 	public List<Auction> selectAllNotOver() throws DALException;
+
+	public List<Auction> selectOngoingByUserId(int userId) throws DALException;
+
+	public void updateStatus(int auctionId, String newStatus) throws DALException;
+
+	public void updateCategory(Auction auction, int substituteId) throws DALException;
 }

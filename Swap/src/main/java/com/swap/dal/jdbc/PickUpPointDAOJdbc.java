@@ -121,6 +121,31 @@ public class PickUpPointDAOJdbc implements PickUpPointDAO {
 	}
 
 	@Override
+	public void deleteByAuctionId(int auctionId) throws DALException {
+		Connection cn = null;
+		PreparedStatement stmt = null;
+		String query = DBUtils.deleteWhere(tableName, "auction_id");
+		try {
+			cn = ConnectionProvider.getConnection();
+			stmt = cn.prepareStatement(query);
+			stmt.setInt(1, auctionId);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Pick-up Point for auction with id " + auctionId + "-- deletion failed", e);
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				cn.close();
+			} catch (SQLException e) {
+				e.getStackTrace();
+			}
+		}
+
+	}
+
+	@Override
 	public PickUpPoint selectById(int id) throws DALException {
 		PickUpPoint pu = null;
 		Connection cn = null;

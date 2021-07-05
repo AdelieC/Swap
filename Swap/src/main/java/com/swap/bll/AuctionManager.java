@@ -174,4 +174,34 @@ public class AuctionManager {
 		return list;
 	}
 
+	public List<Auction> getOngoingByUserId(int userId) throws BLLException {
+		List<Auction> list = null;
+		try {
+			list = this.auctionDAO.selectOngoingByUserId(userId);
+			for (Auction auction : list) {
+				auction.setPictures(pictureManager.getByAuctionId(auction.getId()));
+			}
+		} catch (DALException e) {
+			throw new BLLException("GET AUCTIONS ONGOING BY USERID failure");
+		}
+		return list;
+	}
+
+	public void updateStatus(int auctionId, String newStatus) throws BLLException {
+		try {
+			this.auctionDAO.updateStatus(auctionId, newStatus);
+		} catch (DALException e) {
+			throw new BLLException("UPDATE STATUS failure");
+		}
+	}
+
+	public void updateCategoryForAll(int oldCategoryId, int substituteId) throws BLLException {
+		try {
+			for (Auction auction : getByCategory(oldCategoryId))
+				auctionDAO.updateCategory(auction, substituteId);
+		} catch (DALException e) {
+			throw new BLLException("UPDATE CATEGORY failure");
+		}
+	}
+
 }

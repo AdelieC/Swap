@@ -13,8 +13,8 @@ public class PictureManager {
 	private PictureDAO pictureDAO;
 
 	public PictureManager() {
-		this.pictureRepo = DAOFactory.getImageFileDAO();
-		this.pictureDAO = DAOFactory.getImageDAO();
+		pictureRepo = DAOFactory.getPictureRepository();
+		pictureDAO = DAOFactory.getImageDAO();
 	}
 
 	private boolean isValid(Picture picture) {
@@ -26,8 +26,8 @@ public class PictureManager {
 		if (!isValid(picture))
 			throw new BLLException("Invalid image");
 		try {
-			this.pictureRepo.save(picture);
-			this.pictureDAO.create(picture);
+			pictureRepo.save(picture);
+			pictureDAO.create(picture);
 		} catch (DALException e) {
 			throw new BLLException("Couldn't create image", e);
 		}
@@ -43,7 +43,7 @@ public class PictureManager {
 	public void update(Picture picture) throws BLLException {
 		if (isValid(picture)) {
 			try {
-				this.pictureDAO.update(picture);
+				pictureDAO.update(picture);
 			} catch (DALException e) {
 				throw new BLLException("UPDATE AUCTION failure");
 			}
@@ -52,8 +52,8 @@ public class PictureManager {
 
 	public void delete(Picture picture) throws BLLException {
 		try {
-			this.pictureDAO.delete(picture);
-			this.pictureRepo.remove(picture);
+			pictureDAO.delete(picture);
+			pictureRepo.remove(picture);
 		} catch (DALException e) {
 			throw new BLLException("Failed to delete image", e);
 		}
@@ -62,7 +62,7 @@ public class PictureManager {
 	public List<Picture> getByAuctionId(int auctionId) throws BLLException {
 		List<Picture> images = null;
 		try {
-			images = this.pictureDAO.selectByAuctionId(auctionId);
+			images = pictureDAO.selectByAuctionId(auctionId);
 		} catch (DALException e) {
 			throw new BLLException("Failed to get images for auction with id = " + auctionId, e);
 		}
@@ -71,8 +71,10 @@ public class PictureManager {
 
 	public void deleteAllByAuctionId(int auctionId) throws BLLException {
 		try {
-			this.pictureRepo.removeAll(pictureDAO.selectByAuctionId(auctionId));
-			this.pictureDAO.deleteAllByAuctionId(auctionId);
+			List<Picture> pictures = pictureDAO.selectByAuctionId(auctionId);
+			for (Picture picture : pictures) {
+				delete(picture);
+			}
 		} catch (DALException e) {
 			throw new BLLException("Failed to delete images for auction with id " + auctionId, e);
 		}

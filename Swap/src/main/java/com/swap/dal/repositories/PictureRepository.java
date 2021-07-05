@@ -34,7 +34,6 @@ public class PictureRepository implements Repository {
 
 	@Override
 	public void save(Picture picture) throws DALException {
-		System.out.println("trying to create image files");
 		try {
 			BufferedInputStream bis = new BufferedInputStream(picture.getImageFile().getInputStream());
 			BufferedImage pictureB = ImageIO.read(bis);

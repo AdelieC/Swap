@@ -50,9 +50,25 @@ public class UserManager {
 
 	public void updatePassword(User user) throws BLLException {
 		try {
-			this.UserDAO.updatePassword(user);
+			this.UserDAO.updatePasswordAndSalt(user);
 		} catch (DALException e) {
 			throw new BLLException("Failed to update password", e);
+		}
+	}
+
+	public void enable(User user) throws BLLException {
+		try {
+			this.UserDAO.updateWasDisabled(user, false);
+		} catch (DALException e) {
+			throw new BLLException("Failed to enable user", e);
+		}
+	}
+
+	public void disable(User user) throws BLLException {
+		try {
+			this.UserDAO.updateWasDisabled(user, true);
+		} catch (DALException e) {
+			throw new BLLException("Failed to disable user", e);
 		}
 	}
 
@@ -134,5 +150,23 @@ public class UserManager {
 			throw new BLLException("Log in failed", e);
 		}
 		return usernameIsValid;
+	}
+
+	public void credit(int userId, int amount) throws BLLException {
+		try {
+			int balance = this.getById(userId).getBalance();
+			this.UserDAO.updateBalance(userId, balance + amount);
+		} catch (DALException e) {
+			throw new BLLException("Failed to credit user " + userId, e);
+		}
+	}
+
+	public void debit(int userId, int amount) throws BLLException {
+		try {
+			int balance = this.getById(userId).getBalance();
+			this.UserDAO.updateBalance(userId, balance - amount);
+		} catch (DALException e) {
+			throw new BLLException("Failed to debit user " + userId, e);
+		}
 	}
 }

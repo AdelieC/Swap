@@ -1,5 +1,4 @@
 <%@ include file="./includes/base.jsp" %>
-<c:set var="user" scope="request" value="${sessionScope.user}"/>
 <!DOCTYPE html>
 <html>
 	<jsp:include page="./includes/basicLinks.html"/>
@@ -61,35 +60,31 @@
 			            <label for="end-date">End date:</label>
 			            <input type="date" name="end-date" value="${auction.endDate}" min="${auction.startDate != null ? auction.startDate : minDate}" max="${maxDate}" required>
 		            </div>
-		            </fieldset>
-	 	            <fieldset class="pup">
-		            	<legend>Pick Up Point</legend>
-		            	<div class="form-field">
-				            <label for="street">Street:</label>
-				            <input type="text" name="street" value="${pickUpPoint.street}">
-			            </div>
-			            <div class="form-field">
-				            <label for="postcode">Postcode:</label>
-				            <input type="text" name="postcode" value="${pickUpPoint.postcode}">
-			            </div>
-			            <div class="form-field">
-				            <label for="city">City:</label>
-				            <input type="text" name="city" value="${pickUpPoint.city}">
-			            </div>
-		            </fieldset>
-		            </form>
-		            <div class="btn-group">
-		            	<input type="hidden" form="auction-form" name="auctionId" value="${auction.getId()}">
-		            	<input type="submit" form="auction-form" class="btn submit1" value="Save">
-		            	<a class="btn submit2" href="/Swap">Cancel</a>
-						<c:if test="${!empty auction && auction.status.equals('CREATED')}">
-							<form method="post" action="/Swap/auction/cancel">
-								<input type="hidden" name="auctionId" value="${auction.getId()}">
-		        				<input type="submit" class="btn cta" name="cancel-auction" value="Cancel auction">
-		        			</form>
-	       	 			</c:if> 
-	       	 		</div>
-			
+				</fieldset>
+ 	            <fieldset class="pup">
+	            	<legend>Pick Up Point</legend>
+	            	<div class="form-field">
+			            <label for="street">Street:</label>
+			            <input type="text" name="street" value="${pickUpPoint.street}">
+		            </div>
+		            <div class="form-field">
+			            <label for="postcode">Postcode:</label>
+			            <input type="text" name="postcode" value="${pickUpPoint.postcode}">
+		            </div>
+		            <div class="form-field">
+			            <label for="city">City:</label>
+			            <input type="text" name="city" value="${pickUpPoint.city}">
+		            </div>
+	            </fieldset>
+			</form>
+            <div class="btn-group">
+            	<input type="hidden" form="auction-form" name="auctionId" value="${auction.getId()}">
+            	<input type="submit" form="auction-form" class="btn submit1" value="Save">
+            	<a class="btn submit2" href="/Swap">Cancel</a>
+				<c:if test="${!empty auction && auction.status.equals('CREATED')}">
+					<jsp:include page="./includes/cancelAuctionBtn.jsp"/>
+      	 		</c:if> 
+      	 	</div>
 	    </main>
 		<jsp:include page="./includes/footer.jsp"/>
 	</body>

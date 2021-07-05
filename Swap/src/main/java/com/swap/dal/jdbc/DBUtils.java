@@ -74,6 +74,10 @@ public class DBUtils {
 		return "INSERT INTO " + tableName + "(" + cols + ") VALUES(" + values + ")";
 	}
 
+	public static String updateTwoColsWhere(String tableName, String col1, String col2, String colId) {
+		return "UPDATE " + tableName + " SET " + col1 + " = ?, " + col2 + " = ? WHERE " + colId + " = ?";
+	}
+
 	public static String updateWhere(String tableName, String colId, String[] columns) {
 		String cols = columns[1] + " = ?";
 		for (int i = 2; i < columns.length; i++)
@@ -81,8 +85,8 @@ public class DBUtils {
 		return "UPDATE " + tableName + " SET " + cols + " WHERE " + colId + " = ?";
 	}
 
-	public static String updateWhere(String tableName, String colId, String colToUpdate) {
-		return "UPDATE " + tableName + " SET " + colToUpdate + "= ? WHERE " + colId + " = ?";
+	public static String updateWhere(String tableName, String colToUpdate, String colId) {
+		return "UPDATE " + tableName + " SET " + colToUpdate + " = ? WHERE " + colId + " = ?";
 	}
 
 	public static String deleteWhere(String tableName, String col) {

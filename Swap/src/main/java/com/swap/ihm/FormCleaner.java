@@ -16,11 +16,6 @@ public class FormCleaner {
 		return true;
 	}
 
-	public static String encode(String password) {
-		// TODO : logic here
-		return password;
-	}
-
 	public static String cleanEmail(String email) {
 		Pattern p = Pattern.compile(MAILREG);
 		Matcher m = p.matcher(email.trim());
@@ -73,6 +68,11 @@ public class FormCleaner {
 		Pattern p = Pattern.compile(IDREG);
 		Matcher m = p.matcher(strId.trim());
 		return (isSafe(strId) && m.matches()) ? Integer.parseInt(strId.trim()) : null;
+	}
+
+	public static String cleanText(String parameter) {
+		// TODO : complete
+		return parameter;
 	}
 
 }

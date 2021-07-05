@@ -19,16 +19,16 @@
 			<nav>
 				<ul>
 					<h4>Notifications</h4>
-					<li><a href="#container-notifs-admin">Notifications : <i>${ADMINUnread > 0 ? ADMINUnread : '0'} unread</i></a></li>
-					<li><a href="#container-notifs-wins">Auctions won : <i>${WINUnread > 0 ? WINUnread : '0'} unread</i></a></li>
-					<li><a href="#container-notifs-sales">Items sold : <i>${SALEUnread > 0 ? SALEUnread : '0'} unread</i></a></li>
-					<li><a href="#container-notifs-bids">Bids on your auctions : <i>${BIDUnread > 0 ? BIDUnread : '0'} unread</i></a></li>
+					<li><a id="ADMIN" class="${ADMINUnread > 0 ? 'unread' : ''}" href="#container-notifs-admin" onclick="markAsRead(this)">Notifications : <i><span>${ADMINUnread > 0 ? ADMINUnread : '0'}</span> unread</i></a></li>
+					<li><a id="WIN" class="${WINUnread > 0 ? 'unread' : ''}" href="#container-notifs-wins" onclick="markAsRead(this)">Auctions won : <i><span>${WINUnread > 0 ? WINUnread : '0'}</span> unread</i></a></li>
+					<li><a id="SALE" class="${SALEUnread > 0 ? 'unread' : ''}"href="#container-notifs-sales" onclick="markAsRead(this)">Items sold : <i><span>${SALEUnread > 0 ? SALEUnread : '0'}</span> unread</i></a></li>
+					<li><a id="BID" class="${BIDUnread > 0 ? 'unread' : ''}"href="#container-notifs-bids" onclick="markAsRead(this)">Bids on your auctions : <i><span>${BIDUnread > 0 ? BIDUnread : '0'}</span> unread</i></a></li>
 				</ul>
 				<c:if test="${conversations != null && !conversations.isEmpty()}">
 					<ul>
 						<h4>Conversations</h4>
 						<c:forEach var="conversation" items="${conversations}">
-							<li><a href="#container-notifs-${conversation.correspondantName}">${conversation.correspondantName} : <i>${conversation.numberOfUnreadMessages} unread</i></a></li>
+							<li><a class="MESSAGE ${conversation.numberOfUnreadMessages > 0 ? 'unread' : ''}" id="${conversation.correspondantId}" href="#container-notifs-${conversation.correspondantName}" onclick="markAsRead(this)">${conversation.correspondantName} : <i><span>${conversation.numberOfUnreadMessages}</span> unread</i></a></li>
 						</c:forEach>
 					</ul>
 				</c:if>
@@ -40,6 +40,7 @@
 							<h4>From ${notif.senderName}</h4>
 							<p>${notif.content}</p>
 							<p>${notif.dateAndTime}</p>
+							<button class="btn cta" id="${notif.id}" onclick="deleteNotification(this)">Delete</button>
 						</article>
 					</c:forEach>
 				</section>
@@ -51,6 +52,7 @@
 							<h4>${notif.auctionName} won!</h4>
 							<p>${notif.content}</p>
 							<p>${notif.dateAndTime}</p>
+							<button class="btn cta" id="${notif.id}" onclick="deleteNotification(this)">Delete</button>
 						</article>
 					</c:forEach>
 				</section>
@@ -62,6 +64,7 @@
 							<h4>${notif.auctionName} sold!</h4>
 							<p>${notif.content}</p>
 							<p>${notif.dateAndTime}</p>
+							<button class="btn cta" id="${notif.id}" onclick="deleteNotification(this)">Delete</button>
 						</article>
 					</c:forEach>
 				</section>
@@ -74,6 +77,7 @@
 							<p>made by ${notif.senderName}</p>
 							<p>${notif.content}</p>
 							<p>${notif.dateAndTime}</p>
+							<button class="btn cta" id="${notif.id}" onclick="deleteNotification(this)">Delete</button>
 						</article>
 					</c:forEach>
 				</section>
@@ -86,6 +90,9 @@
 								<h4>From ${message.senderName}</h4>
 								<p>${message.content}</p>
 								<p>${message.dateAndTime}</p>
+								<c:if test="${message.senderName.equals(user.getUsername())}">
+									<button class="btn cta" id="${message.id}" onclick="deleteNotification(this)">Delete</button>
+								</c:if>
 							</article>
 						</c:forEach>
 						<form action="/Swap/auction/message" method="post">
@@ -101,5 +108,36 @@
 			</c:if>
 		</main>
 		<jsp:include page="./includes/footer.jsp"/>
+		<script>
+  			function markAsRead(el) {
+  				const request = new XMLHttpRequest();
+  				let typeStr = '';
+  				let idStr = '';
+  				if(el.classList.contains('MESSAGE')) {
+  					typeStr = 'type=MESSAGE';
+  	  			    idStr = '&id=' + el.id;
+  				} else {
+  					typeStr = 'type=' + el.id;
+  				}
+  			    request.open("GET", "/Swap/account/notification/update?" + typeStr + idStr, true);
+  			    request.send();
+  			    markHtmlAsRead(el);
+  			}
+  			
+  			function markHtmlAsRead(el) {
+  			    el.classList.remove('unread');
+  			    const nbOfUnreadSpan = el.getElementsByTagName('span')[0];
+  			    nbOfUnreadSpan.textContent = '0';
+  			}
+  			
+  			function deleteNotification(el) {
+  				const request = new XMLHttpRequest();
+  				const data = "id=" + el.id;
+  			    request.open("POST", "/Swap/account/notification/delete", true);
+  			  	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  			    request.send(data);
+  			    el.parentNode.remove();
+  			}
+  		</script>
 	</body>
 </html>

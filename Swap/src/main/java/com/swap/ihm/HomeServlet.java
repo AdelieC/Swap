@@ -16,6 +16,7 @@ import com.swap.bll.AuctionManager;
 import com.swap.bll.BLLException;
 import com.swap.bll.CategoryManager;
 import com.swap.bll.NotificationManager;
+import com.swap.bll.UserManager;
 import com.swap.bo.Auction;
 import com.swap.bo.Category;
 import com.swap.bo.Notification;
@@ -34,6 +35,7 @@ public class HomeServlet extends MotherServlet {
 	private static final AuctionManager auctionM = new AuctionManager();
 	private static final NotificationManager notificationM = new NotificationManager();
 	private static final CategoryManager catmng = new CategoryManager();
+	private static final UserManager userM = new UserManager();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -159,13 +161,22 @@ public class HomeServlet extends MotherServlet {
 		return thumbnails;
 	}
 
-	private AuctionThumbnail getThumbnail(Auction auction) throws BLLException {
-		if (auction.getPictures().isEmpty()) {
-			return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
-					auction.getStartDate(), auction.getEndDate());
-		} else {
-			return new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
-					auction.getStartDate(), auction.getEndDate(), auction.getPictures().get(0));
+	private AuctionThumbnail getThumbnail(Auction auction) {
+		User user = null;
+		AuctionThumbnail auctionThumbnail = null;
+		try {
+			user = userM.getById(auction.getUserId());
+			if (auction.getPictures().isEmpty()) {
+				auctionThumbnail = new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
+						auction.getStartDate(), auction.getEndDate(), user.getUsername());
+			} else {
+				auctionThumbnail = new AuctionThumbnail(auction.getId(), auction.getName(), auction.getSalePrice(),
+						auction.getStartDate(), auction.getEndDate(), user.getUsername(), auction.getPictures().get(0));
+			}
+		} catch (BLLException e) {
+			// TODO Handle error 500
+			e.printStackTrace();
 		}
+		return auctionThumbnail;
 	}
 }

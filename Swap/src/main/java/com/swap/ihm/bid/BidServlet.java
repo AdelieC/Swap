@@ -102,7 +102,6 @@ public class BidServlet extends MotherServlet {
 		previousBid = bidmng.getMaxBid(auction.getId());
 		bid = new Bid(user.getUserId(), auction.getId(), offer, LocalDate.now());
 		bidmng.create(bid);
-		System.out.println("Offer :" + offer);
 		usmng.debit(user.getUserId(), offer);
 		if (previousBid != null) {
 			notifyPreviousBuyer(previousBid, auction);

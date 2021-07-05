@@ -23,4 +23,6 @@ public interface NotificationDAO extends DAO<Notification> {
 
 	public void deleteBySenderId(int userId) throws DALException;
 
+	public void updateIsRead(Notification notification) throws DALException;
+
 }

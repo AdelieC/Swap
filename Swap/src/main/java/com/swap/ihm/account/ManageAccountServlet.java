@@ -126,7 +126,6 @@ public class ManageAccountServlet extends MotherServlet {
 	private Map<String, String> getErrors(Map<String, String> inputs) {
 		Map<String, String> errors = new HashMap<>();
 		inputs.forEach((x, y) -> {
-			System.out.println(x + " : " + y);
 			if (y == null)
 				errors.put(x, FormError.getError(x).toString());
 		});

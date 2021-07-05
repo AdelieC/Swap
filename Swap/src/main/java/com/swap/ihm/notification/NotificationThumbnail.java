@@ -17,15 +17,16 @@ public class NotificationThumbnail implements Serializable, Comparable<Notificat
 	private static final long serialVersionUID = 1L;
 	AuctionManager auctionM = new AuctionManager();
 	UserManager userM = new UserManager();
-	private int auctionId;
+	private int id, auctionId;
 	private String type, senderName, recipientName, auctionName;
 	private String content;
 	private boolean isRead;
 	private String dateAndTime;
 	private Timestamp timestamp;
 
-	public NotificationThumbnail(int recipientId, int senderId, String type, String content, boolean isRead,
+	public NotificationThumbnail(int id, int recipientId, int senderId, String type, String content, boolean isRead,
 			int auctionId, java.sql.Timestamp timestamp) throws BLLException {
+		this.id = id;
 		setRecipientName(recipientId);
 		setSenderName(senderId);
 		this.type = type;
@@ -38,6 +39,7 @@ public class NotificationThumbnail implements Serializable, Comparable<Notificat
 	}
 
 	public NotificationThumbnail(Notification notification) throws BLLException {
+		this.id = notification.getId();
 		setRecipientName(notification.getRecipientId());
 		setSenderName(notification.getSenderId());
 		this.type = notification.getType();
@@ -47,6 +49,10 @@ public class NotificationThumbnail implements Serializable, Comparable<Notificat
 		setAuctionName(notification.getAuctionId());
 		setDateAndTime(notification.getTimestamp());
 		this.timestamp = notification.getTimestamp();
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public int getAuctionId() {

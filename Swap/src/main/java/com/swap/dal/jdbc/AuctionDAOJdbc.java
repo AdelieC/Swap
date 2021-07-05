@@ -449,7 +449,6 @@ public class AuctionDAOJdbc implements AuctionDAO {
 		ResultSet result = null;
 		String query = DBUtils.selectWhereDifferent(tableName, "status");
 		try {
-			System.out.println(query);
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setString(1, "OVER");
@@ -483,7 +482,6 @@ public class AuctionDAOJdbc implements AuctionDAO {
 		ResultSet result = null;
 		String query = DBUtils.selectByTwoCols(tableName, "status", "user_id");
 		try {
-			System.out.println(query);
 			cn = ConnectionProvider.getConnection();
 			stmt = cn.prepareStatement(query);
 			stmt.setString(1, "ONGOING");

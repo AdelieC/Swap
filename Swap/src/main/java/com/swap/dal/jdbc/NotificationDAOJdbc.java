@@ -342,4 +342,24 @@ public class NotificationDAOJdbc implements NotificationDAO {
 			DBUtils.closeConnection(conn);
 		}
 	}
+
+	@Override
+	public void updateIsRead(Notification n) throws DALException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String SQLQuery = DBUtils.updateWhere(TABLENAME, "is_read", "id");
+		try {
+			conn = ConnectionProvider.getConnection();
+			stmt = conn.prepareStatement(SQLQuery);
+			stmt.setBoolean(1, true);
+			stmt.setInt(2, n.getId());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DALException("Notification number " + n.getId() + " couldn't be marked as read", e);
+		} finally {
+			DBUtils.closePrepStmt(stmt);
+			DBUtils.closeConnection(conn);
+		}
+
+	}
 }

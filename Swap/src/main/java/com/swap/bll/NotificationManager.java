@@ -45,6 +45,14 @@ public class NotificationManager {
 		}
 	}
 
+	public void markAsRead(Notification n) throws BLLException {
+		try {
+			this.NotificationDAO.updateIsRead(n);
+		} catch (DALException e) {
+			throw new BLLException("Failed to update notification with id = " + n.getId(), e);
+		}
+	}
+
 	public void delete(int id) throws BLLException {
 		try {
 			this.NotificationDAO.delete(id);
